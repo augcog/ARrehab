@@ -4,6 +4,11 @@ When contributing to this repository, please open up a GitHub issue and assign i
 
 Please note that the master branch is write protected so please make your commits in your own branch before making a pull request.
 
+## Getting Started
+1. Clone the repository `https://github.com/erwang01/ARrehab.git`
+2. Create a branch related to your issue `git branch <branch_name>`
+3. Checkout your branch `git checkout <branch_name>`
+
 ## Pull Request Process
 
 1. Update the README.md with details of changes to the interface, this includes new environment variables, useful file locations and container parameters.
