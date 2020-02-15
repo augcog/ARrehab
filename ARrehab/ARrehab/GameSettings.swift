@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+struct GameSettings {
+    /// Number of tiles to generate
+    let numTiles: Int = 5
+    
+    /// Play area dimensions (length, width)
+    let areaDim: SIMD2 = SIMD2(3, 5)
+    
+}

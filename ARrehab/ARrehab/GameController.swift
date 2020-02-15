@@ -44,8 +44,105 @@ class GameController {
     var gameAnchor: Experience.Box!
     
     /// The game board
-    var gameBoard = Board()
+    var gameBoard = Board(numTiles: settings.numTiles, length: settings.areaDim[0], width: settings.areaDim[1])
+    
+    /// The game dice
+    var gameDice: Entity
+    
+    /// The current state of the game.
+    private var currentState: State
+    
+    init() {
+        currentState = .begin
+    }
+    
+    /// Begins the game from application launch.
+    func begin() {
+        transition(to: .appStart)
+    }
+    
+    /// Informs the game controller that the player is ready to play the game.
+    func playerReadyToBeginPlay() {
+        transition(to: .placingContent)
+    }
+    
+    /// Informs the game controller that the player is ready to roll dice.
+    func playerReadyToRoll() {
+        transition(to: .readyToRoll)
+    }
     
     
-    
+    /// Causes a state transition.
+    private func transition(to state: State) {
+        guard state != currentState else { return }
+        
+        func transitionToAppStart() {
+            Experience.loadGameAsync { [weak self] result in
+                switch result {
+                case .success(let game):
+                    guard let self = self else { return }
+                    
+                    if self.gameAnchor == nil {
+                        self.gameAnchor = game
+                    }
+                    
+                    if case let .waitingForContent(nextState) = self.currentState {
+                        self.transition(to: nextState)
+                    }
+                case .failure(let error):
+                    print("Unable to load the game with error: \(error.localizedDescription)")
+                }
+            }
+            
+            transition(to: .menu)
+        }
+        
+        func transitionToMenu() {
+        }
+        
+        func transitionToPlacingContent() {
+        }
+        
+        func transitionToReadyToRoll() {
+            if gameAnchor == nil {
+                transition(to: .waitingForContent(nextState: .readyToRoll))
+            } else {
+            }
+        }
+        
+        func transitionToBallAtRest() {
+            let currentGame = gameNumber
+            DispatchQueue.main.asyncAfter(deadline: .now() + settings.frameSettleDelay) {
+                guard currentGame == self.gameNumber else { return }
+                
+                // It's been a while and we're still on this game. Assume we have a stuck bowling frame.
+                self.completeBowlingFrame()
+            }
+        }
+        
+        func transitionToFrameComplete(striking struckPinCount: Int) {
+            observer?.gameController(self, completedBowlingFrameWithStruckPins: struckPinCount)
+        }
+        
+        func transitionToWaitingForContent(for nextState: State) {
+            if gameAnchor != nil {
+                transition(to: nextState)
+            }
+        }
+
+        currentState = state
+        switch state {
+        case .begin: break
+        case .appStart: transitionToAppStart()
+        case .menu: transitionToMenu()
+        case .placingContent: transitionToPlacingContent()
+        case .readyToRoll:
+            transitionToReadyToRoll()
+        case .movingToPosition:
+            transitionToMovingToPosition()
+        case .positionReached:
+            transitionToPositionReached()
+        case let .waitingForContent(nextState): transitionToWaitingForContent(for: nextState)
+        }
+    }
 }
