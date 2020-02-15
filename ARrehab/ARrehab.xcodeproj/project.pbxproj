@@ -10,6 +10,7 @@
 		155510C623F7D0A5003EEE6C /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510C523F7D0A5003EEE6C /* Board.swift */; };
 		155510C823F7D83D003EEE6C /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510C723F7D83D003EEE6C /* GameController.swift */; };
 		155510CA23F7E0D7003EEE6C /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510C923F7E0D7003EEE6C /* Tile.swift */; };
+		155510CC23F7E5FC003EEE6C /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510CB23F7E5FC003EEE6C /* GameSettings.swift */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
 		159A41EF23F49283000A5376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EE23F49283000A5376 /* ViewController.swift */; };
 		159A41F123F49283000A5376 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159A41F023F49283000A5376 /* Experience.rcproject */; };
@@ -41,6 +42,7 @@
 		155510C523F7D0A5003EEE6C /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		155510C723F7D83D003EEE6C /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		155510C923F7E0D7003EEE6C /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		155510CB23F7E5FC003EEE6C /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A41EC23F49283000A5376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		159A41EE23F49283000A5376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
 				155510C723F7D83D003EEE6C /* GameController.swift */,
+				155510CB23F7E5FC003EEE6C /* GameSettings.swift */,
 				155510C923F7E0D7003EEE6C /* Tile.swift */,
 				155510C523F7D0A5003EEE6C /* Board.swift */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
@@ -274,6 +277,7 @@
 				155510CA23F7E0D7003EEE6C /* Tile.swift in Sources */,
 				155510C623F7D0A5003EEE6C /* Board.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
+				155510CC23F7E5FC003EEE6C /* GameSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
