@@ -77,7 +77,8 @@ class GameController {
         guard state != currentState else { return }
         
         func transitionToAppStart() {
-            Experience.loadGameAsync { [weak self] result in
+            // TODO: change loadBoxAsync to loading whatever stage it is.
+            Experience.loadBoxAsync { [weak self] result in
                 switch result {
                 case .success(let game):
                     guard let self = self else { return }
@@ -109,7 +110,7 @@ class GameController {
             } else {
             }
         }
-        
+        /*
         func transitionToBallAtRest() {
             let currentGame = gameNumber
             DispatchQueue.main.asyncAfter(deadline: .now() + settings.frameSettleDelay) {
@@ -122,6 +123,14 @@ class GameController {
         
         func transitionToFrameComplete(striking struckPinCount: Int) {
             observer?.gameController(self, completedBowlingFrameWithStruckPins: struckPinCount)
+        } */
+        
+        func transitionToMovingToPosition() {
+            
+        }
+        
+        func transitionToPositionReached() {
+            
         }
         
         func transitionToWaitingForContent(for nextState: State) {

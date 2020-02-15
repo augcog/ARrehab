@@ -55,11 +55,3 @@ class Tile: Entity, HasModel, HasCollision {
         self.nextTile = nextTile
     }
 }
-
-class TileModelComponent: ModelComponent {
-    
-}
-
-class TileCollisionComponent: CollisionComponent {
-    
-}
