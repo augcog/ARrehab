@@ -40,6 +40,12 @@ class GameController {
     /// A series of constants that control aspects of game behavior.
     let settings = GameSettings()   // TODO: enable physical therapists to customize.
     
+    /// The app's Reality File anchored scene (from Reality Composer).
+    var gameAnchor: Experience.Box!
+    
+    /// The game board
+    var gameBoard = Board()
+    
     
     
 }
