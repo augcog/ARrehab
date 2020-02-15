@@ -8,10 +8,19 @@
 
 import UIKit
 import RealityKit
+import ARKit
 
 class ViewController: UIViewController {
     
+    /// The app's root view.
     @IBOutlet var arView: ARView!
+    
+    /// A view that instructs the user's movement during session initialization.
+    @IBOutlet weak var coachingOverlay: ARCoachingOverlayView!
+    
+    /// The game controller, which manages game state.
+    var gameController: GameController!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
