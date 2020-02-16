@@ -10,16 +10,19 @@ import Foundation
 
 struct GameSettings {
     /// Number of tiles to generate
-    var numTiles: Int = 5
+    var numTiles: Int
     
     /// Play area dimensions (length, width)
-    var areaDim: SIMD2<Float> = SIMD2(3, 5)
+    var areaDim: SIMD2<Float>
     
     init() {
+        numTiles = 5
+        areaDim = SIMD2(3, 5)
     }
-    
+    /*
     init(numTiles: Int?, areaDim: SIMD2<Float>?) {
         self.numTiles = numTiles ?? self.numTiles
         self.areaDim = areaDim ?? self.areaDim
     }
+ */
 }

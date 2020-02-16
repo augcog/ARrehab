@@ -11,8 +11,8 @@
 		155510C823F7D83D003EEE6C /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510C723F7D83D003EEE6C /* GameController.swift */; };
 		155510CA23F7E0D7003EEE6C /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510C923F7E0D7003EEE6C /* Tile.swift */; };
 		155510CC23F7E5FC003EEE6C /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155510CB23F7E5FC003EEE6C /* GameSettings.swift */; };
-		155510CF23F812D6003EEE6C /* hardscene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 155510CD23F812D6003EEE6C /* hardscene.rcproject */; };
-		155510D023F812D6003EEE6C /* easyscene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 155510CE23F812D6003EEE6C /* easyscene.rcproject */; };
+		155510D523F8C6C8003EEE6C /* hard.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 155510D323F8C6C8003EEE6C /* hard.rcproject */; };
+		155510D623F8C6C8003EEE6C /* easy.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 155510D423F8C6C8003EEE6C /* easy.rcproject */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
 		159A41EF23F49283000A5376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EE23F49283000A5376 /* ViewController.swift */; };
 		159A41F123F49283000A5376 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159A41F023F49283000A5376 /* Experience.rcproject */; };
@@ -45,8 +45,8 @@
 		155510C723F7D83D003EEE6C /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		155510C923F7E0D7003EEE6C /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		155510CB23F7E5FC003EEE6C /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
-		155510CD23F812D6003EEE6C /* hardscene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = hardscene.rcproject; sourceTree = "<group>"; };
-		155510CE23F812D6003EEE6C /* easyscene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = easyscene.rcproject; sourceTree = "<group>"; };
+		155510D323F8C6C8003EEE6C /* hard.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = hard.rcproject; sourceTree = "<group>"; };
+		155510D423F8C6C8003EEE6C /* easy.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = easy.rcproject; sourceTree = "<group>"; };
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A41EC23F49283000A5376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		159A41EE23F49283000A5376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +111,8 @@
 		159A41EB23F49283000A5376 /* ARrehab */ = {
 			isa = PBXGroup;
 			children = (
+				155510D423F8C6C8003EEE6C /* easy.rcproject */,
+				155510D323F8C6C8003EEE6C /* hard.rcproject */,
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
 				155510C723F7D83D003EEE6C /* GameController.swift */,
@@ -118,8 +120,6 @@
 				155510C923F7E0D7003EEE6C /* Tile.swift */,
 				155510C523F7D0A5003EEE6C /* Board.swift */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
-				155510CE23F812D6003EEE6C /* easyscene.rcproject */,
-				155510CD23F812D6003EEE6C /* hardscene.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -278,14 +278,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
-				155510D023F812D6003EEE6C /* easyscene.rcproject in Sources */,
 				155510C823F7D83D003EEE6C /* GameController.swift in Sources */,
-				155510CF23F812D6003EEE6C /* hardscene.rcproject in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
 				155510CA23F7E0D7003EEE6C /* Tile.swift in Sources */,
 				155510C623F7D0A5003EEE6C /* Board.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
+				155510D623F8C6C8003EEE6C /* easy.rcproject in Sources */,
 				155510CC23F7E5FC003EEE6C /* GameSettings.swift in Sources */,
+				155510D523F8C6C8003EEE6C /* hard.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +458,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X444959833;
 				INFOPLIST_FILE = ARrehab/Info.plist;
@@ -467,6 +468,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -476,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X444959833;
 				INFOPLIST_FILE = ARrehab/Info.plist;
@@ -485,6 +488,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
