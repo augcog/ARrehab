@@ -9,7 +9,7 @@
 import Foundation
 import RealityKit
 
-class Tile: Entity {
+class Tile: Entity, HasModel, HasCollision {
     let length: Float = 0.3
     let width: Float = 0.3
     var previousTile: Tile?
@@ -54,5 +54,4 @@ class Tile: Entity {
     func setNextTile(nextTile: Tile?) {
         self.nextTile = nextTile
     }
-    
 }

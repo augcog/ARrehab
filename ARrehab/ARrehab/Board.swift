@@ -15,8 +15,16 @@ class Board {
     var width: Float
     init(numTiles: Int, length: Float, width: Float) {
         var previousTile: Tile? = nil
+        self.tiles = Array()
         for i in 0 ..< numTiles {
-            tiles[i] = Tile(previousTile: previousTile)
+            self.tiles[i] = Tile(previousTile: previousTile)
+            previousTile = self.tiles[i]
         }
+        self.length = length
+        self.width = width
+    }
+    
+    getPath(startTile: Tile, endTile: Tile) {
+        
     }
 }
