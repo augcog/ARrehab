@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         arView.session.run(arConfiguration)
         
         // Player's Trigger volume
-        let player = TriggerVolume(shape: ShapeResource.generateBox(width: 0.5, height: 2, depth: 0.5), filter: <#T##CollisionFilter#>)
+        let player = TriggerVolume(shape: ShapeResource.generateBox(width: 0.5, height: 2, depth: 0.5))
         
         // Initialize the game controller, which begins the game.
         gameController = GameController()

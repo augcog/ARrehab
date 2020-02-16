@@ -38,13 +38,13 @@ class GameController {
     }
     
     /// A series of constants that control aspects of game behavior.
-    let settings = GameSettings()   // TODO: enable physical therapists to customize.
+    let settings: GameSettings  // TODO: enable physical therapists to customize.
     
     /// The app's Reality File anchored scene (from Reality Composer).
     var gameAnchor: Experience.Box!
     
     /// The game board
-    var gameBoard = Board(numTiles: settings.numTiles, length: settings.areaDim[0], width: settings.areaDim[1])
+    var gameBoard: Board
     
     /// The game dice
     var gameDice: Entity
@@ -53,7 +53,11 @@ class GameController {
     private var currentState: State
     
     init() {
+        settings = GameSettings()
+        gameBoard = Board(numTiles: settings.numTiles, length: settings.areaDim[0], width: settings.areaDim[1])
         currentState = .begin
+        gameAnchor = try! Experience.loadBox()
+        gameDice = Entity()
     }
     
     /// Begins the game from application launch.
@@ -108,6 +112,7 @@ class GameController {
             if gameAnchor == nil {
                 transition(to: .waitingForContent(nextState: .readyToRoll))
             } else {
+                // TODO: Roll the Dice
             }
         }
         /*
@@ -126,11 +131,11 @@ class GameController {
         } */
         
         func transitionToMovingToPosition() {
-            
+            // heighlight path to target
         }
         
         func transitionToPositionReached() {
-            
+            // provide reward
         }
         
         func transitionToWaitingForContent(for nextState: State) {
