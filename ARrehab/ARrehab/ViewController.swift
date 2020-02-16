@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     
     /// The app's root view.
     @IBOutlet var arView: ARView!
+    
     /// A view that instructs the user's movement during session initialization.
     @IBOutlet weak var coachingOverlay: ARCoachingOverlayView!
     
