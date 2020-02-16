@@ -17,6 +17,16 @@ class ViewController: UIViewController {
     /// A view that instructs the user's movement during session initialization.
     @IBOutlet weak var coachingOverlay: ARCoachingOverlayView!
     
+    
+    
+    @IBOutlet weak var label: UILabel!
+    
+    @IBOutlet weak var leftImageView: UIImageView!
+    
+    
+    @IBOutlet weak var rightImageView: UIImageView!
+    
+    
     /// The game controller, which manages game state.
     var gameController: GameController!
     
@@ -53,6 +63,20 @@ class ViewController: UIViewController {
         coachingOverlay.goal = .horizontalPlane
         coachingOverlay.activatesAutomatically = false
         self.coachingOverlay.setActive(true, animated: true)
+    }
+    
+    // Handles what happens when the roll dice button is tapped
+    @IBAction func rollDicePressed(_ sender: UIButton) {
+        
+        let roll1 = Int.random(in: 1 ... 6)
+        let roll2 = Int.random(in: 1 ... 6)
+        
+        label.text = "You rolled a: \(roll1) and \(roll2). "
+        
+        leftImageView.image = UIImage(named: "Dice\(roll1)")
+        
+        rightImageView.image = UIImage(named: "Dice\(roll2)")
+        
     }
     
 }
