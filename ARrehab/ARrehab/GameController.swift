@@ -52,12 +52,15 @@ class GameController {
     /// The current state of the game.
     private var currentState: State
     
-    init() {
+    var player: TriggerVolume
+    
+    init(player: TriggerVolume) {
         settings = GameSettings()
         gameBoard = Board(numTiles: settings.numTiles, length: settings.areaDim[0], width: settings.areaDim[1])
         currentState = .begin
         gameAnchor = try! Experience.loadBox()
         gameDice = Entity()
+        self.player = player
     }
     
     /// Begins the game from application launch.

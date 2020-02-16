@@ -19,10 +19,5 @@ struct GameSettings {
         numTiles = 5
         areaDim = SIMD2(3, 5)
     }
-    /*
-    init(numTiles: Int?, areaDim: SIMD2<Float>?) {
-        self.numTiles = numTiles ?? self.numTiles
-        self.areaDim = areaDim ?? self.areaDim
-    }
- */
+
 }
