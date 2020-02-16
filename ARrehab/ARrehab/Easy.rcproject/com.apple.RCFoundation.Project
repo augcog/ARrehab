@@ -72,30 +72,6 @@
                                     }
                                   ],
                                   "__version" : 1
-                                },
-                                {
-                                  "__content" : [
-                                    {
-                                      "configurationBox" : {
-                                        "configuration" : {
-                                          "audioType" : "play",
-                                          "filePath" : "audio:com.apple.rc.audio.sound-effects.cork-pop-fx-01\/Cork%20Pop%20FX%2001.caf",
-                                          "loops" : false,
-                                          "multiplePerformType" : "ignore request",
-                                          "target" : [
-                                            "B0B8D1F1-3C20-4632-AA8A-C530CC7468B7"
-                                          ],
-                                          "volume" : 0.5
-                                        },
-                                        "name" : {
-                                          "type" : "audio"
-                                        }
-                                      },
-                                      "identifier" : "B5CBD08F-DBC2-4208-B061-592619B7659B",
-                                      "isEnabled" : true
-                                    }
-                                  ],
-                                  "__version" : 1
                                 }
                               ],
                               "identifier" : "F14D6F49-6AB7-44A7-BC9E-56873DCB5E6F",
@@ -238,30 +214,6 @@
                                         }
                                       },
                                       "identifier" : "A71DE77C-7372-4195-AECC-ED1B8524D7B6",
-                                      "isEnabled" : true
-                                    }
-                                  ],
-                                  "__version" : 1
-                                },
-                                {
-                                  "__content" : [
-                                    {
-                                      "configurationBox" : {
-                                        "configuration" : {
-                                          "audioType" : "play",
-                                          "filePath" : "audio:com.apple.rc.audio.miscellaneous.jaw-harp-fx-01\/Jaw%20Harp%20FX%2001.caf",
-                                          "loops" : false,
-                                          "multiplePerformType" : "ignore request",
-                                          "target" : [
-                                            "043BA842-F293-483D-AD7F-8B36FEA99676"
-                                          ],
-                                          "volume" : 0.5
-                                        },
-                                        "name" : {
-                                          "type" : "audio"
-                                        }
-                                      },
-                                      "identifier" : "6B61DF8A-0EA8-4D75-8F0B-DC2CD0D0ED44",
                                       "isEnabled" : true
                                     }
                                   ],
@@ -558,30 +510,6 @@
                                     }
                                   ],
                                   "__version" : 1
-                                },
-                                {
-                                  "__content" : [
-                                    {
-                                      "configurationBox" : {
-                                        "configuration" : {
-                                          "audioType" : "play",
-                                          "filePath" : "audio:com.apple.rc.audio.miscellaneous.jaw-harp-fx-01\/Jaw%20Harp%20FX%2001.caf",
-                                          "loops" : false,
-                                          "multiplePerformType" : "ignore request",
-                                          "target" : [
-                                            "E11D8A0E-74F2-4E10-8411-4DC462FE9AEF"
-                                          ],
-                                          "volume" : 0.75796180963516235
-                                        },
-                                        "name" : {
-                                          "type" : "audio"
-                                        }
-                                      },
-                                      "identifier" : "35A1C7CE-EC65-48AC-A7E0-2F70797D4C27",
-                                      "isEnabled" : true
-                                    }
-                                  ],
-                                  "__version" : 1
                                 }
                               ],
                               "identifier" : "CC64FFFF-666C-4227-B8A7-1C57F1BD206A",
@@ -784,124 +712,26 @@
                                     {
                                       "configurationBox" : {
                                         "configuration" : {
-                                          "audioType" : "play",
-                                          "filePath" : "audio:com.apple.rc.audio.miscellaneous.happy-chime-fx-01\/Happy%20Chime%20FX.caf",
-                                          "loops" : false,
-                                          "multiplePerformType" : "ignore request",
-                                          "target" : [
-
-                                          ],
-                                          "volume" : 0.75477707386016846
-                                        },
-                                        "name" : {
-                                          "type" : "audio"
-                                        }
-                                      },
-                                      "identifier" : "14D51AB9-D4E1-4390-895A-AB5EE52A68A0",
-                                      "isEnabled" : true
-                                    }
-                                  ],
-                                  "__version" : 1
-                                },
-                                {
-                                  "__content" : [
-                                    {
-                                      "configurationBox" : {
-                                        "configuration" : {
                                           "animationStyle" : "basic",
-                                          "duration" : 3,
-                                          "emphasisAnimationType" : "flip",
+                                          "duration" : 1,
+                                          "emphasisAnimationType" : "float",
                                           "iterations" : 1,
                                           "target" : [
-
+                                            "C0F5124D-65AB-4E49-BDCE-3C830AB1F036"
                                           ]
                                         },
                                         "name" : {
                                           "type" : "emphasis"
                                         }
                                       },
-                                      "identifier" : "C7B8A51B-B9AC-4E0A-A1E9-0982F8DC8E30",
+                                      "identifier" : "A92587F8-5210-44FF-970F-61E096F4C2F7",
                                       "isEnabled" : true
                                     }
                                   ],
                                   "__version" : 1
                                 }
                               ],
-                              "identifier" : "66CA7DEC-93B7-43E4-9753-CF231FE7E9B9",
-                              "isEnabled" : true
-                            }
-                          ],
-                          "__version" : 1
-                        }
-                      ],
-                      "color" : [
-                        0.69411766529083252,
-                        0.69019609689712524,
-                        0.63529413938522339,
-                        1
-                      ],
-                      "identifier" : "19B5BAC2-5219-40FB-BFC0-DC87B37C157B",
-                      "isEnabled" : true,
-                      "isLooping" : false,
-                      "isModal" : false,
-                      "name" : "Behavior 9",
-                      "triggers" : [
-                        {
-                          "__content" : [
-                            {
-                              "configurationBox" : {
-                                "configuration" : {
-                                  "target" : [
-
-                                  ]
-                                },
-                                "name" : "tapTarget"
-                              },
-                              "identifier" : "A19D00C4-5716-442A-8FC4-FAF3742FAB49",
-                              "isEnabled" : true
-                            }
-                          ],
-                          "__version" : 1
-                        }
-                      ]
-                    }
-                  ],
-                  "__version" : 2
-                },
-                {
-                  "__content" : [
-                    {
-                      "actionGroups" : [
-                        {
-                          "__content" : [
-                            {
-                              "configurations" : [
-                                {
-                                  "__content" : [
-                                    {
-                                      "configurationBox" : {
-                                        "configuration" : {
-                                          "audioType" : "play",
-                                          "filePath" : "audio:622530c6ca7954356d3b0ab2d5283ec1\/Ari%20Pulkkinen%20-%20Title%20Theme.mp3",
-                                          "loops" : false,
-                                          "target" : [
-
-                                          ],
-                                          "volume" : 0.16878980398178101
-                                        },
-                                        "name" : {
-                                          "arguments" : "stereoBypass",
-                                          "type" : "soundtrack"
-                                        }
-                                      },
-                                      "identifier" : "2CDE0A33-281B-45F5-B27B-BFE510D4033F",
-                                      "isEnabled" : true
-                                    }
-                                  ],
-                                  "__version" : 1
-                                }
-                              ],
-                              "identifier" : "287B134D-E93B-4AAF-873A-672AE7FE49F8",
+                              "identifier" : "8C7214F0-9687-4D88-AEEB-5E48FAC82243",
                               "isEnabled" : true
                             }
                           ],
@@ -925,13 +755,11 @@
                             {
                               "configurationBox" : {
                                 "configuration" : {
-                                  "target" : [
-                                    "C0F5124D-65AB-4E49-BDCE-3C830AB1F036"
-                                  ]
+                                  "userIdentifier" : "startGame "
                                 },
-                                "name" : "tapTarget"
+                                "name" : "custom"
                               },
-                              "identifier" : "844CD871-DEDA-40A8-B76C-397C382653A8",
+                              "identifier" : "4AF732B3-9931-43FD-98D1-5D5ACC48F6E1",
                               "isEnabled" : true
                             }
                           ],
@@ -1203,6 +1031,81 @@
                                 "name" : "tapTarget"
                               },
                               "identifier" : "4FAB024A-3753-4F4F-8380-377C8640815C",
+                              "isEnabled" : true
+                            }
+                          ],
+                          "__version" : 1
+                        }
+                      ]
+                    }
+                  ],
+                  "__version" : 2
+                },
+                {
+                  "__content" : [
+                    {
+                      "actionGroups" : [
+                        {
+                          "__content" : [
+                            {
+                              "configurations" : [
+                                {
+                                  "__content" : [
+                                    {
+                                      "configurationBox" : {
+                                        "configuration" : {
+                                          "animationStyle" : "basic",
+                                          "duration" : 1.7699999809265137,
+                                          "emphasisAnimationType" : "jiggle",
+                                          "iterations" : 1,
+                                          "target" : [
+
+                                          ]
+                                        },
+                                        "name" : {
+                                          "type" : "emphasis"
+                                        }
+                                      },
+                                      "identifier" : "807B5582-97FA-4E43-9E18-AE5D82203DD3",
+                                      "isEnabled" : true
+                                    }
+                                  ],
+                                  "__version" : 1
+                                }
+                              ],
+                              "identifier" : "29E15960-B538-41CD-AEBF-C7B322A06B85",
+                              "isEnabled" : true
+                            }
+                          ],
+                          "__version" : 1
+                        }
+                      ],
+                      "color" : [
+                        0.92156863212585449,
+                        0.72156864404678345,
+                        0.31372550129890442,
+                        1
+                      ],
+                      "identifier" : "6AE03C43-7D57-4C9B-B998-CC9E15354568",
+                      "isEnabled" : true,
+                      "isLooping" : false,
+                      "isModal" : false,
+                      "name" : "Behavior 13",
+                      "triggers" : [
+                        {
+                          "__content" : [
+                            {
+                              "configurationBox" : {
+                                "configuration" : {
+                                  "distance" : 1,
+                                  "target" : [
+
+                                  ],
+                                  "type" : 0
+                                },
+                                "name" : "proximity"
+                              },
+                              "identifier" : "04A2C463-AA95-450C-B973-7F7AA9A54DB7",
                               "isEnabled" : true
                             }
                           ],
@@ -3627,6 +3530,13 @@
                             "typeName" : "UUID",
                             "value" : "C0F5124D-65AB-4E49-BDCE-3C830AB1F036"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -3872,9 +3782,9 @@
                         0,
                         33.562332153320312,
                         0,
-                        -0.71024012565612793,
-                        -0.14346478879451752,
-                        -1.7637274265289307,
+                        -0.80716556310653687,
+                        6.7762643858279697e-21,
+                        -1.478411078453064,
                         1
                       ]
                     }
@@ -4230,21 +4140,21 @@
               "title" : "EasyAdventure",
               "viewTransform" : {
                 "cameraTransform" : [
-                  -0.9354701042175293,
-                  -3.4272667903678666e-07,
-                  -0.35340568423271179,
+                  -0.99958783388137817,
+                  -3.2782554626464844e-07,
+                  0.028706777840852737,
                   0,
-                  -0.11275275051593781,
-                  0.94773930311203003,
-                  0.29845753312110901,
+                  0.020619645714759827,
+                  0.69574391841888428,
+                  0.71799385547637939,
                   0,
-                  0.33493629097938538,
-                  0.3190457820892334,
-                  -0.88658183813095093,
+                  -0.019972940906882286,
+                  0.71829003095626831,
+                  -0.69545698165893555,
                   0,
-                  0.73742842674255371,
-                  3.176701545715332,
-                  -9.8204803466796875,
+                  11.809395790100098,
+                  10.711013793945312,
+                  -25.036331176757812,
                   1
                 ],
                 "sceneTransform" : [
