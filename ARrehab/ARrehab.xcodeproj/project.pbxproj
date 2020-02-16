@@ -19,6 +19,9 @@
 		159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F723F49286000A5376 /* LaunchScreen.storyboard */; };
 		159A420423F49286000A5376 /* ARrehabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420323F49286000A5376 /* ARrehabTests.swift */; };
 		159A420F23F49286000A5376 /* ARrehabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420E23F49286000A5376 /* ARrehabUITests.swift */; };
+		15EA383A23F92A3700F8FC01 /* Hard.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 15EA383823F92A3700F8FC01 /* Hard.rcproject */; };
+		15EA383B23F92A3700F8FC01 /* Easy.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 15EA383923F92A3700F8FC01 /* Easy.rcproject */; };
+		15EA383D23F94A5100F8FC01 /* GameDice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EA383C23F94A5100F8FC01 /* GameDice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		159A420A23F49286000A5376 /* ARrehabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARrehabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A420E23F49286000A5376 /* ARrehabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARrehabUITests.swift; sourceTree = "<group>"; };
 		159A421023F49286000A5376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15EA383823F92A3700F8FC01 /* Hard.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Hard.rcproject; sourceTree = "<group>"; };
+		15EA383923F92A3700F8FC01 /* Easy.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Easy.rcproject; sourceTree = "<group>"; };
+		15EA383C23F94A5100F8FC01 /* GameDice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,8 @@
 		159A41EB23F49283000A5376 /* ARrehab */ = {
 			isa = PBXGroup;
 			children = (
+				15EA383923F92A3700F8FC01 /* Easy.rcproject */,
+				15EA383823F92A3700F8FC01 /* Hard.rcproject */,
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
 				155510C723F7D83D003EEE6C /* GameController.swift */,
@@ -118,6 +126,7 @@
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
 				159A41FA23F49286000A5376 /* Info.plist */,
+				15EA383C23F94A5100F8FC01 /* GameDice.swift */,
 			);
 			path = ARrehab;
 			sourceTree = "<group>";
@@ -271,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15EA383D23F94A5100F8FC01 /* GameDice.swift in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				155510C823F7D83D003EEE6C /* GameController.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
@@ -278,6 +288,8 @@
 				155510C623F7D0A5003EEE6C /* Board.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				155510CC23F7E5FC003EEE6C /* GameSettings.swift in Sources */,
+				15EA383B23F92A3700F8FC01 /* Easy.rcproject in Sources */,
+				15EA383A23F92A3700F8FC01 /* Hard.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,13 +463,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q8XSH75VY2;
+				DEVELOPMENT_TEAM = X444959833;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yuhan.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -469,13 +481,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q8XSH75VY2;
+				DEVELOPMENT_TEAM = X444959833;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yuhan.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -16,16 +16,18 @@ class StartViewController: UIViewController {
     /// The app's root view.
     @IBOutlet var arView: ARView!
     
+    var nextAnchor: HasAnchoring!
+    
     @IBOutlet weak var label: UILabel!
     
     @IBAction func hard(_ sender: Any) {
         let hardAdventure = try! Hard.loadScene()
-        arView.scene.addAnchor(hardAdventure)
+        nextAnchor = hardAdventure
     }
     
     @IBAction func easy(_ sender: Any) {
         let easyAdventure = try! Easy.loadEasyAdventure()
-        arView.scene.addAnchor(easyAdventure)
+        nextAnchor = easyAdventure
     }
     
     override func viewDidLoad() {
@@ -37,10 +39,21 @@ class StartViewController: UIViewController {
         arView.session.run(arConfiguration)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is GameViewController
+        {
+            let vc = segue.destination as? GameViewController
+            vc?.anchor = nextAnchor
+        }
+    }
+    
 }
 
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, ARCoachingOverlayViewDelegate, ARSessionDelegate {
+    
+    var anchor: HasAnchoring!
     
     /// The app's root view.
     @IBOutlet var arView: ARView!
@@ -52,6 +65,8 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var rollDice: UIButton!
     
+    @IBOutlet weak var sessionInfoLabel: UILabel!
+    
     /// The game controller, which manages game state.
     var gameController: GameController!
     
@@ -61,21 +76,40 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        guard ARWorldTrackingConfiguration.isSupported else {
+            fatalError("""
+                ARKit is not available on this device. For apps that require ARKit
+                for core functionality, use the `arkit` key in the key in the
+                `UIRequiredDeviceCapabilities` section of the Info.plist to prevent
+                the app from installing. (If the app can't be installed, this error
+                can't be triggered in a production scenario.)
+                In apps where AR is an additive feature, use `isSupported` to
+                determine whether to show UI for launching AR experiences.
+            """) // For details, see https://developer.apple.com/documentation/arkit
+        }
+        /*
         // Player's Trigger volume
         player = TriggerVolume(shape: ShapeResource.generateBox(width: 0.5, height: 2, depth: 0.5))
         
         // Initialize the game controller, which begins the game.
         gameController = GameController(player: player)
         gameController.begin()
+        */
+               
+        arView.scene.anchors.append(anchor)
+        arView.session.delegate = self
+        arView.debugOptions = [ .showFeaturePoints ]
         
-        presentCoachingOverlay()
+        // Prevent the screen from being dimmed after a while as users will likely
+               // have long periods of interaction without touching the screen or buttons.UIApplication.shared.isIdleTimerDisabled = true
+
     }
     
     /// Begins the coaching process that instructs the user's movement during
     /// ARKit's session initialization.
     func presentCoachingOverlay() {
         coachingOverlay.session = arView.session
-        //coachingOverlay.delegate = self as! ARCoachingOverlayViewDelegate
+        coachingOverlay.delegate = self
         coachingOverlay.goal = .horizontalPlane
         coachingOverlay.activatesAutomatically = false
         self.coachingOverlay.setActive(true, animated: true)
