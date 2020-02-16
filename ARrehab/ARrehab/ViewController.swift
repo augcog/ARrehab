@@ -22,10 +22,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var label: UILabel!
     
-    @IBOutlet weak var leftImageView: UIImageView!
-    
-    
-    @IBOutlet weak var rightImageView: UIImageView!
+    @IBOutlet weak var rollDice: UIButton!
     
     
     /// The game controller, which manages game state.
@@ -37,7 +34,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Load the "Box" scene from the "Experience" Reality File
+        /*// Load the "Box" scene from the "Experience" Reality File
         let boxAnchor = try! Experience.loadBox()
         
         // Add the box anchor to the scene
@@ -54,6 +51,7 @@ class ViewController: UIViewController {
         // Initialize the game controller, which begins the game.
         gameController = GameController()
         gameController.begin()
+ */
     }
     
     /// Begins the coaching process that instructs the user's movement during
@@ -70,13 +68,11 @@ class ViewController: UIViewController {
     @IBAction func rollDicePressed(_ sender: UIButton) {
         
         let roll1 = Int.random(in: 1 ... 6)
-        let roll2 = Int.random(in: 1 ... 6)
         
-        label.text = "You rolled a: \(roll1) and \(roll2). "
+        label.text = "You rolled a: \(roll1). "
         
-        leftImageView.image = UIImage(named: "Dice\(roll1)")
+        rollDice.setImage(UIImage(named: "Dice\(roll1)"), for: .normal)
         
-        rightImageView.image = UIImage(named: "Dice\(roll2)")
         
     }
     

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,10 +15,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81E-M6-GCu">
+                            <arView multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EYD-s4-vJ8">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </arView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81E-M6-GCu">
                                 <rect key="frame" x="466" y="520" width="93" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="easy"/>
+                                <connections>
+                                    <action selector="easy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hDE-UQ-MaP"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5b-78-Nyl">
                                 <rect key="frame" x="466" y="664" width="93" height="38"/>
@@ -38,6 +45,9 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <size key="freeformSize" width="1024" height="1366"/>
+                    <connections>
+                        <outlet property="arView" destination="EYD-s4-vJ8" id="Tf4-68-hdE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -51,98 +61,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="table" translatesAutoresizingMaskIntoConstraints="NO" id="MUs-V0-bQs">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1296"/>
-                            </imageView>
                             <arView multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOt-5a-R1N">
-                                <rect key="frame" x="392" y="619" width="240" height="128"/>
+                                <rect key="frame" x="-15" y="-18" width="1039" height="1384"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </arView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="113" translatesAutoresizingMaskIntoConstraints="NO" id="YF0-nZ-thn">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1296"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="58" translatesAutoresizingMaskIntoConstraints="NO" id="rxj-1C-0ap">
-                                        <rect key="frame" x="285" y="0.0" width="454" height="196"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dice5" translatesAutoresizingMaskIntoConstraints="NO" id="kqZ-A9-3iy" userLabel="leftImageView">
-                                                <rect key="frame" x="0.0" y="0.0" width="198" height="196"/>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dice2" translatesAutoresizingMaskIntoConstraints="NO" id="OpL-m7-F5X" userLabel="rightImageView">
-                                                <rect key="frame" x="256" y="0.0" width="198" height="196"/>
-                                            </imageView>
-                                        </subviews>
-                                    </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You rolled a:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Mo-Vj-tqD">
-                                        <rect key="frame" x="391.5" y="309" width="241" height="56.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="47"/>
-                                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckb-Cu-Uug">
-                                        <rect key="frame" x="378" y="478.5" width="268" height="817.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                        <state key="normal" title="ROLL DICE!" image="Roll">
-                                            <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="rollDicePressed:" destination="XKo-AK-4pw" eventType="touchUpInside" id="9gu-xb-DHK"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckb-Cu-Uug">
+                                <rect key="frame" x="428" y="1052" width="153" height="153"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <state key="normal" image="Dice1">
+                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="rollDicePressed:" destination="XKo-AK-4pw" eventType="touchUpInside" id="9gu-xb-DHK"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You rolled a:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Mo-Vj-tqD">
+                                <rect key="frame" x="384" y="987" width="241" height="56.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="47"/>
+                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="bottom" secondItem="nxE-Iw-2e8" secondAttribute="bottom" id="2p5-R4-M0q"/>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="leading" secondItem="nxE-Iw-2e8" secondAttribute="leading" id="7fd-2Z-FxY"/>
-                            <constraint firstItem="MUs-V0-bQs" firstAttribute="trailing" secondItem="nxE-Iw-2e8" secondAttribute="trailing" id="9Ka-Di-aGr"/>
-                            <constraint firstItem="MUs-V0-bQs" firstAttribute="top" secondItem="jbH-jw-Dh3" secondAttribute="top" id="9Ti-4y-f91"/>
-                            <constraint firstItem="MUs-V0-bQs" firstAttribute="top" secondItem="jbH-jw-Dh3" secondAttribute="top" id="Bum-pg-fXL"/>
-                            <constraint firstItem="nxE-Iw-2e8" firstAttribute="trailing" secondItem="MUs-V0-bQs" secondAttribute="trailing" id="NPA-9B-iuA"/>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="leading" secondItem="nxE-Iw-2e8" secondAttribute="leading" id="Qeo-yl-6ca"/>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="trailing" secondItem="nxE-Iw-2e8" secondAttribute="trailing" id="XH7-B1-VOA"/>
-                            <constraint firstItem="MUs-V0-bQs" firstAttribute="leading" secondItem="nxE-Iw-2e8" secondAttribute="leading" id="XaQ-YN-6Qh"/>
-                            <constraint firstItem="MUs-V0-bQs" firstAttribute="leading" secondItem="nxE-Iw-2e8" secondAttribute="leading" id="Y0A-pi-TB1"/>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="top" secondItem="nxE-Iw-2e8" secondAttribute="top" id="Z16-Pn-0FD"/>
-                            <constraint firstItem="nxE-Iw-2e8" firstAttribute="bottom" secondItem="MUs-V0-bQs" secondAttribute="bottom" id="cOa-GF-kXz"/>
-                            <constraint firstItem="nxE-Iw-2e8" firstAttribute="trailing" secondItem="YF0-nZ-thn" secondAttribute="trailing" id="epC-bg-m5F"/>
-                            <constraint firstItem="nxE-Iw-2e8" firstAttribute="bottom" secondItem="YF0-nZ-thn" secondAttribute="bottom" id="kwj-Ex-nDb"/>
-                            <constraint firstItem="YF0-nZ-thn" firstAttribute="top" secondItem="nxE-Iw-2e8" secondAttribute="top" id="lxA-gf-vXf"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="nxE-Iw-2e8"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="hCL-89-qi2"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="arView" destination="gOt-5a-R1N" id="TkW-Dr-rDw"/>
+                        <outlet property="coachingOverlay" destination="gOt-5a-R1N" id="Jf6-vW-j4v"/>
                         <outlet property="label" destination="7Mo-Vj-tqD" id="qy8-mj-1qv"/>
-                        <outlet property="leftImageView" destination="kqZ-A9-3iy" id="si6-eb-6dl"/>
-                        <outlet property="rightImageView" destination="OpL-m7-F5X" id="cKP-Cr-zC0"/>
+                        <outlet property="rollDice" destination="Ckb-Cu-Uug" id="GiU-qk-rI0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3a-9D-UaD" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1032.421875" y="133.96778916544656"/>
         </scene>
-        <!--ARView-->
-        <scene sceneID="Dfe-1F-6nX">
-            <objects>
-                <viewController id="2MA-yu-gFx" userLabel="ARView" customClass="ViewController" customModule="ARrehab" customModuleProvider="target" sceneMemberID="viewController">
-                    <arView key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="PNp-HG-gfz">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </arView>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nxd-K8-HCh" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1984" y="134"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="Dice2" width="99" height="98"/>
-        <image name="Dice5" width="99" height="98"/>
-        <image name="Roll" width="32" height="32"/>
-        <image name="table" width="414" height="736"/>
+        <image name="Dice1" width="99" height="98"/>
     </resources>
 </document>
