@@ -17,7 +17,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     var hasMapped: Bool!
     
     let cameraAnchor = AnchorEntity(.camera)
-    let cameraCollisionBox = TriggerVolume(shape: ShapeResource.generateBox(width: 0.2, height: 4, depth: 0.2))
+    let cameraCollisionBox = ModelEntity(mesh: MeshResource.generateBox(width: 0.2, height: 1, depth: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)], collisionShape: ShapeResource.generateBox(width: 0.2, height: 4, depth: 0.2), mass: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,29 @@ class ViewController: UIViewController, ARSessionDelegate {
         hasMapped = false
         
         cameraAnchor.addChild(cameraCollisionBox)
+        cameraCollisionBox.transform.translation = [0, 0, -0.5]
+        print(cameraCollisionBox.transform)
         arView.scene.addAnchor(cameraAnchor)
+        
+//        let c = arView.scene.subscribe(to: SceneEvents.Update.self) { (event) in
+////          guard let cameraBox = ModelEntity? else {
+////            return
+////          }
+//          print("TESTSSTSTESTS")
+//          // Translation matrix that moves the box 1m in front of the camera
+//          let translate = float4x4(
+//            [1,0,0,0],
+//            [0,1,0,0],
+//            [0,0,1,0],
+//            [0,0,-1,1]
+//          )
+//
+//          // Transformed applied right to left
+//            let finalMatrix = self.arView.cameraTransform.matrix * translate
+//
+//            self.cameraCollisionBox.setTransformMatrix(finalMatrix, relativeTo: nil)
+//
+//        }
         
         let arConfig = ARWorldTrackingConfiguration()
         arConfig.planeDetection = .horizontal
@@ -36,24 +58,35 @@ class ViewController: UIViewController, ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        if (hasMapped) { return }
+        if (hasMapped) {
+            print(cameraCollisionBox.transform)
+            return
+        }
         let anc = anchors[0]
         let ancEntity = AnchorEntity(anchor: anc)
         for x in -1 ... 1 {
             for z in -1 ... 1 {
-                ancEntity.addChild(Tile(name: "test", x: Float(x)/2.0, z: Float(z)/2.0).entity)
+                ancEntity.addChild(Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0))
             }
         }
-        arView.scene.subscribe(to: CollisionEvents.Began.self, on: cameraCollisionBox) {
-            event in guard let tile = event.entityB as? Tile.entity else {
+        arView.scene.subscribe(to: CollisionEvents.Began.self) {
+            event in
+            print("Collision Started")
+            guard let tile = event.entityB as? Tile else {
                 return
             }
-            updateCustomUI(tile.name)
+            self.updateCustomUI(message: "On Tile: " + tile.name)
+            tile.model?.materials = [
+                SimpleMaterial(color: .red, isMetallic: false)
+            ]
         }
+        
         arView.scene.addAnchor(ancEntity)
         hasMapped = true
     }
     
-    
+    func updateCustomUI(message: String) {
+        print(message)
+    }
     
 }

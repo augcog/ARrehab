@@ -12,16 +12,19 @@ import CoreGraphics
 
 class Tile : Entity, HasModel, HasCollision {
     
-    var entity: ModelEntity
-    var name: String
+    var tileName: String
     
-    
-    init(name: String, x: Float, z: Float) {
-        
-        self.name = name
-        self.entity = ModelEntity(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5), materials: [SimpleMaterial()], collisionShape: ShapeResource.generateBox(width: 0.5, height: 6.0, depth: 0.5), mass: 0.0)
-        self.entity.transform.translation = SIMD3<Float>(x,0.0,z)
+    required init(name: String, x: Float, z: Float) {
+        self.tileName = name
+        super.init()
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5, cornerRadius: 0.2), materials: [SimpleMaterial()])
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.5, height: 6.0, depth: 0.5)], mode: .trigger, filter: .sensor)
+        self.transform.translation = SIMD3<Float>(x,0.0,z)
+        print("Generated Tile: " + name)
         
     }
     
+    required init() {
+        fatalError("init() has not been implemented")
+    }
 }
