@@ -20,7 +20,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     
 //    let cameraAnchor = AnchorEntity(.camera)
 //    let cameraCollisionBox = ModelEntity(mesh: MeshResource.generateBox(width: 0.2, height: 1, depth: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)], collisionShape: ShapeResource.generateBox(width: 0.2, height: 1, depth: 0.2), mass: 0)
-    let cameraCollisionBox = Player(target: .camera)
+    let cameraEntity = Player(target: .camera)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         // cameraCollisionBox.transform.translation = [0, 0, -0.5]
         // print(cameraCollisionBox.transform)
         //arView.scene.addAnchor(cameraAnchor)
-        arView.scene.addAnchor(cameraCollisionBox)
+        arView.scene.addAnchor(cameraEntity)
         
 //        let c = self.arView.scene.subscribe(to: SceneEvents.Update.self) { (event) in
 //          guard let cameraBox = ModelEntity? else {
@@ -83,28 +83,30 @@ class ViewController: UIViewController, ARSessionDelegate {
                     ancEntity.addChild(Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0))
                 }
             }
-            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Began.self, on: cameraCollisionBox) {
-                event in
-                print("Collision Started")
-                guard let tile = event.entityB as? Tile else {
-                    return
-                }
-                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
-                tile.model?.materials = [
-                    SimpleMaterial(color: .red, isMetallic: false)
-                ]
-            })
-            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Ended.self, on: cameraCollisionBox) {
-                event in
-                print("Collision Ended")
-                guard let tile = event.entityB as? Tile else {
-                    return
-                }
-                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
-                tile.model?.materials = [
-                    SimpleMaterial(color: .green, isMetallic: false)
-                ]
-            })
+//            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Began.self, on: cameraCollisionBox) {
+//                event in
+//                print("Collision Started")
+//                guard let tile = event.entityB as? Tile else {
+//                    return
+//                }
+//                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
+//                tile.model?.materials = [
+//                    SimpleMaterial(color: .red, isMetallic: false)
+//                ]
+//            })
+//            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Ended.self, on: cameraCollisionBox) {
+//                event in
+//                print("Collision Ended")
+//                guard let tile = event.entityB as? Tile else {
+//                    return
+//                }
+//                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
+//                tile.model?.materials = [
+//                    SimpleMaterial(color: .green, isMetallic: false)
+//                ]
+//            })
+            
+            cameraEntity.addCollision()
             
             self.arView.scene.addAnchor(ancEntity)
         }
