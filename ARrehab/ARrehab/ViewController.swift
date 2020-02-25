@@ -83,18 +83,29 @@ class ViewController: UIViewController, ARSessionDelegate {
                     ancEntity.addChild(Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0))
                 }
             }
-            let subscription = self.arView.scene.subscribe(to: CollisionEvents.Began.self, on: cameraCollisionBox) {
+            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Began.self, on: cameraCollisionBox) {
                 event in
                 print("Collision Started")
                 guard let tile = event.entityB as? Tile else {
                     return
                 }
-                self.updateCustomUI(message: ("On Tile: " + tile.name))
+                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
                 tile.model?.materials = [
                     SimpleMaterial(color: .red, isMetallic: false)
                 ]
-            }
-            self.subscriptions.append(subscription)
+            })
+            self.subscriptions.append(self.arView.scene.subscribe(to: CollisionEvents.Ended.self, on: cameraCollisionBox) {
+                event in
+                print("Collision Ended")
+                guard let tile = event.entityB as? Tile else {
+                    return
+                }
+                self.updateCustomUI(message: "On Tile: \(tile.tileName)")
+                tile.model?.materials = [
+                    SimpleMaterial(color: .green, isMetallic: false)
+                ]
+            })
+            
             self.arView.scene.addAnchor(ancEntity)
         }
     }
