@@ -57,11 +57,51 @@ class ViewController: UIViewController, ARSessionDelegate {
             cameraEntity.addCollision()
             
             self.arView.scene.addAnchor(ancEntity)
+            
+            addTileButtonToView()
         }
     }
     
     func updateCustomUI(message: String) {
         print(message)
+    }
+    
+    func addTileButtonToView() {
+        let tileButton = UIButton(type: .system)
+        
+        tileButton.frame = CGRect(x: 150, y: 150, width: 200, height: 100)
+        tileButton.tintColor = .white
+        tileButton.backgroundColor = .gray
+        tileButton.setTitle("Add / Remove Tile", for: .normal)
+        
+        tileButton.addTarget(self, action: #selector(tileButtonClicked), for: .touchUpInside)
+        
+        self.view.addSubview(tileButton)
+        self.view.bringSubviewToFront(tileButton)
+    }
+    
+    @objc func tileButtonClicked(sender: UIButton) {
+        print("Tile Button Clicked")
+        let tile = cameraEntity.collidingWith
+        
+        if (!cameraEntity.isColliding) {
+            print("You are not on a tile")
+            return
+        }
+                
+        if (tile.isDisplayed) {
+            print("Deleting tile" + tile.name)
+            tile.model = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.clear, isMetallic: false)])
+            tile.isDisplayed = false
+            return
+        }
+        
+        else {
+            print("Adding tile" + tile.name)
+            tile.model = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false)])
+            tile.isDisplayed = true
+            return
+        }
     }
     
 }
