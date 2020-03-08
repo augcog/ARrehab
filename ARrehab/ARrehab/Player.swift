@@ -11,6 +11,8 @@ import RealityKit
 import Combine
 
 class Player : TileCollider, HasModel, HasAnchoring{
+    
+    var onTile: Tile!
         
     required init(target: AnchoringComponent.Target) {
         super.init()
@@ -21,48 +23,20 @@ class Player : TileCollider, HasModel, HasAnchoring{
     required init() {
         fatalError("init() has not been implemented")
     }
-}
-
-class GameAvatar: Entity, HasModel {
-    required init() {
-        super.init()
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.3, height: 0.3, depth: 0.3), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
-    }
-    
-    func changeTile(tile: Tile?) {
-        self.setParent(tile, preservingWorldTransform: false)
-    }
-    
-}
-
-class PlayerAvatar: TileCollider, HasModel {
-    var onTile: Tile? = nil
-    var gameAvatar: GameAvatar
-    
-    required init(gameAvatar: GameAvatar) {
-        self.gameAvatar = gameAvatar
-        super.init()
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.0, height: 0.0, depth: 0.0), materials: [SimpleMaterial(color: SimpleMaterial.Color.yellow, isMetallic: false)])
-    }
-    
-    required init() {
-        fatalError("init() has not been implemented")
-    }
     
     override func onCollisionBegan(tile: Tile) {
         self.onTile = tile
-        self.gameAvatar.changeTile(tile: self.onTile)
+        super.onCollisionBegan(tile: tile)
     }
     
     override func onCollisionEnded(tile: Tile) {
         if self.onTile == tile {
             self.onTile = nil
-            self.gameAvatar.changeTile(tile: nil)
         }
+        super.onCollisionEnded(tile: tile)
     }
 }
 
-    
 class TileCollider : Entity, HasCollision {
     
     var subscriptions: [Cancellable] = []

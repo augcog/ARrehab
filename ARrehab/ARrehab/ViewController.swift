@@ -18,18 +18,6 @@ class ViewController: UIViewController, ARSessionDelegate {
     var hasMapped: Bool!
 
     let cameraEntity = Player(target: .camera)
-    let gameAvatarEntity = GameAvatar()
-    let playerAvatarEntity: PlayerAvatar
-    
-    required override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.playerAvatarEntity = PlayerAvatar(gameAvatar: gameAvatarEntity)
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.playerAvatarEntity = PlayerAvatar(gameAvatar: gameAvatarEntity)
-        super.init(coder: coder)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,15 +52,10 @@ class ViewController: UIViewController, ARSessionDelegate {
                 for z in -1 ... 1 {
                     let tile: Tile = Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0)
                     ancEntity.addChild(tile)
-                    if x == 0 && z == 0 {
-                        tile.addChild(gameAvatarEntity)
-                        gameAvatarEntity.transform.translation = SIMD3<Float>(0,0.5,0)
-                    }
                 }
             }
             
             cameraEntity.addCollision()
-            playerAvatarEntity.addCollision()
             
             self.arView.scene.addAnchor(ancEntity)
         }
