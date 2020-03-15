@@ -17,20 +17,31 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     var hasMapped: Bool!
 
-    let cameraEntity = Player(target: .camera)
+    let playerEntity = Player(target: .camera)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         hasMapped = false
+        arView.scene.addAnchor(playerEntity)
         
-        arView.scene.addAnchor(cameraEntity)
-
-        let arConfig = ARWorldTrackingConfiguration()
+        let objectDetectionConfig = ARObjectScanningConfiguration()
+        objectDetectionConfig.planeDetection = .horizontal
+        
+        arView.session.delegate = self
+        arView.session.run(objectDetectionConfig)
+        
+        /*let arConfig = ARWorldTrackingConfiguration()
         arConfig.planeDetection = .horizontal
+        
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) {
+            arConfig.frameSemantics.insert(.personSegmentationWithDepth)
+        } else {
+            print("This device does not support People Occlusion with Depth")
+        }
                 
         arView.session.delegate = self
-        arView.session.run(arConfig)
+        arView.session.run(arConfig)*/
         
     }
     
@@ -55,7 +66,7 @@ class ViewController: UIViewController, ARSessionDelegate {
                 }
             }
             
-            cameraEntity.addCollision()
+            playerEntity.addCollision()
             
             self.arView.scene.addAnchor(ancEntity)
         }
