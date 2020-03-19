@@ -4,6 +4,11 @@ When contributing to this repository, please open up a GitHub issue and assign i
 
 Please note that the master branch is write protected so please make your commits in your own branch before making a pull request.
 
+## Setting up Development Environment
+1. Install XCode from the app store or from Apple's Developer website
+2. Get developer credentials.
+    - https://github.com/erwang01/ARrehab/wiki/Common-Issues
+
 ## Getting Started
 1. Clone the repository `https://github.com/erwang01/ARrehab.git`
 2. Create a branch related to your issue `git branch <branch_name>`
