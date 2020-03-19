@@ -16,7 +16,7 @@ class Player : TileCollider, HasModel, HasAnchoring{
         
     required init(target: AnchoringComponent.Target) {
         super.init()
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 2, height: 2, depth: 2), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 2, depth: 0.5), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
         self.components[AnchoringComponent] = AnchoringComponent(target)
     }
     

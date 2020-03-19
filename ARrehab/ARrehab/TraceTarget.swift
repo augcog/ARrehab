@@ -16,6 +16,9 @@ import Foundation
 import RealityKit
 import Combine
 
+/**
+Trace Target Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
+ */
 class TraceTarget : Entity {
     // list of TracePoints that make up this target.
     var pointCloud : [TracePoint] = []
@@ -33,12 +36,11 @@ class TraceTarget : Entity {
         self.laser.collision?.filter = CollisionFilter(group: self.laserCollisionGroup, mask: self.pointCollisionGroup)
         super.init()
         for i in -5...5 {
-            let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.2,Float(i)*0.2,Float(i)*0.2))
+            let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.1,Float(i)*0.1,0))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
             pointCloud.append(point)
             self.addChild(point)
         }
-        self.transform.translation = SIMD3<Float>(0,0,1.0)
     }
     
     func getLaser() -> Laser {
@@ -46,59 +48,70 @@ class TraceTarget : Entity {
     }
 }
 
+/**
+ TracePoint Entity is an individual point the laser interacts with.
+ By default, it changes color upon contact to red and to clear after contact ends.
+ */
 class TracePoint : Entity, HasModel, HasCollision {
+    var active = true
     required init() {
         super.init()
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.2)], mode: .trigger, filter: .default)
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateSphere(radius: 0.2), materials: [SimpleMaterial(color: .cyan, isMetallic: false)])
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.05)], mode: .trigger, filter: .default)
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .cyan, isMetallic: false)])
     }
     
     required convenience init(translation: SIMD3<Float>) {
         self.init()
         self.transform.translation = translation
     }
+    
+    func onCollisionBegan() {
+        if (active) {
+            self.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+        }
+    }
+    
+    func onCollisionEnded() {
+        self.model?.materials = [
+            SimpleMaterial(color: .clear, isMetallic: false)
+        ]
+        active = false
+    }
 }
 
+/**
+ Laser class is what the user controls typically via rotation of the camera. It interacts with TracePoints within a certain distance.
+ */
 class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLight
     var subscriptions: [Cancellable] = []
     
     required init() {
         super.init()
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: 5.0, radius: 0.1).offsetBy(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0,-1)), translation: SIMD3<Float>(0,5,0))], mode: .trigger, filter: .default)
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.2,5.0,0.2)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
-        //self.transform.rotation = simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0,-1))
-        self.transform.translation = SIMD3<Float>(-1,-1,-1)
-        addCollision()
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: 2.0, radius: 0.01)], mode: .trigger, filter: .default)
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,2.0,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
+        self.transform.translation = SIMD3<Float>(0,0,-0.25)
     }
     
+    /**
+        Adds Collision Capabilities. Run this function after adding the Laser to the scene.
+     
+        No Effect if run before Laser is part of a scene.
+     */
     func addCollision() {
         guard let scene = self.scene else {return}
         subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
             guard let point = event.entityB as? TracePoint else {
+                print("Bad Collision Event")
                 return
             }
-            self.onCollisionBegan(point: point)
-            
+            point.onCollisionBegan()
         })
         subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             guard let point = event.entityB as? TracePoint else {
                 return
             }
-            self.onCollisionEnded(point: point)
-            
+            point.onCollisionEnded()
         })
-    }
-    
-    func onCollisionBegan(point: TracePoint) {
-        print("Collision with Trace Points Began")
-        point.model?.materials = [
-            SimpleMaterial(color: .red, isMetallic: false)
-        ]
-    }
-    
-    func onCollisionEnded(point: TracePoint) {
-        point.model?.materials = [
-            SimpleMaterial(color: .clear, isMetallic: false)
-        ]
     }
 }

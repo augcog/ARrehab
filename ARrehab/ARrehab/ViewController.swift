@@ -60,7 +60,7 @@ class ViewController: UIViewController, ARSessionDelegate {
                 }
             }
             
-            //cameraEntity.addCollision()
+            cameraEntity.addCollision()
             
             self.arView.scene.addAnchor(groundAncEntity)
             traceSwitch.addTarget(self, action: #selector(traceStateChanged), for: .valueChanged)
@@ -79,8 +79,13 @@ class ViewController: UIViewController, ARSessionDelegate {
                 return
             }
             traceTarget = TraceTarget()
-            groundAncEntity.addChild(traceTarget!) //TODO: See if this entity will move.
+            var transform = Transform()
+            transform.translation = SIMD3<Float>(0,1,-1)
+            traceTarget?.setTransformMatrix(transform.matrix, relativeTo: cameraEntity)
+            groundAncEntity.addChild(traceTarget!) //TODO: Transform this entity relative to camera such that its in front of the camera.
             cameraEntity.addChild(traceTarget!.getLaser())
+            traceTarget!.getLaser().addCollision()
+
         } else {
             traceLabel.text = "Trace is Off"
             guard traceTarget != nil else {
@@ -89,8 +94,9 @@ class ViewController: UIViewController, ARSessionDelegate {
             }
             print("Trace Target State: ", traceTarget!.isEnabled)
             print("Removing Trace Target")
-            cameraEntity.removeChild(traceTarget!)
-            cameraEntity.removeChild((traceTarget!.getLaser()))
+            traceTarget?.parent?.removeChild(traceTarget!)
+            cameraEntity.removeChild(traceTarget!.getLaser())
+            traceTarget = nil
         }
     }
     
