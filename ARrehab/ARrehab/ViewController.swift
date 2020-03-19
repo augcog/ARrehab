@@ -20,6 +20,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     var hasMapped: Bool!
 
     let cameraEntity = Player(target: .camera)
+    /** Current trace game / target object. */
     var traceTarget: TraceTarget?
     var groundAncEntity: AnchorEntity!
     
@@ -28,6 +29,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         
         hasMapped = false
         traceTarget = nil
+        traceSwitch.setOn(false, animated: false)
         
         arView.scene.addAnchor(cameraEntity)
 
@@ -71,33 +73,58 @@ class ViewController: UIViewController, ARSessionDelegate {
         print(message)
     }
     
+    /**
+     Trace switch logic. When switched on, a new trace game is created.
+     */
     @objc func traceStateChanged(switchState: UISwitch) {
         if switchState.isOn {
             traceLabel.text = "Trace is On"
-            guard traceTarget == nil else {
-                print("Trace Target Already Exists!")
-                return
-            }
-            traceTarget = TraceTarget()
-            var transform = Transform()
-            transform.translation = SIMD3<Float>(0,1,-1)
-            traceTarget?.setTransformMatrix(transform.matrix, relativeTo: cameraEntity)
-            groundAncEntity.addChild(traceTarget!) //TODO: Transform this entity relative to camera such that its in front of the camera.
-            cameraEntity.addChild(traceTarget!.getLaser())
-            traceTarget!.getLaser().addCollision()
-
+            enableTraceGame(targetParent: groundAncEntity, laserParent: cameraEntity)
         } else {
             traceLabel.text = "Trace is Off"
-            guard traceTarget != nil else {
-                print("No Trace Target")
-                return
-            }
-            print("Trace Target State: ", traceTarget!.isEnabled)
-            print("Removing Trace Target")
-            traceTarget?.parent?.removeChild(traceTarget!)
-            cameraEntity.removeChild(traceTarget!.getLaser())
-            traceTarget = nil
+            disableTraceGame()
         }
+    }
+    
+    /**
+     Sets up a Trace Game.
+     Updates traceTarget with the new TraceTarget.
+     Attaches the new TraceTarget 1 m up and 1 m away from the camera.
+     Attaches the Laser to the cameraEntity.
+     
+     Requires
+     targetParent: Entity - the entity to attach the target as a child to. Typically some fixed plane anchor.
+     laserParent: Entity - the entity to attach the laser as a child to. Typically the camera.
+     */
+    func enableTraceGame(targetParent: Entity, laserParent: Entity){
+        guard traceTarget == nil else {
+             print("Trace Target Already Exists!")
+             return
+        }
+        traceTarget = TraceTarget()
+        var transform = Transform()
+        transform.translation = SIMD3<Float>(0,1,-1)
+        traceTarget?.setTransformMatrix(transform.matrix, relativeTo: cameraEntity) // what exactly does this do? what if targetParent is not (0,0,0) in world coordinates.
+        targetParent.addChild(traceTarget!) //TODO: Transform this entity relative to camera such that its in front of the camera.
+        laserParent.addChild(traceTarget!.getLaser())
+        traceTarget!.getLaser().addCollision()
+    }
+    
+    /**
+    Removes a Trace Game.
+    Updates traceTarget to nil.
+    Removes traceTarget and its Laser from its parents.
+    */
+    func disableTraceGame(){
+        guard traceTarget != nil else {
+            print("No Trace Target")
+            return
+        }
+        print("Trace Target State: ", traceTarget!.isEnabled)
+        print("Removing Trace Target")
+        traceTarget?.parent?.removeChild(traceTarget!)
+        cameraEntity.removeChild(traceTarget!.getLaser())
+        traceTarget = nil
     }
     
 }
