@@ -19,7 +19,7 @@ This is a research project done under the advisement of Professor Allen Yang and
 To switch to any branch: `git checkout treehacks`
 
 # Contributing
-Please see CONTRIBUTING.md
+Please see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Please checkout the treehacks branch to see our work at TreeHacks.
 `git checkout treehacks`
