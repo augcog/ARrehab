@@ -65,4 +65,9 @@ class ViewController: UIViewController, ARSessionDelegate {
         print(message)
     }
     
+    func enterMinigame(game: Game) {
+        var minigame = game.newInstance()
+        minigame.attach(ground: Entity(), player: cameraEntity) //TODO: replace Entity with actual desired ground anchor.
+    }
+    
 }
