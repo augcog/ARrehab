@@ -11,9 +11,11 @@ import RealityKit
 import ARKit
 import Combine
 
-class ViewController: UIViewController, ARSessionDelegate/*, ARSCNViewDelegate*/ {
+class ViewController: UIViewController, ARSessionDelegate {
     
     @IBOutlet var arView: ARView!
+    
+    let colorList = [SimpleMaterial.Color.blue, SimpleMaterial.Color.yellow, SimpleMaterial.Color.green, SimpleMaterial.Color.gray, SimpleMaterial.Color.red]
     
     var hasMapped: Bool!
     var planeNumber: Int = 0
@@ -21,6 +23,7 @@ class ViewController: UIViewController, ARSessionDelegate/*, ARSCNViewDelegate*/
     let playerEntity = Player(target: .camera)
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         hasMapped = false
@@ -40,46 +43,9 @@ class ViewController: UIViewController, ARSessionDelegate/*, ARSCNViewDelegate*/
         
     }
     
-    /*func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        
-        let meshGeometry = ARSCNPlaneGeometry()
-        meshGeometry.update(from: planeAnchor.geometry)
-        
-        let meshNode = SCNNode(geometry: meshGeometry)
-        meshNode.opacity = 0.25
-        meshNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-        
-        node.addChildNode(meshNode)
-        
-        print("Added Node")
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        guard let meshGeometry = node.childNodes.first?.geometry as? ARSCNPlaneGeometry else {return}
-        meshGeometry.update(from: planeAnchor.geometry)
-        
-        print("Updated Node")
-    }*/
-    
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         
-        for anc in anchors {
-            
-            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
-            let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
-            
-            let planeModel = ModelEntity()
-            planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.clear, isMetallic: true)])
-            planeModel.transform = Transform(pitch: 0, yaw: 0, roll: 0)
-            
-            planeAnchorEntity.addChild(planeModel)
-            planeAnchorEntity.name = planeAnchor.identifier.uuidString
-            
-            arView.scene.addAnchor(planeAnchorEntity)
-            
-        }
+        //visualizePlanes(anchors: anchors)
         
         /*if (hasMapped) {
             return
@@ -109,15 +75,103 @@ class ViewController: UIViewController, ARSessionDelegate/*, ARSCNViewDelegate*/
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         
+        //updatePlaneVisual(anchors: anchors)
+        
+        guard !hasMapped else {return}
+        
         for anc in anchors {
+            guard !hasMapped else {return}
+            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
+            if isValidSurface(plane: planeAnchor) {
+                let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
+                generateTiles(plane: planeAnchor, anchor: planeAnchorEntity)
+                hasMapped = true
+            }
+        }
+        
+    }
+    
+    func visualizePlanes(anchors: [ARAnchor]) {
+        for anc in anchors {
+            
+            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
+            let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
+                        
+            for point in planeAnchor.geometry.boundaryVertices {
+                let pointEntity = ModelEntity.init(mesh: MeshResource.generatePlane(width: 0.01, depth: 0.01))
+                pointEntity.transform = Transform(translation: point)
+                planeAnchorEntity.addChild(pointEntity)
+            }
+            
+            let planeModel = ModelEntity()
+            planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
+            planeModel.transform = Transform(pitch: 0, yaw: 0, roll: 0)
+            
+            planeAnchorEntity.addChild(planeModel)
+            
+            planeAnchorEntity.name = planeAnchor.identifier.uuidString
+            
+            arView.scene.addAnchor(planeAnchorEntity)
+            
+        }
+    }
+    
+    func updatePlaneVisual(anchors: [ARAnchor]) {
+        for anc in anchors {
+            
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
             
             guard let planeAnchorEntity = self.arView.scene.findEntity(named: planeAnchor.identifier.uuidString) else {return}
             
-            let modelComponent = planeAnchorEntity.children.first as? ModelEntity
-            modelComponent?.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.clear.withAlphaComponent(CGFloat(0.5)), isMetallic: true)])
+            /*let onePoint = planeAnchorEntity.children.first as! ModelEntity
+            guard let pointMaterials = onePoint.model?.materials else {return}*/
+            
+            var newBoundaries = [ModelEntity]()
+            
+            for point in planeAnchor.geometry.boundaryVertices {
+                let pointEntity = ModelEntity.init(mesh: MeshResource.generatePlane(width: 0.01, depth: 0.01))
+                pointEntity.transform = Transform(translation: point)
+                newBoundaries.append(pointEntity)
+            }
+            
+            planeAnchorEntity.children.replaceAll(newBoundaries)
+            
+            
+            let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
+            
+            planeAnchorEntity.addChild(modelEntity)
         }
+    }
+    
+    func isValidSurface(plane: ARPlaneAnchor) -> Bool {
+        guard plane.alignment == .horizontal else {return false}
+        let boundaryOne = plane.extent.x
+        let boundaryTwo = plane.extent.z
+        return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
+    }
+    
+    func generateTiles(plane: ARPlaneAnchor, anchor: AnchorEntity) {
+        var numberOfXTiles = round(plane.extent.x / 0.5)
+        var numberOfZTiles = round(plane.extent.z / 0.5)
         
+        var currentX = -(plane.extent.x / 2.0) + 0.25
+        var currentZ = -(plane.extent.z / 2.0) + 0.25
+        
+        var x = 0
+        while Float(x) < numberOfXTiles {
+            var z = 0
+            while Float(z) < numberOfZTiles {
+                print(currentX)
+                print(currentZ)
+                let tile = Tile(name: String(format: "Tile (%d,%d)", currentX, currentZ), x: currentX, z: currentZ)
+                anchor.addChild(tile)
+                
+                currentZ += 0.5
+                z += 1
+            }
+            currentX += 0.5
+            x += 1
+        }
     }
     
     func updateCustomUI(message: String) {
