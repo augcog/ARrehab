@@ -18,7 +18,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     let colorList = [SimpleMaterial.Color.blue, SimpleMaterial.Color.yellow, SimpleMaterial.Color.green, SimpleMaterial.Color.gray, SimpleMaterial.Color.red]
     
     var hasMapped: Bool!
-    var planeNumber: Int = 0
+    var visualizedPlanes = [ARAnchor]()
 
     let playerEntity = Player(target: .camera)
     
@@ -75,19 +75,24 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         
+        let visualizedPlanes = anchors.filter() {anc in self.visualizedPlanes.contains(anc)}
+        updatePlaneVisual(anchors: visualizedPlanes)
+        
+        let nonVisualizedPlanes = anchors.filter() {anc in
+            !self.visualizedPlanes.contains(anc)}
+        visualizePlanes(anchors: nonVisualizedPlanes, floor: true)
+        
         //updatePlaneVisual(anchors: anchors)
         
-        guard !hasMapped else {return}
-        
-        for anc in anchors {
-            guard !hasMapped else {return}
+        /*for anc in anchors {
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
+            
             if isValidSurface(plane: planeAnchor) {
                 let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
                 generateTiles(plane: planeAnchor, anchor: planeAnchorEntity)
                 hasMapped = true
             }
-        }
+        }*/
         
     }
     
@@ -112,8 +117,17 @@ class ViewController: UIViewController, ARSessionDelegate {
             planeAnchorEntity.name = planeAnchor.identifier.uuidString
             
             arView.scene.addAnchor(planeAnchorEntity)
-            
+            self.visualizedPlanes.append(planeAnchor)
         }
+    }
+    
+    func visualizePlanes(anchors: [ARAnchor], floor: Bool) {
+        let validAnchors = anchors.filter() {anc in
+            guard let planeAnchor = anc as? ARPlaneAnchor else {return false}
+            return isValidSurface(plane: planeAnchor) == floor
+        }
+        
+        visualizePlanes(anchors: validAnchors)
     }
     
     func updatePlaneVisual(anchors: [ARAnchor]) {
@@ -122,9 +136,6 @@ class ViewController: UIViewController, ARSessionDelegate {
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
             
             guard let planeAnchorEntity = self.arView.scene.findEntity(named: planeAnchor.identifier.uuidString) else {return}
-            
-            /*let onePoint = planeAnchorEntity.children.first as! ModelEntity
-            guard let pointMaterials = onePoint.model?.materials else {return}*/
             
             var newBoundaries = [ModelEntity]()
             
@@ -135,7 +146,6 @@ class ViewController: UIViewController, ARSessionDelegate {
             }
             
             planeAnchorEntity.children.replaceAll(newBoundaries)
-            
             
             let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
             
