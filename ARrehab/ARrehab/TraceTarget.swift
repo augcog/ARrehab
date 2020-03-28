@@ -41,7 +41,7 @@ class TraceTarget : Entity, Minigame {
         self.total = 10
         self.active = self.total
         super.init()
-        for i in (-(total+1)/2)...total/2 {
+        for i in (-total/2)...total/2 {
             let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.1,Float(i)*0.1,0))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
             pointCloud.append(point)

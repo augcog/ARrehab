@@ -20,8 +20,6 @@ class ViewController: UIViewController, ARSessionDelegate {
     var hasMapped: Bool!
 
     let cameraEntity = Player(target: .camera)
-    /** Current trace game / target object. */
-    var traceTarget: TraceTarget?
     var groundAncEntity: AnchorEntity!
     var currentMinigame: Minigame?
     
@@ -29,7 +27,6 @@ class ViewController: UIViewController, ARSessionDelegate {
         super.viewDidLoad()
         
         hasMapped = false
-        traceTarget = nil
         traceSwitch.setOn(false, animated: false)
         currentMinigame = nil
         
@@ -81,7 +78,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     }
     
     func endMinigame() {
-        print("Score: ", currentMinigame?.endGame())
+        traceLabel.text = "Score: \(currentMinigame?.endGame() ?? 0)"
         currentMinigame = nil
     }
 
