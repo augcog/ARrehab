@@ -13,21 +13,27 @@ import Combine
 
 class ViewController: UIViewController, ARSessionDelegate {
     
+    /// AR View
     @IBOutlet var arView: ARView!
-    @IBOutlet var traceSwitch: UISwitch!
-    @IBOutlet var traceLabel: UILabel!
-    
+    /// Switch that turns on and off the Minigames, cycling through them.
+    @IBOutlet var minigameSwitch: UISwitch!
+    /// Label to display minigame output.
+    @IBOutlet var minigameLabel: UILabel!
+    /// If a ground anchor has been detected and added to the AR scene.
     var hasMapped: Bool!
-
+    /// The Player Entity that is attached to the camera.
     let cameraEntity = Player(target: .camera)
+    /// The ground anchor entity that holds the tiles and other fixed game objects
     var groundAncEntity: AnchorEntity!
+    /// The current minigame object
     var currentMinigame: Minigame?
     
+    /// Add the player entity and set the AR session to begin detecting the floor.
     override func viewDidLoad() {
         super.viewDidLoad()
         
         hasMapped = false
-        traceSwitch.setOn(false, animated: false)
+        minigameSwitch.setOn(false, animated: false)
         currentMinigame = nil
         
         arView.scene.addAnchor(cameraEntity)
@@ -64,66 +70,61 @@ class ViewController: UIViewController, ARSessionDelegate {
             cameraEntity.addCollision()
             
             self.arView.scene.addAnchor(groundAncEntity)
-            traceSwitch.addTarget(self, action: #selector(traceStateChanged), for: .valueChanged)
+            minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         }
     }
     
     func updateCustomUI(message: String) {
         print(message)
     }
-    
-    func enterMinigame(game: Game) {
-        currentMinigame = game.makeNewInstance()
-        currentMinigame!.attach(ground: groundAncEntity, player: cameraEntity) //TODO: replace Entity with actual desired ground anchor.
-    }
-    
-    func endMinigame() {
-        traceLabel.text = "Score: \(currentMinigame?.endGame() ?? 0)"
-        currentMinigame = nil
-    }
 
     /**
-     Trace switch logic. When switched on, a new trace game is created.
+     Minigame switch logic. When switched on, a new game is created.
      */
-    @objc func traceStateChanged(switchState: UISwitch) {
+    @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            traceLabel.text = "Trace is On"
-            enableTraceGame()
+            minigameLabel.text = "Trace is On"
+            enableMinigame()
         } else {
-            traceLabel.text = "Trace is Off"
-            disableTraceGame()
+            minigameLabel.text = "Trace is Off"
+            disableMinigame()
         }
     }
     
     /**
-     Sets up a Trace Game.
-     Updates traceTarget with the new TraceTarget.
-     Attaches the new TraceTarget 1 m up and 1 m away from the camera.
-     Attaches the Laser to the cameraEntity.
-     
-     Requires
-     targetParent: Entity - the entity to attach the target as a child to. Typically some fixed plane anchor.
-     laserParent: Entity - the entity to attach the laser as a child to. Typically the camera.
+     Sets up a new Trace Minigame if no game is currently in progress.
      */
-    func enableTraceGame(){
+    func enableMinigame(){
         guard currentMinigame == nil else {
              print("A Minigame is already active!")
              return
         }
-        enterMinigame(game: .trace)
+        enableMinigame(game: .trace)
     }
     
     /**
-    Removes a Trace Game.
-    Updates traceTarget to nil.
-    Removes traceTarget and its Laser from its parents.
+     Sets up a new Minigame if no game is currently in progress.
+     - Parameters:
+        - game: the game to set up.
+     */
+    func enableMinigame(game: Game){
+        guard currentMinigame == nil else {
+             print("A Minigame is already active!")
+             return
+        }
+        currentMinigame = game.makeNewInstance()
+        currentMinigame!.attach(ground: groundAncEntity, player: cameraEntity)
+    }
+    
+    /**
+     Removes the current game in progress, if any.
     */
-    func disableTraceGame(){
-        guard currentMinigame is TraceTarget else {
-            print("No Trace Target")
+    func disableMinigame(){
+        guard currentMinigame != nil else {
+            print("No minigame active")
             return
         }
-        print("Removing Trace Target")
-        endMinigame()
+        minigameLabel.text = "Score: \(currentMinigame?.endGame() ?? 0)"
+        currentMinigame = nil
     }    
 }

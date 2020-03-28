@@ -49,6 +49,12 @@ class TraceTarget : Entity, Minigame {
         }
     }
     
+    /// Updates traceTarget with the new TraceTarget.
+    /// Attaches the new TraceTarget 1 m up and 1 m away from the camera.
+    /// Attaches the Laser to the cameraEntity.
+    /// - Parameters:
+    ///   - ground: <#ground description#>
+    ///   - player: <#player description#>
     func attach(ground: Entity, player: Entity) {
         var transform = Transform()
         transform.translation = SIMD3<Float>(0,1,-1)
