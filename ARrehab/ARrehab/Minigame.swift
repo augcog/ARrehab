@@ -27,10 +27,9 @@ enum Game : CaseIterable {
             return TraceTarget()
         }
     }
-    
 }
 
-protocol Minigame {
+protocol Minigame : Entity {
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
     /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
@@ -49,28 +48,15 @@ protocol Minigame {
     func attach(ground: Entity, player: Entity)
     
     /**
-     Deinitialize the Minigame.
-     Removing it from the scene.
+     Removes the minigame from the scene;
      Returns the completion status of the minigame in the range [0.0, 1.0].
      */
     func endGame() -> Float
 }
 
-class TraceTarget : Entity, Minigame { //TODO: Replace with actual TraceTarget class upon merge.
-    required convenience init(ground: Entity, player: Entity) {
+extension Minigame {
+    init(ground: Entity, player: Entity) {
         self.init()
         attach(ground: ground, player: player)
-    }
-    
-    required init() {
-        super.init()
-    }
-    
-    func attach(ground: Entity, player: Entity) {
-        return
-    }
-    
-    func endGame() -> Float {
-        return 1.0
     }
 }
