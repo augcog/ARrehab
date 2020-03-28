@@ -9,7 +9,7 @@
 import Foundation
 import RealityKit
 
-/*
+/**
  Minigames available to play
  
  Use ```Minigame.allCases.randomElement()!``` to get a random minigame.
@@ -18,7 +18,10 @@ enum Game : CaseIterable {
     // List of minigames.
     case trace
     
-    func newInstance() -> Minigame{
+    /**
+     Returns a new instance of the minigame.
+     */
+    func makeNewInstance() -> Minigame{
         switch self {
         case .trace:
             return TraceTarget()
@@ -28,17 +31,20 @@ enum Game : CaseIterable {
 }
 
 protocol Minigame {
-    /** Initializes the minigame. Adding it to the scene as appropriate
-     Parameters:
-     ground - an Entity to used as a parent for items in fixed locations.
-     player - an Entity that represents the player. This will be used as a parent for elements that need to update with the camera.
-     */
+    /// Initializes the minigame. Adding it to the scene as appropriate.
+    ///
+    /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
+    /// - Parameter player: an Entity that represents the player. This will be used as a parent for elements that need to update with the camera.
     init(ground: Entity, player: Entity)
     
-    /** Add to the scene as appropriate
-     Parameters:
-     ground - an Entity to used as a parent for items in fixed locations.
-     player - an Entity that represents the player. This will be used as a parent for elements that need to update with the camera.
+    /**
+     Add to the scene as appropriate
+     
+     Uses the player's current location to determine the inital transofrm of the minigame.
+     
+     - parameters:
+        - ground:  an Entity to used as a parent for items in fixed locations.
+        - player:  an Entity that represents the player. This will be used as a parent for elements that need to update with the camera.
      */
     func attach(ground: Entity, player: Entity)
     
