@@ -15,12 +15,12 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     @IBOutlet var arView: ARView!
     
-    let colorList = [SimpleMaterial.Color.blue, SimpleMaterial.Color.yellow, SimpleMaterial.Color.green, SimpleMaterial.Color.gray, SimpleMaterial.Color.red]
-    
     var hasMapped: Bool!
     var visualizedPlanes = [ARAnchor]()
 
     let playerEntity = Player(target: .camera)
+    
+    var boardAnchorID: UUID = UUID()
     
     override func viewDidLoad() {
         
@@ -75,24 +75,28 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         
-        let visualizedPlanes = anchors.filter() {anc in self.visualizedPlanes.contains(anc)}
+        /*let visualizedPlanes = anchors.filter() {anc in self.visualizedPlanes.contains(anc)}
         updatePlaneVisual(anchors: visualizedPlanes)
         
         let nonVisualizedPlanes = anchors.filter() {anc in
             !self.visualizedPlanes.contains(anc)}
-        visualizePlanes(anchors: nonVisualizedPlanes, floor: true)
+        visualizePlanes(anchors: nonVisualizedPlanes, floor: true)*/
         
-        //updatePlaneVisual(anchors: anchors)
-        
-        /*for anc in anchors {
+        for anc in anchors {
+            
+            guard !hasMapped else {break}
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
             
             if isValidSurface(plane: planeAnchor) {
                 let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
-                generateTiles(plane: planeAnchor, anchor: planeAnchorEntity)
+                
+                generateBoard(planeAnchor: planeAnchor, anchorEntity: planeAnchorEntity)
+                
+                self.arView.scene.addAnchor(planeAnchorEntity)
                 hasMapped = true
+                boardAnchorID = planeAnchor.identifier
             }
-        }*/
+        }
         
     }
     
@@ -160,32 +164,36 @@ class ViewController: UIViewController, ARSessionDelegate {
         return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
     }
     
-    func generateTiles(plane: ARPlaneAnchor, anchor: AnchorEntity) {
-        var numberOfXTiles = round(plane.extent.x / 0.5)
-        var numberOfZTiles = round(plane.extent.z / 0.5)
-        
-        var currentX = -(plane.extent.x / 2.0) + 0.25
-        var currentZ = -(plane.extent.z / 2.0) + 0.25
-        
-        var x = 0
-        while Float(x) < numberOfXTiles {
-            var z = 0
-            while Float(z) < numberOfZTiles {
-                print(currentX)
-                print(currentZ)
-                let tile = Tile(name: String(format: "Tile (%d,%d)", currentX, currentZ), x: currentX, z: currentZ)
-                anchor.addChild(tile)
-                
-                currentZ += 0.5
-                z += 1
-            }
-            currentX += 0.5
-            x += 1
-        }
-    }
-    
     func updateCustomUI(message: String) {
         print(message)
+    }
+    
+    
+    func generateBoard(planeAnchor: ARPlaneAnchor, anchorEntity: AnchorEntity) {
+        
+        guard isValidSurface(plane: planeAnchor) else {return}
+        
+        let xExtent = planeAnchor.extent.x
+        let zExtent = planeAnchor.extent.z
+        
+        var currentX = xExtent
+        var currentZ = zExtent
+        
+        while currentX > 0 {
+            while currentZ > 0 {
+                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: (currentX/2) - (Tile().tileSize.x/2), z: (currentZ/2) - (Tile().tileSize.z/2))
+                anchorEntity.addChild(newTile)
+                currentZ -= Tile().tileSize.z
+            }
+            currentZ = zExtent
+            currentX -= Tile().tileSize.x
+        }
+        
+    }
+    
+    //Will require a board object
+    func updateBoard(planeAnchor: ARPlaneAnchor, anchorEntity: AnchorEntity) {
+        
     }
     
 }
