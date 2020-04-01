@@ -38,28 +38,36 @@ class TraceTarget : Entity, Minigame {
         self.laserCollisionGroup = CollisionGroup(rawValue: self.pointCollisionGroup.rawValue+1)
         self.laser = Laser()
         self.laser.collision?.filter = CollisionFilter(group: self.laserCollisionGroup, mask: self.pointCollisionGroup)
-        self.total = 10
+        self.total = 11
         self.active = self.total
         super.init()
         for i in (-total/2)...total/2 {
             let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.1,Float(i)*0.1,0))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
+            if (i == 0) {
+                point.model?.materials = [SimpleMaterial(color: .yellow, isMetallic: false)]
+            }
             pointCloud.append(point)
             self.addChild(point)
         }
     }
     
     /// Updates traceTarget with the new TraceTarget.
-    /// Attaches the new TraceTarget 1 m up and 1 m away from the camera.
+    /// Attaches the new TraceTarget 1 m away from the camera and 1.5 meters high in the air.
     /// Attaches the Laser to the cameraEntity.
     /// - Parameters:
-    ///   - ground: <#ground description#>
-    ///   - player: <#player description#>
+    ///   - ground: entity to anchor the trace targets to. Typically a fixed plane anchor.
+    ///   - player: entity to anchor the laser to. Typically the camera.
     func attach(ground: Entity, player: Entity) {
-        var transform = Transform()
-        transform.translation = SIMD3<Float>(0,1,-1)
-        self.setTransformMatrix(transform.matrix, relativeTo: player) // what exactly does this do? what if targetParent is not (0,0,0) in world coordinates.
-        ground.addChild(self) //TODO: Transform this entity relative to camera such that its in front of the camera.
+        var playerPosition = player.position(relativeTo: ground)
+        var targetPosition = player.convert(position: SIMD3<Float>(0,0,-1), to: ground)
+        targetPosition = targetPosition - playerPosition
+        targetPosition.y = 0
+        playerPosition.y = 1.5
+        targetPosition = simd_normalize(targetPosition) + playerPosition
+        print(targetPosition)
+        self.look(at: playerPosition, from: targetPosition, relativeTo: ground)
+        ground.addChild(self)
         player.addChild(self.getLaser())
         self.getLaser().addCollision()
     }
@@ -141,7 +149,7 @@ class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLi
         guard let scene = self.scene else {return}
         subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
             guard let point = event.entityB as? TracePoint else {
-                print("Bad Collision Event")
+//                print("Bad Collision Event with", event.entityB)
                 return
             }
             point.onCollisionBegan()
