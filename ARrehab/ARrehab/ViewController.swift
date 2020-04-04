@@ -90,6 +90,8 @@ class ViewController: UIViewController, ARSessionDelegate {
             if isValidSurface(plane: planeAnchor) {
                 let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
                 
+                visualizePlanes(anchors: [planeAnchor])
+                
                 generateBoard(planeAnchor: planeAnchor, anchorEntity: planeAnchorEntity)
                 
                 self.arView.scene.addAnchor(planeAnchorEntity)
@@ -176,16 +178,16 @@ class ViewController: UIViewController, ARSessionDelegate {
         let xExtent = planeAnchor.extent.x
         let zExtent = planeAnchor.extent.z
         
-        var currentX = xExtent
-        var currentZ = zExtent
+        var currentX = xExtent/2
+        var currentZ = zExtent/2
         
-        while currentX > 0 {
-            while currentZ > 0 {
-                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: (currentX/2) - (Tile().tileSize.x/2), z: (currentZ/2) - (Tile().tileSize.z/2))
+        while abs(currentX) <= xExtent/2 {
+            while abs(currentZ) <= zExtent/2 {
+                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX - (Tile().tileSize.x/2), z: currentZ - (Tile().tileSize.z/2))
                 anchorEntity.addChild(newTile)
                 currentZ -= Tile().tileSize.z
             }
-            currentZ = zExtent
+            currentZ = zExtent/2
             currentX -= Tile().tileSize.x
         }
         
