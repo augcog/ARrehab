@@ -16,6 +16,7 @@
 		159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F723F49286000A5376 /* LaunchScreen.storyboard */; };
 		159A420423F49286000A5376 /* ARrehabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420323F49286000A5376 /* ARrehabTests.swift */; };
 		159A420F23F49286000A5376 /* ARrehabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420E23F49286000A5376 /* ARrehabUITests.swift */; };
+		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		159A420A23F49286000A5376 /* ARrehabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARrehabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A420E23F49286000A5376 /* ARrehabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARrehabUITests.swift; sourceTree = "<group>"; };
 		159A421023F49286000A5376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +107,7 @@
 			children = (
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
+				19089AEC24380DF70054EFED /* GameBoard.swift */,
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
@@ -267,6 +270,7 @@
 			files = (
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
+				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
 				19B1736A2403475400845819 /* Tile.swift in Sources */,

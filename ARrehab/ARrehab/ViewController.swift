@@ -19,8 +19,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     var visualizedPlanes = [ARAnchor]()
 
     let playerEntity = Player(target: .camera)
-    
-    var boardAnchorID: UUID = UUID()
+    var gameBoard: GameBoard = nil
     
     override func viewDidLoad() {
         
@@ -94,9 +93,7 @@ class ViewController: UIViewController, ARSessionDelegate {
                 
                 generateBoard(planeAnchor: planeAnchor, anchorEntity: planeAnchorEntity)
                 
-                self.arView.scene.addAnchor(planeAnchorEntity)
                 hasMapped = true
-                boardAnchorID = planeAnchor.identifier
             }
         }
         
@@ -178,24 +175,27 @@ class ViewController: UIViewController, ARSessionDelegate {
         let xExtent = planeAnchor.extent.x
         let zExtent = planeAnchor.extent.z
         
+        let xSize = Tile.tileSize.x
+        let zSize = Tile.tileSize.z
+        
         var currentX = xExtent/2
         var currentZ = zExtent/2
         
+        var listOfTiles : [Tile] = []
+        
         while abs(currentX) <= xExtent/2 {
             while abs(currentZ) <= zExtent/2 {
-                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX - (Tile().tileSize.x/2), z: currentZ - (Tile().tileSize.z/2))
-                anchorEntity.addChild(newTile)
-                currentZ -= Tile().tileSize.z
+                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ)
+                //anchorEntity.addChild(newTile)
+                listOfTiles.append(newTile)
+                currentZ -= zSize
             }
             currentZ = zExtent/2
-            currentX -= Tile().tileSize.x
+            currentX -= xSize
         }
         
-    }
-    
-    //Will require a board object
-    func updateBoard(planeAnchor: ARPlaneAnchor, anchorEntity: AnchorEntity) {
-        
+        self.gameBoard = GameBoard(tiles: listOfTiles, surfaceAnchor: planeAnchor)
+        self.arView.scene.addAnchor(self.gameBoard.board)
     }
     
 }
