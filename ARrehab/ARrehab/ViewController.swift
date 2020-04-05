@@ -25,8 +25,8 @@ class ViewController: UIViewController, ARSessionDelegate {
     let cameraEntity = Player(target: .camera)
     /// The ground anchor entity that holds the tiles and other fixed game objects
     var groundAncEntity: AnchorEntity!
-    /// The current minigame object
-    var currentMinigame: Minigame?
+    /// Minigame Controller Struct
+    var minigameController: MinigameController!
     
     /// Add the player entity and set the AR session to begin detecting the floor.
     override func viewDidLoad() {
@@ -34,7 +34,6 @@ class ViewController: UIViewController, ARSessionDelegate {
         
         hasMapped = false
         minigameSwitch.setOn(false, animated: false)
-        currentMinigame = nil
         
         arView.scene.addAnchor(cameraEntity)
 
@@ -70,6 +69,7 @@ class ViewController: UIViewController, ARSessionDelegate {
             cameraEntity.addCollision()
             
             self.arView.scene.addAnchor(groundAncEntity)
+            minigameController = MinigameController(ground: groundAncEntity, player: cameraEntity)
             minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         }
     }
@@ -84,47 +84,11 @@ class ViewController: UIViewController, ARSessionDelegate {
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
             minigameLabel.text = "Trace is On"
-            enableMinigame()
+            minigameController.enableMinigame()
         } else {
             minigameLabel.text = "Trace is Off"
-            disableMinigame()
+            minigameController.disableMinigame()
+            minigameLabel.text = "Score \(minigameController.score())"
         }
     }
-    
-    /**
-     Sets up a new Trace Minigame if no game is currently in progress.
-     */
-    func enableMinigame(){
-        guard currentMinigame == nil else {
-             print("A Minigame is already active!")
-             return
-        }
-        enableMinigame(game: .trace)
-    }
-    
-    /**
-     Sets up a new Minigame if no game is currently in progress.
-     - Parameters:
-        - game: the game to set up.
-     */
-    func enableMinigame(game: Game){
-        guard currentMinigame == nil else {
-             print("A Minigame is already active!")
-             return
-        }
-        currentMinigame = game.makeNewInstance()
-        currentMinigame!.attach(ground: groundAncEntity, player: cameraEntity)
-    }
-    
-    /**
-     Removes the current game in progress, if any.
-    */
-    func disableMinigame(){
-        guard currentMinigame != nil else {
-            print("No minigame active")
-            return
-        }
-        minigameLabel.text = "Score: \(currentMinigame?.endGame() ?? 0)"
-        currentMinigame = nil
-    }    
 }

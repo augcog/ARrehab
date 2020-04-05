@@ -69,7 +69,19 @@ class TraceTarget : Entity, Minigame {
         self.look(at: playerPosition, from: targetPosition, relativeTo: ground)
         ground.addChild(self)
         player.addChild(self.getLaser())
+    }
+    
+    func run() -> Bool {
         self.getLaser().addCollision()
+        self.getLaser().isEnabled = true
+        assert(self.getLaser().isActive == true, "Warning Laser is not active")
+        for child in self.children {
+            if let tracePoint = child as? TracePoint {
+                tracePoint.active = true
+                assert(tracePoint.isActive == true, "Warning tracePoint is not active")
+            }
+        }
+        return true
     }
     
     func endGame() -> Float {
@@ -122,7 +134,9 @@ class TracePoint : Entity, HasModel, HasCollision {
         self.model?.materials = [
             SimpleMaterial(color: .clear, isMetallic: false)
         ]
-        active = false
+        if (active) {
+            active = false
+        }
     }
 }
 
