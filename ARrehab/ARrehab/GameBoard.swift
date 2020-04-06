@@ -87,9 +87,12 @@ class GameBoard: ExpressibleByNilLiteral {
         self.board.scene?.removeAnchor(self.board)
     }
     
+    //Work in progress
     func generatePath(from: Tile, to: Tile) {
         guard self.tilesDict[from.coords] != nil && self.tilesDict[to.coords] != nil else {return}
         var tilePath: [Tile] = []
+        var initialCoords = from.coords
+        let finalCoords = to.coords
     }
     
 }

@@ -44,32 +44,6 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         
-        //visualizePlanes(anchors: anchors)
-        
-        /*if (hasMapped) {
-            return
-        }
-        var anc: ARAnchor?
-        anchors.forEach {anchor in
-            guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-            if (planeAnchor.alignment == .horizontal) { // TODO: change to classification == .floor, Get the planeAnchor to make sure that the plane is large enough
-                anc = planeAnchor
-                self.hasMapped = true
-            }
-        }
-        if (hasMapped) {
-            let ancEntity = AnchorEntity(anchor: anc!)
-            for x in -1 ... 1 {
-                for z in -1 ... 1 {
-                    let tile: Tile = Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0)
-                    ancEntity.addChild(tile)
-                }
-            }
-            
-            playerEntity.addCollision()
-            
-            self.arView.scene.addAnchor(ancEntity)
-        }*/
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
@@ -87,12 +61,8 @@ class ViewController: UIViewController, ARSessionDelegate {
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
             
             if isValidSurface(plane: planeAnchor) {
-                let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
-                
                 visualizePlanes(anchors: [planeAnchor])
-                
-                generateBoard(planeAnchor: planeAnchor, anchorEntity: planeAnchorEntity)
-                
+                generateBoard(planeAnchor: planeAnchor)
                 hasMapped = true
             }
         }
@@ -168,7 +138,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     }
     
     
-    func generateBoard(planeAnchor: ARPlaneAnchor, anchorEntity: AnchorEntity) {
+    func generateBoard(planeAnchor: ARPlaneAnchor) {
         
         guard isValidSurface(plane: planeAnchor) else {return}
         
@@ -186,7 +156,6 @@ class ViewController: UIViewController, ARSessionDelegate {
         while abs(currentX) <= xExtent/2 {
             while abs(currentZ) <= zExtent/2 {
                 let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ)
-                //anchorEntity.addChild(newTile)
                 listOfTiles.append(newTile)
                 currentZ -= zSize
             }

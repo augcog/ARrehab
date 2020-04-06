@@ -38,9 +38,11 @@ class Tile : Entity, HasModel, HasCollision {
 
 extension Tile {
     
-    struct Coordinates : Hashable {
+    struct Coordinates : Hashable, Equatable {
         var x : Float
         var z : Float
+        func changeX(newX: Float) -> Coordinates {return Coordinates(x: newX, z: self.z)}
+        func changeZ(newZ: Float) -> Coordinates {return Coordinates(x: self.x, z: newZ)}
     }
     
     //Adjusts the translation of the tiles so that the center of the tile is at the coordinates it is initialized with
