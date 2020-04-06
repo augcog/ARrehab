@@ -25,7 +25,7 @@ enum Game : CaseIterable {
     func makeNewInstance() -> Minigame{
         switch self {
         case .trace:
-            return TraceTarget()
+            return TraceGame()
         }
     }
 }

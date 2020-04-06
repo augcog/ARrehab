@@ -1,13 +1,13 @@
 //
-//  TraceTarget.swift
+//  TraceGame.swift
 //  ARrehab
 //
 //  Created by Eric Wang on 3/15/20.
 //  Copyright © 2020 Eric Wang. All rights reserved.
 //
-//  TraceTarget class for tracing figures with a "laser" by moving the iPad.
+//  TraceGame class for tracing figures with a "laser" by moving the iPad.
 //  This targets upper body movement.
-//  TraceTarget class is an Entity that holds a pointCloud of TracePoints which
+//  TraceGame class is an Entity that holds a pointCloud of TracePoints which
 //  individually light up or change color upon collision with the laser.
 //  Laser class provides collision events for TracePoints along with providing
 //  visual feedback for where the user is pointing to with the iPad.
@@ -17,9 +17,9 @@ import RealityKit
 import Combine
 
 /**
-Trace Target Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
+Trace Game Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
  */
-class TraceTarget : Entity, Minigame {
+class TraceGame : Entity, Minigame {
     
     // list of TracePoints that make up this target.
     var pointCloud : [TracePoint] = []
@@ -27,7 +27,7 @@ class TraceTarget : Entity, Minigame {
     var pointCollisionGroup : CollisionGroup
     // Collision group for the laser.
     var laserCollisionGroup : CollisionGroup
-    // The laser that interacts withi the TracePoints.
+    // The laser that interacts with the TracePoints.
     var laser : Laser
     
     var total : Int
@@ -52,8 +52,8 @@ class TraceTarget : Entity, Minigame {
         }
     }
     
-    /// Updates traceTarget with the new TraceTarget.
-    /// Attaches the new TraceTarget 1 m away from the camera and 1.5 meters high in the air.
+    /// Updates traceGame with the new TraceGame.
+    /// Attaches the new TraceGame 1 m away from the camera and 1.5 meters high in the air.
     /// Attaches the Laser to the cameraEntity.
     /// - Parameters:
     ///   - ground: entity to anchor the trace targets to. Typically a fixed plane anchor.
