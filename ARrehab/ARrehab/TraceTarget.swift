@@ -21,16 +21,17 @@ Trace Target Entity holds a pointCloud of TracePoints which the uesr needs to tr
  */
 class TraceTarget : Entity, Minigame {
     
-    // list of TracePoints that make up this target.
+    /// list of TracePoints that make up this target.
     var pointCloud : [TracePoint] = []
-    // Collision group for the TracePoints
+    /// Collision group for the TracePoints
     var pointCollisionGroup : CollisionGroup
-    // Collision group for the laser.
+    /// Collision group for the laser.
     var laserCollisionGroup : CollisionGroup
-    // The laser that interacts withi the TracePoints.
+    /// The laser that interacts withi the TracePoints.
     var laser : Laser
-    
+    /// Total number of points in the pointCloud
     var total : Int
+    /// Total number of points still active
     var active : Int
     
     required init() {
@@ -42,11 +43,15 @@ class TraceTarget : Entity, Minigame {
         self.active = self.total
         super.init()
         for i in (-total/2)...total/2 {
+            // Create a line of points going from the upper left to the lower right.
             let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.1,Float(i)*0.1,0))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
+            
+            // Make the center point a different color.
             if (i == 0) {
                 point.model?.materials = [SimpleMaterial(color: .yellow, isMetallic: false)]
             }
+            
             pointCloud.append(point)
             self.addChild(point)
         }
@@ -59,13 +64,23 @@ class TraceTarget : Entity, Minigame {
     ///   - ground: entity to anchor the trace targets to. Typically a fixed plane anchor.
     ///   - player: entity to anchor the laser to. Typically the camera.
     func attach(ground: Entity, player: Entity) {
+        // All coordinates are relative to the ground anchor which will be the parent of the TraceGame.
+        // Player position
         var playerPosition = player.position(relativeTo: ground)
+        // Our target position (also where the TraceGame will be located).
+        // Currently its set to be 1m in front of the camera
         var targetPosition = player.convert(position: SIMD3<Float>(0,0,-1), to: ground)
+        // Get the position transform from the player to the target
         targetPosition = targetPosition - playerPosition
+        // Extract the x and z values of the transform (Find the projection to the ground plane)
         targetPosition.y = 0
+        // Fix the player position at a height of 1.5 m.
         playerPosition.y = 1.5
+        // Get a unit vector of our target projection then add it to our player position
         targetPosition = simd_normalize(targetPosition) + playerPosition
-        print(targetPosition)
+        // This should result in a position denoted by a 1m vector extending out from the player in the XZ direction the player is facing. This position is fixed at a height of 1.5 m.
+//      print(targetPosition)
+        // Set the target at thee desired position and orient it towards the player.
         self.look(at: playerPosition, from: targetPosition, relativeTo: ground)
         ground.addChild(self)
         player.addChild(self.getLaser())
@@ -148,9 +163,13 @@ class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLi
     
     required init() {
         super.init()
+        // Create a 2 m long "laser"
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: 2.0, radius: 0.01)], mode: .trigger, filter: .default)
+        // Create a visual representation of this 2 m long laser.
         self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,2.0,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        // Rotate this laser such that instead of pointing up, it points up and out.
         self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
+        // Position this laser a quarter meter in front of the user. (Note that becausue the capsule extends both above and below, the laser really ends behind the user.)
         self.transform.translation = SIMD3<Float>(0,0,-0.25)
     }
     
