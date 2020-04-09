@@ -15,9 +15,10 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     @IBOutlet var arView: ARView!
     
-    var hasMapped: Bool!
     var visualizedPlanes = [ARAnchor]()
-
+    
+    var hasMapped: Bool!
+    
     let playerEntity = Player(target: .camera)
     var gameBoard: GameBoard = nil
     
@@ -34,7 +35,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) {
             arConfig.frameSemantics.insert(.personSegmentationWithDepth)
         } else {
-            print("This device does not support People Occlusion with Depth")
+            print("This device does not support people occlusion")
         }
                 
         arView.session.delegate = self
@@ -69,6 +70,51 @@ class ViewController: UIViewController, ARSessionDelegate {
         
     }
     
+    func isValidSurface(plane: ARPlaneAnchor) -> Bool {
+        guard plane.alignment == .horizontal else {return false}
+        let boundaryOne = plane.extent.x
+        let boundaryTwo = plane.extent.z
+        return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
+    }
+    
+    func updateCustomUI(message: String) {
+        print(message)
+    }
+    
+    
+    func generateBoard(planeAnchor: ARPlaneAnchor) {
+        
+        guard isValidSurface(plane: planeAnchor) else {return}
+        
+        let xExtent = planeAnchor.extent.x
+        let zExtent = planeAnchor.extent.z
+        
+        let xSize = Tile.tileSize.x
+        let zSize = Tile.tileSize.z
+        
+        var currentX = xExtent/2
+        var currentZ = zExtent/2
+        
+        var listOfTiles : [Tile] = []
+        
+        while abs(currentX) <= xExtent/2 {
+            while abs(currentZ) <= zExtent/2 {
+                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ)
+                listOfTiles.append(newTile)
+                currentZ -= zSize
+            }
+            currentZ = zExtent/2
+            currentX -= xSize
+        }
+        
+        self.gameBoard = GameBoard(tiles: listOfTiles, surfaceAnchor: planeAnchor)
+        self.arView.scene.addAnchor(self.gameBoard.board)
+    }
+    
+}
+
+extension ViewController {
+    //Plane visualization methods, for use in development
     func visualizePlanes(anchors: [ARAnchor]) {
         for anc in anchors {
             
@@ -125,46 +171,4 @@ class ViewController: UIViewController, ARSessionDelegate {
             planeAnchorEntity.addChild(modelEntity)
         }
     }
-    
-    func isValidSurface(plane: ARPlaneAnchor) -> Bool {
-        guard plane.alignment == .horizontal else {return false}
-        let boundaryOne = plane.extent.x
-        let boundaryTwo = plane.extent.z
-        return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
-    }
-    
-    func updateCustomUI(message: String) {
-        print(message)
-    }
-    
-    
-    func generateBoard(planeAnchor: ARPlaneAnchor) {
-        
-        guard isValidSurface(plane: planeAnchor) else {return}
-        
-        let xExtent = planeAnchor.extent.x
-        let zExtent = planeAnchor.extent.z
-        
-        let xSize = Tile.tileSize.x
-        let zSize = Tile.tileSize.z
-        
-        var currentX = xExtent/2
-        var currentZ = zExtent/2
-        
-        var listOfTiles : [Tile] = []
-        
-        while abs(currentX) <= xExtent/2 {
-            while abs(currentZ) <= zExtent/2 {
-                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ)
-                listOfTiles.append(newTile)
-                currentZ -= zSize
-            }
-            currentZ = zExtent/2
-            currentX -= xSize
-        }
-        
-        self.gameBoard = GameBoard(tiles: listOfTiles, surfaceAnchor: planeAnchor)
-        self.arView.scene.addAnchor(self.gameBoard.board)
-    }
-    
 }
