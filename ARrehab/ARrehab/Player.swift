@@ -10,68 +10,79 @@ import Foundation
 import RealityKit
 import Combine
 
-class Player : Entity, HasModel, HasCollision, HasAnchoring{
+class Player : TileCollider, HasModel, HasAnchoring{
     
-    var playerSubs: [Cancellable] = []
-    
-    var isColliding: Bool
-    var collidingWith: Tile
-    let defaultTile = Tile(name: "Default", x: 0.0, z: 0.0)
-    
-    required init(target: AnchoringComponent.Target) {
-        self.isColliding = false
-        collidingWith = defaultTile
+    var onTile: Tile!
         
+    required init(target: AnchoringComponent.Target) {
         super.init()
-                
-        self.components[AnchoringComponent] = AnchoringComponent(target)
         self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 2, height: 2, depth: 2), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+        self.components[AnchoringComponent] = AnchoringComponent(target)
     }
     
     required init() {
         fatalError("init() has not been implemented")
     }
     
+    override func onCollisionBegan(tile: Tile) {
+        self.onTile = tile
+        super.onCollisionBegan(tile: tile)
+    }
+    
+    override func onCollisionEnded(tile: Tile) {
+        if self.onTile == tile {
+            self.onTile = nil
+        }
+        super.onCollisionEnded(tile: tile)
+    }
+}
+
+class TileCollider : Entity, HasCollision {
+    
+    var subscriptions: [Cancellable] = []
+
+    required init() {
+        super.init()
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+    }
+    
     func addCollision() {
         guard let scene = self.scene else {return}
-        playerSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-            print("Collision Started")
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
             guard let tile = event.entityB as? Tile else {
                 return
             }
-            print("On Tile: \(tile.tileName)")
+            self.onCollisionBegan(tile: tile)
+            })
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
+            guard let tile = event.entityB as? Tile else {
+                return
+            }
+            self.onCollisionEnded(tile: tile)
+            })
+    }
+    
+    func onCollisionBegan(tile: Tile) {
+        print("Collision Started")
+        print("On Tile: \(tile.tileName)")
+        tile.model?.materials = [
+            SimpleMaterial(color: .yellow, isMetallic: false)
+        ]
+        if (!tile.isDisplayed) {tile.isDisplayed = true}
+    }
+    
+    func onCollisionEnded(tile: Tile) {
+        print("Collision Ended")
+        print("On Tile: \(tile.tileName)")
+        if (tile.isDisplayed) {
             tile.model?.materials = [
-                SimpleMaterial(color: .yellow, isMetallic: false)
+                SimpleMaterial(color: .green, isMetallic: false)
             ]
-            self.isColliding = true
-            self.collidingWith = tile
-            })
-        playerSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
-            print("Collision Ended")
-            guard let tile = event.entityB as? Tile else {
-                return
-            }
-            print("On Tile: \(tile.tileName)")
-            if (tile.isDisplayed) {
-                tile.model?.materials = [
-                    SimpleMaterial(color: .green, isMetallic: false)
-                ]
-            } else {
-                tile.model?.materials = [
-                    SimpleMaterial(color: .clear, isMetallic: false)
-                ]
-            }
-            self.isColliding = false
-            self.collidingWith = self.defaultTile
-            })
-        playerSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
-            guard let tile = event.entityB as? Tile else {
-                return
-            }
-            self.isColliding = true
-            self.collidingWith = tile
-        })
+        } else {
+            tile.model?.materials = [
+                SimpleMaterial(color: .clear, isMetallic: false)
+            ]
+        }
     }
     
 }
