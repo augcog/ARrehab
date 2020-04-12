@@ -49,24 +49,12 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         
-        /*let visualizedPlanes = anchors.filter() {anc in self.visualizedPlanes.contains(anc)}
+        let visualizedPlanes = anchors.filter() {anc in self.visualizedPlanes.contains(anc)}
         updatePlaneVisual(anchors: visualizedPlanes)
         
         let nonVisualizedPlanes = anchors.filter() {anc in
             !self.visualizedPlanes.contains(anc)}
-        visualizePlanes(anchors: nonVisualizedPlanes, floor: true)*/
-        
-        for anc in anchors {
-            
-            guard !hasMapped else {break}
-            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
-            
-            if isValidSurface(plane: planeAnchor) {
-                visualizePlanes(anchors: [planeAnchor])
-                generateBoard(planeAnchor: planeAnchor)
-                hasMapped = true
-            }
-        }
+        visualizePlanes(anchors: nonVisualizedPlanes, floor: true)
         
     }
     
@@ -100,39 +88,6 @@ class ViewController: UIViewController, ARSessionDelegate {
         
         self.playerEntity.addCollision()
         addTileButtonToView()
-    }
-    
-    func addTileButtonToView() {
-        let tileButton = UIButton(type: .system)
-        
-        tileButton.frame = CGRect(x: 150, y: 150, width: 200, height: 100)
-        tileButton.tintColor = .white
-        tileButton.backgroundColor = .gray
-        tileButton.setTitle("Add / Remove Tile", for: .normal)
-        
-        tileButton.addTarget(self, action: #selector(tileButtonClicked), for: .touchUpInside)
-        
-        self.view.addSubview(tileButton)
-        self.view.bringSubviewToFront(tileButton)
-    }
-    
-    @objc func tileButtonClicked(sender: UIButton) {
-        print("Tile Button Clicked")
-        guard let tile = playerEntity.onTile else {return}
-                
-        if (tile.isDisplayed) {
-            print("Deleting tile" + tile.name)
-            tile.model = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.clear, isMetallic: false)])
-            tile.isDisplayed = false
-            return
-        }
-        
-        else {
-            print("Adding tile" + tile.name)
-            tile.model = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 0.01, depth: 0.5, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false)])
-            tile.isDisplayed = true
-            return
-        }
     }
 }
 
