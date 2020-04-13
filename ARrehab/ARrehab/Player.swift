@@ -16,7 +16,7 @@ class Player : TileCollider, HasModel, HasAnchoring{
         
     required init(target: AnchoringComponent.Target) {
         super.init()
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 2, height: 2, depth: 2), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 2, depth: 0.5), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
         self.components[AnchoringComponent] = AnchoringComponent(target)
     }
     
@@ -49,7 +49,7 @@ class TileCollider : Entity, HasCollision {
     func addCollision() {
         guard let scene = self.scene else {return}
         subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-            print("Collision Started")
+//            print("Collision Started")
             guard let tile = event.entityB as? Tile else {
                 return
             }
@@ -57,7 +57,7 @@ class TileCollider : Entity, HasCollision {
             
         })
         subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
-            print("Collision Ended")
+//            print("Collision Ended")
             guard let tile = event.entityB as? Tile else {
                 return
             }
@@ -67,14 +67,14 @@ class TileCollider : Entity, HasCollision {
     }
     
     func onCollisionBegan(tile: Tile) {
-        print("On Tile: \(tile.tileName)")
+//        print("On Tile: \(tile.tileName)")
         tile.model?.materials = [
             SimpleMaterial(color: .red, isMetallic: false)
         ]
     }
     
     func onCollisionEnded(tile: Tile) {
-        print("On Tile: \(tile.tileName)")
+//        print("On Tile: \(tile.tileName)")
         tile.model?.materials = [
             SimpleMaterial(color: .green, isMetallic: false)
         ]

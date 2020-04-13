@@ -13,16 +13,27 @@ import Combine
 
 class ViewController: UIViewController, ARSessionDelegate {
     
+    /// AR View
     @IBOutlet var arView: ARView!
-    
+    /// Switch that turns on and off the Minigames, cycling through them.
+    @IBOutlet var minigameSwitch: UISwitch!
+    /// Label to display minigame output.
+    @IBOutlet var minigameLabel: UILabel!
+    /// If a ground anchor has been detected and added to the AR scene.
     var hasMapped: Bool!
-
+    /// The Player Entity that is attached to the camera.
     let cameraEntity = Player(target: .camera)
+    /// The ground anchor entity that holds the tiles and other fixed game objects
+    var groundAncEntity: AnchorEntity!
+    /// Minigame Controller Struct
+    var minigameController: MinigameController!
     
+    /// Add the player entity and set the AR session to begin detecting the floor.
     override func viewDidLoad() {
         super.viewDidLoad()
         
         hasMapped = false
+        minigameSwitch.setOn(false, animated: false)
         
         arView.scene.addAnchor(cameraEntity)
 
@@ -47,22 +58,37 @@ class ViewController: UIViewController, ARSessionDelegate {
             }
         }
         if (hasMapped) {
-            let ancEntity = AnchorEntity(anchor: anc!)
+            self.groundAncEntity = AnchorEntity(anchor: anc!)
             for x in -1 ... 1 {
                 for z in -1 ... 1 {
                     let tile: Tile = Tile(name: String(format: "Tile (%d,%d)", x, z), x: Float(x)/2.0, z: Float(z)/2.0)
-                    ancEntity.addChild(tile)
+                    groundAncEntity.addChild(tile)
                 }
             }
             
             cameraEntity.addCollision()
             
-            self.arView.scene.addAnchor(ancEntity)
+            self.arView.scene.addAnchor(groundAncEntity)
+            minigameController = MinigameController(ground: groundAncEntity, player: cameraEntity)
+            minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         }
     }
     
     func updateCustomUI(message: String) {
         print(message)
     }
-    
+
+    /**
+     Minigame switch logic. When switched on, a new game is created.
+     */
+    @objc func minigameSwitchStateChanged(switchState: UISwitch) {
+        if switchState.isOn {
+            minigameLabel.text = "Trace is On"
+            minigameController.enableMinigame()
+        } else {
+            minigameLabel.text = "Trace is Off"
+            minigameController.disableMinigame()
+            minigameLabel.text = "Score \(minigameController.score())"
+        }
+    }
 }
