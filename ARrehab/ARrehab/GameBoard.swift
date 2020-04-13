@@ -31,7 +31,7 @@ import ARKit
     assignGames()
         - Assigns Minigames to each tile in a list of tiles (mutates self.games)
 */
-class GameBoard: ExpressibleByNilLiteral {
+class GameBoard {
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
@@ -60,12 +60,6 @@ class GameBoard: ExpressibleByNilLiteral {
         generateBoard()
     }
      */
-    
-    //Nil implementation of GameBoard object
-    required init(nilLiteral: ()) {
-        self.board = AnchorEntity()
-        self.surfaceAnchor = ARAnchor.init(transform: simd_float4x4(diagonal: SIMD4(Float(0), Float(0), Float(0), Float(0))))
-    }
     
     /* Assigns every tile in self.tiles a random color and adds it to the self.board AnchorEntity */
     private func generateBoard() {

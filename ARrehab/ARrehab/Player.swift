@@ -68,17 +68,15 @@ class TileCollider : Entity, HasCollision {
         tile.model?.materials = [
             SimpleMaterial(color: .yellow, isMetallic: false)
         ]
-        if (!tile.isDisplayed) {tile.isDisplayed = true}
     }
     
     func onCollisionEnded(tile: Tile) {
         print("Collision Ended")
         print("On Tile: \(tile.tileName)")
-        if (tile.isDisplayed) {
-            tile.model?.materials = [
-                SimpleMaterial(color: .green, isMetallic: false)
-            ]
-        } else {
+        if tile.isDisplayed {
+            tile.model?.materials = [SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: true)]
+        }
+        else {
             tile.model?.materials = [
                 SimpleMaterial(color: .clear, isMetallic: false)
             ]
