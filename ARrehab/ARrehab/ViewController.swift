@@ -83,10 +83,10 @@ class ViewController: UIViewController, ARSessionDelegate {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            minigameLabel.text = "Trace is On"
+            minigameLabel.text = "Minigame is On"
             minigameController.enableMinigame()
         } else {
-            minigameLabel.text = "Trace is Off"
+            minigameLabel.text = "Minigame is Off"
             minigameController.disableMinigame()
             minigameLabel.text = "Score \(minigameController.score())"
         }
