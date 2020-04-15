@@ -32,7 +32,7 @@ class MovementGame : Entity, Minigame {
         self.completion = 0.0
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:playerCollisionGroup, mask: targetCollisionGroup))
         super.init()
-        let target = MovementTarget(delay: 1)
+        let target = MovementTarget(delay: 5)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
         self.addChild(target)
     }
@@ -117,32 +117,40 @@ class MovementTarget : Entity, HasModel, HasCollision {
     var active = true
     var end = DispatchTime.distantFuture
     let delay : Double
-    let greenMaterial = SimpleMaterial(color: .green, isMetallic: false)
-    let redMaterial = SimpleMaterial(color: UIColor(red: 1, green: 0, blue: 0, alpha: 0.9), isMetallic: false)
-    let yellowMaterial = SimpleMaterial(color: .yellow, isMetallic: false)
+    let completeMaterial = SimpleMaterial(color: UIColor.green.withAlphaComponent(0.7), isMetallic: false)
+    let uncompleteMaterial = SimpleMaterial(color: UIColor.gray.withAlphaComponent(0.7), isMetallic: false)
+    let inProgressMaterial = SimpleMaterial(color: UIColor.yellow.withAlphaComponent(1), isMetallic: false)
+    let timerEntity: ModelEntity
+    var timer:Timer?
+    
     required init(delay: Double = 0) {
         self.delay = delay
+        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right))
         super.init()
+        self.transform.translation = SIMD3<Float>(0.5,0,0.5)
         // TODO Make these boxes / planes Make them translucent
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.5, height: 1, depth: 1).offsetBy(translation: SIMD3<Float>(0.25,0,0))], mode: .trigger, filter: .default)
-        let thresholdPlane = ModelEntity(mesh: MeshResource.generatePlane(width: 1, height: 1, cornerRadius: 0))
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 1, height: 1, depth: 2).offsetBy(translation: SIMD3<Float>(0.25,0,0))], mode: .trigger, filter: .default)
+        let thresholdPlane = ModelEntity(mesh: MeshResource.generatePlane(width: 2, height: 1, cornerRadius: 0))
         // Rotate about the y axis such that the plane is now on the yz dimension.
         thresholdPlane.transform.rotation = simd_quatf(ix: 0, iy: 0.7071, iz: 0, r: 0.7071)
         addChild(thresholdPlane)
         let leftArrow = ModelEntity(mesh:
-            MeshResource.generateText("<=")
-            //MeshResource.generateBox(size: 0.5)
+            MeshResource.generateText("<=", font:
+                .systemFont(ofSize: 1)
+                , alignment: .center)
         )
-        leftArrow.transform.translation = SIMD3<Float>(0,0,1)
-        leftArrow.transform.scale = SIMD3<Float>(2,2,2)
+        leftArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
+        leftArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
         addChild(leftArrow)
-        
+
+        timerEntity.transform = Transform(matrix: leftArrow.transform.matrix)
+        timerEntity.transform.translation.x += 2
+        addChild(timerEntity)
         //TODO Make this box render even when inside. Most likely need to break into separate plane meshes.
-        let targetBox = ModelEntity(mesh: MeshResource.generateBox(width: 0.5, height: 1, depth: 0.5))
+        let targetBox = ModelEntity(mesh: MeshResource.generateBox(width: 1, height: 1, depth: 2))
         targetBox.transform.translation = SIMD3<Float>(0.25, 0, 0)
         addChild(targetBox)
-        self.transform.translation = SIMD3<Float>(0.5,0,0)
-        self.setMaterials(materials: [redMaterial])
+        self.setMaterials(materials: [uncompleteMaterial])
     }
     
     required convenience init(translation: SIMD3<Float>) {
@@ -156,15 +164,37 @@ class MovementTarget : Entity, HasModel, HasCollision {
     
     func onCollisionBegan() {
         if (active) {
-            setMaterials(materials: [yellowMaterial])
+            setMaterials(materials: [inProgressMaterial])
             self.end = DispatchTime.now() + self.delay
+            if (timer == nil) {
+                self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+                    if(!self.active) {
+                        timer.invalidate()
+                        return
+                    }
+                    let timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
+                    self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%.2f", min(self.delay, max(0, timeLeft))), font:
+                    .systemFont(ofSize: 1)
+                    , alignment: .center)
+                }
+                self.timer!.tolerance = 0.1
+            }
         }
     }
+    
     func onCollisionUpdated() {
         if (active) {
             if (self.end < DispatchTime.now()) {
-                setMaterials(materials: [greenMaterial])
+                setMaterials(materials: [completeMaterial])
                 active = false
+                self.timerEntity.model?.mesh = MeshResource.generateText("0.0", font:
+                .systemFont(ofSize: 1)
+                , alignment: .center)
+                guard let game = self.parent as? MovementGame else {
+                    return
+                }
+                game.completion = 1.0
+
             }
         }
     }
@@ -172,10 +202,14 @@ class MovementTarget : Entity, HasModel, HasCollision {
     func onCollisionEnded() {
         if (!active) {
             setMaterials(materials: [
-                greenMaterial
+                completeMaterial
             ])
         } else {
-            setMaterials(materials: [redMaterial])
+            setMaterials(materials: [uncompleteMaterial])
+            self.end = DispatchTime.distantFuture
+            self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"$0.2f", self.delay), font:
+            .systemFont(ofSize: 1)
+            , alignment: .center)
         }
     }
     
