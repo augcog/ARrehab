@@ -79,16 +79,17 @@ class ViewController: UIViewController, ARSessionDelegate {
     }
 
     /**
-     Minigame switch logic. When switched on, a new game is created.
+     Minigame switch logic.
+     Switched on: a new game is created.
+     Switched off: score is displayed and game is removed.
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            minigameLabel.text = "Trace is On"
+            minigameLabel.text = "Minigame is On"
             minigameController.enableMinigame()
         } else {
-            minigameLabel.text = "Trace is Off"
-            minigameController.disableMinigame()
             minigameLabel.text = "Score \(minigameController.score())"
+            minigameController.disableMinigame()
         }
     }
 }

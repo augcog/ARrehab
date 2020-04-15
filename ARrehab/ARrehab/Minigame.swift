@@ -18,6 +18,7 @@ import Combine
 enum Game : CaseIterable {
     // List of minigames.
     case trace
+    case movement
     
     /**
      Returns a new instance of the minigame.
@@ -25,7 +26,9 @@ enum Game : CaseIterable {
     func makeNewInstance() -> Minigame{
         switch self {
         case .trace:
-            return TraceTarget()
+            return TraceGame()
+        case .movement:
+            return MovementGame()
         }
     }
 }
@@ -97,7 +100,8 @@ class MinigameController {
              print("A Minigame is already active!")
              return
         }
-        enableMinigame(game: .trace)
+        //enableMinigame(game: .trace)
+        enableMinigame(game: .movement)
     }
     
     /**
