@@ -33,7 +33,7 @@ class Player : TileCollider, HasModel, HasAnchoring{
         if self.onTile == tile {
             self.onTile = nil
         }
-        super.onCollisionEnded(tile: tile)
+        //super.onCollisionEnded(tile: tile)
     }
 }
 
@@ -66,7 +66,7 @@ class TileCollider : Entity, HasCollision {
         print("Collision Started")
         print("On Tile: \(tile.tileName)")
         tile.model?.materials = [
-            SimpleMaterial(color: .yellow, isMetallic: false)
+            SimpleMaterial(color: .brown, isMetallic: false)
         ]
     }
     

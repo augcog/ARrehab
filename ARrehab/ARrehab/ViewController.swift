@@ -16,12 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet var arView: ARView!
     
     var visualizedPlanes = [ARAnchor]()
+    var counter = 0
     
-    enum BoardState {
-        case notMapped
-        case mapping
-        case hasMapped
-    }
     var boardState : BoardState = .notMapped
     
     var tileGrid: TileGrid?
@@ -33,18 +29,22 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         
+        //Define AR Configuration to detect horizontal surfaces
         let arConfig = ARWorldTrackingConfiguration()
         arConfig.planeDetection = .horizontal
         
+        //Check if the device supports depth-based people occlusion and activate it if so
         if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) {
             arConfig.frameSemantics.insert(.personSegmentationWithDepth)
         } else {
             print("This device does not support people occlusion")
         }
-                
+        
+        //Assign the ViewController class to act as the session's delegate (extension below)
         arView.session.delegate = self
         arView.session.run(arConfig)
         
+        //Set up the player entity
         arView.scene.addAnchor(playerEntity)
         playerEntity.addCollision()
         
@@ -52,36 +52,41 @@ class ViewController: UIViewController {
     
 }
 
+//Extension of ViewController that acts as a delegate for the AR session
+//Recieves updated scene info, can initiate actions based on session-activated events
 extension ViewController: ARSessionDelegate {
-    
+        
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         for anc in anchors {
-            guard boardState == .notMapped else {return}
             guard let planeAnc = anc as? ARPlaneAnchor else {return}
-            if isValidSurface(plane: planeAnc) {
-                initiateBoardLayout(surfaceAnchor: planeAnc)
+            if self.boardState == .notMapped {
+                guard isValidSurface(plane: planeAnc) else {return}
+                //visualizePlanes(anchors: [planeAnc])
+                self.boardState = .mapping
+                DispatchQueue.main.async {
+                    self.initiateBoardLayout(surfaceAnchor: planeAnc)
+                }
             }
         }
     }
     
     func initiateBoardLayout(surfaceAnchor: ARPlaneAnchor) {
-        guard boardState == .notMapped else {return}
-        boardState = .mapping
+        //guard self.boardState == .notMapped else {return}
         
         self.tileGrid = TileGrid(surfaceAnchor: surfaceAnchor)
+        
         let gridEntity = self.tileGrid!.gridEntity
         self.arView.scene.addAnchor(gridEntity)
-        
-        self.addTileButtonToView()
+
+        let generateBoardButton = GenerateBoardButton()
+        self.arView.addSubview(generateBoardButton)
+        self.arView.bringSubviewToFront(generateBoardButton)
     }
+    
 }
-
-
-
-
 
 
 extension ViewController {
@@ -94,6 +99,13 @@ extension ViewController {
         return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
     }
     
+    //Enumerator to represent current state of the game board
+    enum BoardState {
+        case notMapped
+        case mapping
+        case hasMapped
+    }
+    
     //Plane visualization methods, for use in development
     func visualizePlanes(anchors: [ARAnchor]) {
         for anc in anchors {
@@ -102,22 +114,26 @@ extension ViewController {
             let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
                         
             for point in planeAnchor.geometry.boundaryVertices {
-                let pointEntity = ModelEntity.init(mesh: MeshResource.generatePlane(width: 0.01, depth: 0.01))
-                pointEntity.transform = Transform(translation: point)
+                let pointEntity = ModelEntity.init(mesh: MeshResource.generateSphere(radius: 0.01))
+                pointEntity.transform.translation = point
                 planeAnchorEntity.addChild(pointEntity)
             }
             
             let planeModel = ModelEntity()
             planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
-            planeModel.transform = Transform(pitch: 0, yaw: 0, roll: 0)
-            
+            planeModel.transform.translation = planeAnchor.center
             planeAnchorEntity.addChild(planeModel)
+            
+            let center = ModelEntity(mesh: MeshResource.generateBox(width: 0.1, height: 1, depth: 0.1), materials: [SimpleMaterial.init()])
+            center.transform.translation = planeAnchor.center
+            planeAnchorEntity.addChild(center)
             
             planeAnchorEntity.name = planeAnchor.identifier.uuidString
             
             arView.scene.addAnchor(planeAnchorEntity)
             self.visualizedPlanes.append(planeAnchor)
         }
+        
     }
     
     func visualizePlanes(anchors: [ARAnchor], floor: Bool) {
@@ -125,7 +141,6 @@ extension ViewController {
             guard let planeAnchor = anc as? ARPlaneAnchor else {return false}
             return isValidSurface(plane: planeAnchor) == floor
         }
-        
         visualizePlanes(anchors: validAnchors)
     }
     
@@ -140,47 +155,16 @@ extension ViewController {
             
             for point in planeAnchor.geometry.boundaryVertices {
                 let pointEntity = ModelEntity.init(mesh: MeshResource.generatePlane(width: 0.01, depth: 0.01))
-                pointEntity.transform = Transform(translation: point)
+                pointEntity.transform.translation = point
                 newBoundaries.append(pointEntity)
             }
             
             planeAnchorEntity.children.replaceAll(newBoundaries)
             
             let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
+            modelEntity.transform.translation = planeAnchor.center
             
             planeAnchorEntity.addChild(modelEntity)
         }
-    }
-    
-    func generateBoard(planeAnchor: ARPlaneAnchor) {
-        
-        guard isValidSurface(plane: planeAnchor) else {return}
-        
-        let xExtent = planeAnchor.extent.x
-        let zExtent = planeAnchor.extent.z
-        
-        let xSize = Tile.tileSize.x
-        let zSize = Tile.tileSize.z
-        
-        var currentX = xExtent/2
-        var currentZ = zExtent/2
-        
-        var listOfTiles : [Tile] = []
-        
-        while abs(currentX) <= xExtent/2 {
-            while abs(currentZ) <= zExtent/2 {
-                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, adjustTranslation: true)
-                listOfTiles.append(newTile)
-                currentZ -= zSize
-            }
-            currentZ = zExtent/2
-            currentX -= xSize
-        }
-        
-        self.gameBoard = GameBoard(tiles: listOfTiles, surfaceAnchor: planeAnchor)
-        self.arView.scene.addAnchor(self.gameBoard!.board)
-        
-        self.playerEntity.addCollision()
-        addTileButtonToView()
     }
 }

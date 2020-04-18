@@ -16,13 +16,18 @@ class TileGrid {
     var gridEntity: AnchorEntity
     
     var possibleTiles: [Tile] = []
+    /*
+    Variables to aid in manual board generation
     var selectedTiles: [Tile] = []
     var tileCount: Int = 0
-    
+     */
+        
     init(surfaceAnchor: ARPlaneAnchor) {
         self.surfaceAnchor = surfaceAnchor
         self.gridEntity = AnchorEntity(anchor: surfaceAnchor)
-        generatePossibleTiles()
+        self.gridEntity.transform.translation = surfaceAnchor.center
+        
+        self.generatePossibleTiles()
     }
     
     func generatePossibleTiles() {
@@ -46,6 +51,13 @@ class TileGrid {
             currentZ = zExtent/2
             currentX -= xSize
         }
+    }
+    
+    func updatePossibleTiles(updatedAnc: ARPlaneAnchor) {
+        self.surfaceAnchor = updatedAnc
+        self.gridEntity.children.removeAll()
+        generatePossibleTiles()
+        print("UPDATED")
     }
     
 }

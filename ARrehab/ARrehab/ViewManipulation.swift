@@ -16,7 +16,7 @@ import RealityKit
  */
 extension ViewController {
     
-    func addTileButtonToView() {
+    /*func addTileButton() {
         let tileButton = UIButton(type: .system)
         
         tileButton.frame = CGRect(x: 150, y: 150, width: 200, height: 100)
@@ -30,6 +30,10 @@ extension ViewController {
         self.view.bringSubviewToFront(tileButton)
     }
     
+    func removeTileButton(button: UIButton) {
+        button.removeFromSuperview()
+    }
+    
     @objc func tileButtonClicked(sender: UIButton) {
         print("Tile Button Clicked")
         
@@ -40,14 +44,14 @@ extension ViewController {
             print("Removing tile " + tile.name + " from selected tiles")
             self.tileGrid!.selectedTiles.removeAll(where: {$0 == tile})
             tile.isDisplayed = false
-            tile.changeColor(color: SimpleMaterial.Color.clear)
+            tile.changeColor(color: SimpleMaterial.Color.green)
         }
         else {
             self.tileGrid!.selectedTiles.append(tile)
             tile.isDisplayed = true
-            tile.changeColor(color: SimpleMaterial.Color.clear)
+            tile.changeColor(color: SimpleMaterial.Color.brown)
         }
         
-    }
+    }*/
     
 }
