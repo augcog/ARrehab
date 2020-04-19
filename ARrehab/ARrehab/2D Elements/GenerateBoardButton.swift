@@ -20,13 +20,13 @@ class GenerateBoardButton: UIButton {
     let gbBackgroundColor: UIColor = .gray
     let gbText = "Place Board"
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    init() {
+        super.init(frame: gbFrame)
         setUpButton()
     }
     
-    init() {
-        super.init(frame: gbFrame)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         setUpButton()
     }
     
@@ -36,6 +36,10 @@ class GenerateBoardButton: UIButton {
         self.tintColor = gbTintColor
         self.backgroundColor = gbBackgroundColor
         self.setTitle(gbText, for: .normal)
+    }
+    
+    func removeButton() {
+        self.removeFromSuperview()
     }
     
 }

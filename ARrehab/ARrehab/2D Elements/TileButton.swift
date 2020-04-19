@@ -22,13 +22,13 @@ class TileButton: UIButton {
     let tbBackgroundColor: UIColor = .gray
     let tbText = "Add / Remove Tile"
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    init() {
+        super.init(frame: tbFrame)
         setUpButton()
     }
     
-    init() {
-        super.init(frame: tbFrame)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         setUpButton()
     }
     
@@ -38,6 +38,10 @@ class TileButton: UIButton {
         self.tintColor = tbTintColor
         self.backgroundColor = tbBackgroundColor
         self.setTitle(tbText, for: .normal)
+    }
+    
+    func removeButton() {
+        self.removeFromSuperview()
     }
     
 }

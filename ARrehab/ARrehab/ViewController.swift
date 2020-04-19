@@ -64,46 +64,47 @@ extension ViewController: ARSessionDelegate {
             guard let planeAnc = anc as? ARPlaneAnchor else {return}
             if self.boardState == .notMapped {
                 guard isValidSurface(plane: planeAnc) else {return}
-                //visualizePlanes(anchors: [planeAnc])
-                self.boardState = .mapping
-                DispatchQueue.main.async {
-                    self.initiateBoardLayout(surfaceAnchor: planeAnc)
-                }
+                self.initiateBoardLayout(surfaceAnchor: planeAnc)
             }
         }
     }
     
     func initiateBoardLayout(surfaceAnchor: ARPlaneAnchor) {
-        //guard self.boardState == .notMapped else {return}
+        guard self.boardState == .notMapped else {return}
+        self.boardState = .mapping
         
         self.tileGrid = TileGrid(surfaceAnchor: surfaceAnchor)
+        self.arView.scene.addAnchor(self.tileGrid!.gridEntity)
+        self.boardState = .mapped
         
-        let gridEntity = self.tileGrid!.gridEntity
-        self.arView.scene.addAnchor(gridEntity)
-
-        let generateBoardButton = GenerateBoardButton()
-        self.arView.addSubview(generateBoardButton)
-        self.arView.bringSubviewToFront(generateBoardButton)
+        //let gbButton = self.addGbButton()
     }
-    
 }
 
-
+/*
+ Helper functions
+ */
 extension ViewController {
     
-    //Checks if plane is valid surface, according to x and z extent minimums
+    //Checks if plane is valid surface, according to x and z extent
     func isValidSurface(plane: ARPlaneAnchor) -> Bool {
         guard plane.alignment == .horizontal else {return false}
-        let boundaryOne = plane.extent.x
-        let boundaryTwo = plane.extent.z
-        return min(boundaryOne, boundaryTwo) >= 1 && max(boundaryOne, boundaryTwo) >= 2
+        
+        let minBoundary = min(plane.extent.x, plane.extent.z)
+        let maxBoundary = max(plane.extent.x, plane.extent.z)
+        
+        let minExtent = min(GameBoard.EXTENT1, GameBoard.EXTENT2)
+        let maxExtent = max(GameBoard.EXTENT1, GameBoard.EXTENT2)
+        
+        return minBoundary >= minExtent && maxBoundary >= maxExtent
     }
     
     //Enumerator to represent current state of the game board
     enum BoardState {
         case notMapped
         case mapping
-        case hasMapped
+        case mapped
+        case placed
     }
     
     //Plane visualization methods, for use in development

@@ -16,42 +16,18 @@ import RealityKit
  */
 extension ViewController {
     
-    /*func addTileButton() {
-        let tileButton = UIButton(type: .system)
+    func addGbButton() -> GenerateBoardButton {
+        let gbButton = GenerateBoardButton()
+        gbButton.addTarget(self, action: #selector(tileButtonClicked(sender:)), for: .touchUpInside)
         
-        tileButton.frame = CGRect(x: 150, y: 150, width: 200, height: 100)
-        tileButton.tintColor = .white
-        tileButton.backgroundColor = .gray
-        tileButton.setTitle("Add / Remove Tile", for: .normal)
+        self.view.addSubview(gbButton)
+        self.view.bringSubviewToFront(gbButton)
         
-        tileButton.addTarget(self, action: #selector(tileButtonClicked), for: .touchUpInside)
-        
-        self.view.addSubview(tileButton)
-        self.view.bringSubviewToFront(tileButton)
-    }
-    
-    func removeTileButton(button: UIButton) {
-        button.removeFromSuperview()
+        return gbButton
     }
     
     @objc func tileButtonClicked(sender: UIButton) {
-        print("Tile Button Clicked")
-        
-        guard let tile = playerEntity.onTile else {return}
-        guard self.tileGrid!.possibleTiles.contains(tile) else {return}
-        
-        if self.tileGrid!.selectedTiles.contains(tile) {
-            print("Removing tile " + tile.name + " from selected tiles")
-            self.tileGrid!.selectedTiles.removeAll(where: {$0 == tile})
-            tile.isDisplayed = false
-            tile.changeColor(color: SimpleMaterial.Color.green)
-        }
-        else {
-            self.tileGrid!.selectedTiles.append(tile)
-            tile.isDisplayed = true
-            tile.changeColor(color: SimpleMaterial.Color.brown)
-        }
-        
-    }*/
+        print("Button Clicked")
+    }
     
 }

@@ -33,21 +33,28 @@ import ARKit
 */
 class GameBoard {
     
+    //Minimum extents for a valid game board (in meters)
+    //Does not distinguish between x and z directions
+    static let EXTENT1 : Float = 2.0
+    static let EXTENT2 : Float = 2.0
+    
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
-    var surfaceAnchor: ARAnchor
+    var surfaceAnchor: ARPlaneAnchor
     //var games: [Tile:Minigame] = [:]
     
     let colorList : [SimpleMaterial.Color] = [SimpleMaterial.Color.blue, SimpleMaterial.Color.red, SimpleMaterial.Color.green, SimpleMaterial.Color.magenta, SimpleMaterial.Color.purple, SimpleMaterial.Color.cyan, SimpleMaterial.Color.orange]
     
-    init(tiles: [Tile], surfaceAnchor: ARAnchor) {
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor) {
         
         self.surfaceAnchor = surfaceAnchor
+        
         for tile in tiles {
             tilesDict[tile.coords] = tile
         }
        
-        board = AnchorEntity(anchor: surfaceAnchor)
+        self.board = AnchorEntity(anchor: surfaceAnchor)
+        self.board.transform.translation = surfaceAnchor.center
         
         generateBoard()
         //assignGames(games: nil)
@@ -74,6 +81,11 @@ class GameBoard {
         
     }
      */
+    
+    func addBoardToScene(arView: ARView) {
+        print("Trying")
+        arView.scene.addAnchor(self.board)
+    }
     
     /* Removes the GameBoard instance's self.board AnchorEntity from the scene */
     func removeBoard() {

@@ -16,6 +16,7 @@ class TileGrid {
     var gridEntity: AnchorEntity
     
     var possibleTiles: [Tile] = []
+    
     /*
     Variables to aid in manual board generation
     var selectedTiles: [Tile] = []
@@ -24,12 +25,16 @@ class TileGrid {
         
     init(surfaceAnchor: ARPlaneAnchor) {
         self.surfaceAnchor = surfaceAnchor
+        
         self.gridEntity = AnchorEntity(anchor: surfaceAnchor)
         self.gridEntity.transform.translation = surfaceAnchor.center
         
         self.generatePossibleTiles()
     }
     
+    /*
+     Uses the estimated x and z extents of the surface plane to generate an appropriate amount of tiles with adjusted translations (so that tiles don't extend past edges of plane)
+    */
     func generatePossibleTiles() {
         let xExtent = self.surfaceAnchor.extent.x
         let zExtent = self.surfaceAnchor.extent.z
@@ -40,24 +45,23 @@ class TileGrid {
         var currentX = xExtent/2
         var currentZ = zExtent/2
         
-        while abs(currentX) <= xExtent/2 {
-            while abs(currentZ) <= zExtent/2 {
-                let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, adjustTranslation: true)
-                newTile.model?.materials = [SimpleMaterial.init(color: SimpleMaterial.Color.clear, isMetallic: true)]
-                self.possibleTiles.append(newTile)
-                self.gridEntity.addChild(newTile)
-                currentZ -= zSize
+        DispatchQueue.main.async {
+            while abs(currentX) <= xExtent/2 {
+                while abs(currentZ) <= zExtent/2 {
+                    self.generateOneTile(currentX: currentX, currentZ: currentZ)
+                    currentZ -= zSize
+                }
+                currentZ = zExtent/2
+                currentX -= xSize
             }
-            currentZ = zExtent/2
-            currentX -= xSize
         }
     }
     
-    func updatePossibleTiles(updatedAnc: ARPlaneAnchor) {
-        self.surfaceAnchor = updatedAnc
-        self.gridEntity.children.removeAll()
-        generatePossibleTiles()
-        print("UPDATED")
+    func generateOneTile(currentX: Float, currentZ: Float) {
+        let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, adjustTranslation: true)
+        newTile.changeColor(color: SimpleMaterial.Color.red.withAlphaComponent(0.1))
+        self.possibleTiles.append(newTile)
+        self.gridEntity.addChild(newTile)
     }
     
 }
