@@ -29,6 +29,17 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         
+        //Assign the ViewController class to act as the session's delegate (extension below)
+        arView.session.delegate = self
+        startTracking()
+        
+        //Set up the player entity
+        arView.scene.addAnchor(playerEntity)
+        playerEntity.addCollision()
+        
+    }
+    
+    private func startTracking() {
         //Define AR Configuration to detect horizontal surfaces
         let arConfig = ARWorldTrackingConfiguration()
         arConfig.planeDetection = .horizontal
@@ -40,14 +51,7 @@ class ViewController: UIViewController {
             print("This device does not support people occlusion")
         }
         
-        //Assign the ViewController class to act as the session's delegate (extension below)
-        arView.session.delegate = self
-        arView.session.run(arConfig)
-        
-        //Set up the player entity
-        arView.scene.addAnchor(playerEntity)
-        playerEntity.addCollision()
-        
+        self.arView.session.run(arConfig)
     }
     
 }
@@ -60,11 +64,22 @@ extension ViewController: ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        for anc in anchors {
-            guard let planeAnc = anc as? ARPlaneAnchor else {return}
-            if self.boardState == .notMapped {
-                guard isValidSurface(plane: planeAnc) else {return}
-                self.initiateBoardLayout(surfaceAnchor: planeAnc)
+        if self.boardState == .notMapped {
+            for anc in anchors {
+                guard let planeAnc = anc as? ARPlaneAnchor else {break}
+                if self.boardState == .notMapped {
+                    if isValidSurface(plane: planeAnc) {
+                        self.initiateBoardLayout(surfaceAnchor: planeAnc)
+                    }
+                }
+            }
+        }
+        else if self.boardState == .mapped {
+            for anc in anchors {
+                if anc == self.tileGrid?.surfaceAnchor {
+                    //let planeAnc = anc as! ARPlaneAnchor
+                    //self.tileGrid?.gridEntity.transform.translation = planeAnc.center
+                }
             }
         }
     }
@@ -109,13 +124,16 @@ extension ViewController {
     
     //Plane visualization methods, for use in development
     func visualizePlanes(anchors: [ARAnchor]) {
+        
+        let pointModel = ModelEntity.init(mesh: MeshResource.generateSphere(radius: 0.01))
+        
         for anc in anchors {
             
             guard let planeAnchor = anc as? ARPlaneAnchor else {return}
             let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
                         
             for point in planeAnchor.geometry.boundaryVertices {
-                let pointEntity = ModelEntity.init(mesh: MeshResource.generateSphere(radius: 0.01))
+                let pointEntity = pointModel
                 pointEntity.transform.translation = point
                 planeAnchorEntity.addChild(pointEntity)
             }

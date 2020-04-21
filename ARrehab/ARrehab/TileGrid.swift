@@ -12,6 +12,8 @@ import RealityKit
 
 class TileGrid {
     
+    static let gridModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.red.withAlphaComponent(0.1), isMetallic: true)])
+    
     var surfaceAnchor: ARPlaneAnchor
     var gridEntity: AnchorEntity
     
@@ -39,13 +41,14 @@ class TileGrid {
         let xExtent = self.surfaceAnchor.extent.x
         let zExtent = self.surfaceAnchor.extent.z
         
-        let xSize = Tile.tileSize.x
-        let zSize = Tile.tileSize.z
+        let xSize = Tile.TILE_SIZE.x
+        let zSize = Tile.TILE_SIZE.z
         
         var currentX = xExtent/2
         var currentZ = zExtent/2
         
-        DispatchQueue.main.async {
+        //Asynchronously generate the tiles (somewhat intensive operation, prevents process from interrupting other important thread-work)
+        //DispatchQueue.main.async {
             while abs(currentX) <= xExtent/2 {
                 while abs(currentZ) <= zExtent/2 {
                     self.generateOneTile(currentX: currentX, currentZ: currentZ)
@@ -54,12 +57,11 @@ class TileGrid {
                 currentZ = zExtent/2
                 currentX -= xSize
             }
-        }
+        //}
     }
     
     func generateOneTile(currentX: Float, currentZ: Float) {
-        let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, adjustTranslation: true)
-        newTile.changeColor(color: SimpleMaterial.Color.red.withAlphaComponent(0.1))
+        let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, modelComp: TileGrid.gridModel, adjustTranslation: true)
         self.possibleTiles.append(newTile)
         self.gridEntity.addChild(newTile)
     }

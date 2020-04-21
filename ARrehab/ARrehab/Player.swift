@@ -38,11 +38,13 @@ class Player : TileCollider, HasModel, HasAnchoring{
 
 class TileCollider : Entity, HasCollision {
     
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+    
     var subscriptions: [Cancellable] = []
 
     required init() {
         super.init()
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+        self.components[CollisionComponent] = TileCollider.defaultCollisionComp
     }
     
     func addCollision() {
