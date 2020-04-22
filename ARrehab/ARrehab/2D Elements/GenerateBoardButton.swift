@@ -12,16 +12,16 @@ import UIKit
 /*
  Defines the visual attributes of the 'Generate Board' button to be added to the view during board generation
  */
-class GenerateBoardButton: UIButton {
+class PlaceBoardButton: UIButton {
     
     //let gbImageView = <IMAGE FROM DESIGN TEAM>
-    let gbFrame = CGRect(x: 150, y: 150, width: 200, height: 100)
-    let gbTintColor: UIColor = .white
-    let gbBackgroundColor: UIColor = .gray
-    let gbText = "Place Board"
+    let pbFrame = CGRect(x: 150, y: 150, width: 200, height: 100)
+    let pbTintColor: UIColor = .white
+    let pbBackgroundColor: UIColor = .gray
+    let pbText = "Place Board"
     
     init() {
-        super.init(frame: gbFrame)
+        super.init(frame: pbFrame)
         setUpButton()
     }
     
@@ -32,10 +32,10 @@ class GenerateBoardButton: UIButton {
     
     private func setUpButton() {
         //self.imageView = gbImageView
-        self.frame = gbFrame
-        self.tintColor = gbTintColor
-        self.backgroundColor = gbBackgroundColor
-        self.setTitle(gbText, for: .normal)
+        self.frame = pbFrame
+        self.tintColor = pbTintColor
+        self.backgroundColor = pbBackgroundColor
+        self.setTitle(pbText, for: .normal)
     }
     
     func removeButton() {

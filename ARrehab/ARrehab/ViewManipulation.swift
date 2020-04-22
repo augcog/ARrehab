@@ -16,18 +16,19 @@ import RealityKit
  */
 extension ViewController {
     
-    func addGbButton() -> GenerateBoardButton {
-        let gbButton = GenerateBoardButton()
-        gbButton.addTarget(self, action: #selector(tileButtonClicked(sender:)), for: .touchUpInside)
+    func addPbButton() {
+        let pbButton = PlaceBoardButton()
+        pbButton.addTarget(self, action: #selector(pbButtonClicked(sender:)), for: .touchUpInside)
         
-        self.view.addSubview(gbButton)
-        self.view.bringSubviewToFront(gbButton)
+        self.view.addSubview(pbButton)
+        self.view.bringSubviewToFront(pbButton)
         
-        return gbButton
+        self.activeButtons.append(pbButton)
     }
     
-    @objc func tileButtonClicked(sender: UIButton) {
+    @objc func pbButtonClicked(sender: UIButton) {
         print("Button Clicked")
+        self.boardState = .placed
     }
     
 }

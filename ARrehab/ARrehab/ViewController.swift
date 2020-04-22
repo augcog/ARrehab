@@ -15,10 +15,12 @@ class ViewController: UIViewController {
     
     @IBOutlet var arView: ARView!
     
-    var visualizedPlanes = [ARAnchor]()
-    var counter = 0
+    var visualizedPlanes : [ARPlaneAnchor] = []
+    var activeButtons : [UIButton] = []
+    var trackedRaycasts : [ARTrackedRaycast?] = []
     
     var boardState : BoardState = .notMapped
+    
     
     var tileGrid: TileGrid?
     var gameBoard: GameBoard?
@@ -34,8 +36,8 @@ class ViewController: UIViewController {
         startTracking()
         
         //Set up the player entity
-        arView.scene.addAnchor(playerEntity)
-        playerEntity.addCollision()
+        //arView.scene.addAnchor(playerEntity)
+        //playerEntity.addCollision()
         
     }
     
@@ -51,19 +53,21 @@ class ViewController: UIViewController {
             print("This device does not support people occlusion")
         }
         
+        //Run the tracking configuration (start detecting planes)
         self.arView.session.run(arConfig)
     }
     
 }
 
 //Extension of ViewController that acts as a delegate for the AR session
-//Recieves updated scene info, can initiate actions based on session-activated events
+//Recieves updated scene info, can initiate actions based on scene-related events (i.e. anchor detection
 extension ViewController: ARSessionDelegate {
         
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        
         if self.boardState == .notMapped {
             for anc in anchors {
                 guard let planeAnc = anc as? ARPlaneAnchor else {break}
@@ -74,14 +78,16 @@ extension ViewController: ARSessionDelegate {
                 }
             }
         }
+            
         else if self.boardState == .mapped {
             for anc in anchors {
                 if anc == self.tileGrid?.surfaceAnchor {
-                    //let planeAnc = anc as! ARPlaneAnchor
-                    //self.tileGrid?.gridEntity.transform.translation = planeAnc.center
+                    let planeAnc = anc as! ARPlaneAnchor
+                    self.tileGrid?.updateBoard(updatedAnc: planeAnc)
                 }
             }
         }
+        
     }
     
     func initiateBoardLayout(surfaceAnchor: ARPlaneAnchor) {
@@ -92,14 +98,85 @@ extension ViewController: ARSessionDelegate {
         self.arView.scene.addAnchor(self.tileGrid!.gridEntity)
         self.boardState = .mapped
         
-        //let gbButton = self.addGbButton()
+        self.addPbButton()
+        self.startBoardPlacement()
     }
+    
+    func startBoardPlacement() {
+
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(exactly: 1.0)!, repeats: true, block: {timer in
+            
+            if self.boardState == .placed {
+                timer.invalidate()
+            }
+            
+            //Get the current camera translation and direction via its transform matrix
+            let cameraTransform = self.arView.session.currentFrame!.camera.transform
+            let translation = SIMD3<Float>(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+            let direction = -SIMD3<Float>(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
+                        
+            //Raycast from the camera outwards
+            let raycast = self.arView.scene.raycast(origin: translation, direction: direction)
+            
+            
+            if raycast != [] {
+                
+                //Get the "middle" element in the stack of raycast results and use it as the selected tile -- TODO: Figure out a better way to select which tile is being "pointed" at
+                /*if let hitTile = raycast[Int(raycast.count / 2)].entity as? Tile {
+                    self.tileGrid!.updateBoardOutline(centerTile: hitTile)
+                }*/
+                
+                //Alternatively, try to find center-most tile and use it as selected tile
+                var tileList : [Tile] = []
+                for result in raycast {
+                    guard let tile = result.entity as? Tile else {return}
+                    tileList.append(tile)
+                }
+                
+                var sumX : Float = 0
+                var sumZ : Float = 0
+                for tile in tileList {
+                    sumX += tile.coords.x
+                    sumZ += tile.coords.z
+                }
+                
+                let meanX = sumX / Float(tileList.count)
+                let meanZ = sumZ / Float(tileList.count)
+                
+                var deviationX : Float = 100
+                var deviationZ : Float = 100
+                
+                var centerTile = tileList.first
+                for tile in tileList {
+                    if (tile.coords.x - meanX < deviationX) && (tile.coords.z - meanZ < deviationZ) {
+                        deviationX = tile.coords.x - meanX
+                        deviationZ = tile.coords.z - meanZ
+                        centerTile = tile
+                    }
+                }
+                //self.tileGrid?.updateBoardOutline(centerTile: centerTile!)
+                centerTile?.changeColor(color: SimpleMaterial.Color.blue)
+            }
+            
+        })
+    }
+    
 }
 
 /*
  Helper functions
  */
 extension ViewController {
+    
+    
+    //Enumerator to represent current state of the game board
+    enum BoardState {
+        case notMapped
+        case mapping
+        case mapped
+        case placed
+    }
+    
     
     //Checks if plane is valid surface, according to x and z extent
     func isValidSurface(plane: ARPlaneAnchor) -> Bool {
@@ -114,13 +191,6 @@ extension ViewController {
         return minBoundary >= minExtent && maxBoundary >= maxExtent
     }
     
-    //Enumerator to represent current state of the game board
-    enum BoardState {
-        case notMapped
-        case mapping
-        case mapped
-        case placed
-    }
     
     //Plane visualization methods, for use in development
     func visualizePlanes(anchors: [ARAnchor]) {

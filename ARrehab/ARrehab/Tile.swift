@@ -14,6 +14,7 @@ class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
     static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5)
+    static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1)
    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])
     static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.5, height: 4.0, depth: 0.5)], mode: .trigger, filter: .sensor)
@@ -26,13 +27,13 @@ class Tile : Entity, HasModel, HasCollision {
     //Default initializer: Uses default model and collision componenets, does not adjust translation
     required init(name: String, x: Float, z: Float) {
         self.tileName = name
-        
         self.coords = Coordinates(x: x, z: z)
         
         super.init()
 
         self.components[ModelComponent] = Tile.defaultTileModel
         self.components[CollisionComponent] = Tile.defaultCollisionComp
+        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP
         
         self.transform.translation = SIMD3(x, 0.0, z)
         print("Generated Tile: " + name)
@@ -46,11 +47,11 @@ class Tile : Entity, HasModel, HasCollision {
         
         super.init()
 
-        self.components[CollisionComponent] = Tile.defaultCollisionComp
         self.components[ModelComponent] = modelComp
+        self.components[CollisionComponent] = Tile.defaultCollisionComp
+        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP
         
         if adjustTranslation {
-            print("Adjusting")
             self.transform.translation = Tile.adjustTransformTranslation(coords: self.coords)
         }
         else {

@@ -38,6 +38,9 @@ class GameBoard {
     static let EXTENT1 : Float = 2.0
     static let EXTENT2 : Float = 2.0
     
+    //Dimension of the board (in tiles)
+    static let DIMENSIONS = (4, 4)
+    
     //List of colors for random selection at time of initialization
     static let colorList : [SimpleMaterial.Color] = [SimpleMaterial.Color.blue, SimpleMaterial.Color.red, SimpleMaterial.Color.green, SimpleMaterial.Color.magenta, SimpleMaterial.Color.purple, SimpleMaterial.Color.cyan, SimpleMaterial.Color.orange]
     
