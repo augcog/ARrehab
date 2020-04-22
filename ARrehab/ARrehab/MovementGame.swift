@@ -13,7 +13,7 @@ import UIKit
 /**
 Movement Game Entity holds a representatioin of where the user needs to go and the detection mechanism to determine if the user has completed the action.
  */
-class MovementGame : Entity, Minigame {
+class MovementGame : Minigame {
     
     // Collision group for the MovementTarget
     var targetCollisionGroup : CollisionGroup
@@ -24,18 +24,37 @@ class MovementGame : Entity, Minigame {
     // The player. As long as it collides with the target it counts.
     let playerCollisionEntity : TriggerVolume
     // Number of completed targets
-    var completion : Int
+    var completion : Int {
+        get {
+            //return Int(score * Float(total) / 100.0)
+            return Int(score)
+        }
+        set(add) {
+            //score = min(100.0, Float(add) * 100.0 / Float(total))
+            score = Float(add)
+        }
+    }
+    // Number of total targets
+    var total : Int
     
-    required init() {
+    convenience required init() {
+        self.init(num: 1)
+    }
+    
+    required init(num: Int) {
         self.targetCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
         self.playerCollisionGroup = CollisionGroup(rawValue: self.targetCollisionGroup.rawValue + 1)
-        self.completion = 0
+        self.total = num
         // For our purposes, we placed the player as a 2 centimeter sphere around the camera.
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:playerCollisionGroup, mask: targetCollisionGroup))
         super.init()
-        // Create a target with a trigger time of 5 seconds
-        let target = MovementTarget(delay: 5)
+        // Create a target with a trigger time of 1 second
+        let target = MovementTarget(delay: 1, reps: num)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
+        // Change the orientation to squating rather than to the left
+        target.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
+        // Move the squat target down by 0.2 m.
+        target.transform.translation = SIMD3<Float>(0,-0.2,0)
         self.addChild(target)
     }
     
@@ -44,7 +63,7 @@ class MovementGame : Entity, Minigame {
     /// - Parameters:
     ///   - ground: entity to anchor the Movement Game to. Typically a fixed plane anchor.
     ///   - player: entity to anchor the playerCollisionEntity to. Typically the camera.
-    func attach(ground: Entity, player: Entity) {
+    override func attach(ground: Entity, player: Entity) {
         ground.addChild(self)
         var lookDirection = ground.convert(position: SIMD3<Float>(0,0,1), from: player)
         lookDirection.y = ground.convert(position: SIMD3<Float>(0,0,0), from: player).y
@@ -56,7 +75,7 @@ class MovementGame : Entity, Minigame {
         player.addChild(self.getPlayerCollisionEntity())
     }
     
-    func run() -> Bool {
+    override func run() -> Bool {
         self.addCollision()
         self.getPlayerCollisionEntity().isEnabled = true
         assert(self.getPlayerCollisionEntity().isActive == true, "Warning PlayerCollisionEntity is not active")
@@ -69,21 +88,16 @@ class MovementGame : Entity, Minigame {
         return true
     }
     
-    func endGame() -> Float {
+    override func endGame() -> Float {
         self.parent?.removeChild(self)
         self.getPlayerCollisionEntity().parent?.removeChild(self.getPlayerCollisionEntity())
-        return score()
+        return score
     }
     
     /// Returns the player which is a collision entity
     func getPlayerCollisionEntity() -> Entity & HasCollision {
         return playerCollisionEntity
     }
-    
-    func score() -> Float{
-        return min(1.0, Float(completion))
-    }
-    
     
     /**
         Adds Collision Capabilities to the Player Collision Entity
@@ -124,28 +138,28 @@ class MovementTarget : Entity, HasModel, HasCollision {
     /// How long does contact need to last for in seconds.
     let delay : Double
     /// Material to use when target is completed
-    let completeMaterial = SimpleMaterial(color: UIColor.green.withAlphaComponent(0.7), isMetallic: false)
+    let completeMaterial = UnlitMaterial(color: UIColor.green.withAlphaComponent(0.7))
     /// Material to use when target is not completed and not touching
-    let uncompleteMaterial = SimpleMaterial(color: UIColor.gray.withAlphaComponent(0.7), isMetallic: false)
+    let uncompleteMaterial = UnlitMaterial(color: UIColor.gray.withAlphaComponent(0.7))
     /// Material to use when the timer is counting down
-    let inProgressMaterial = SimpleMaterial(color: UIColor.yellow.withAlphaComponent(1), isMetallic: false)
+    let inProgressMaterial = UnlitMaterial(color: UIColor.yellow.withAlphaComponent(0.5))
     /// A text model with the timer attached
     let timerEntity: ModelEntity
     /// A timer that updates the timerEntity.
     var timer:Timer?    //TODO: Consdsider switching from timer directly into the update frame.
+    var reps: Int
     
     /** Create a movement target that is completed upon delay seconds of contact.
      Creates a large target to the left of the user, asking them to take a step to the left.
      - Parameters:
      - delay: the number of seconds it takes to complete the target
      */
-    required init(delay: Double = 0) {
+    required init(delay: Double = 0, reps: Int) {
         self.delay = delay
         // Set the timer to delay seconds
-        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right))
+        self.reps = reps
+        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right), materials: [uncompleteMaterial])
         super.init()
-        // Shift the target forward and to the left.
-        self.transform.translation = SIMD3<Float>(0.5,0,0.5)
         // Create the collision box of this target and shift the box to the left by half the width such that (0,0,0) lies on the edge of the box.
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 1, height: 1, depth: 2).offsetBy(translation: SIMD3<Float>(0.5,0,0))], mode: .trigger, filter: .default)
         // TODO: Make this box render even when inside. Most likely need to break into separate plane meshes.
@@ -160,19 +174,22 @@ class MovementTarget : Entity, HasModel, HasCollision {
         addChild(thresholdPlane)
         
         // Create an indicator to move to the left
-        let leftArrow = ModelEntity(mesh:
+        let dirArrow = ModelEntity(mesh:
             MeshResource.generateText("<=", font:
                 .systemFont(ofSize: 1)
                 , alignment: .center)
         )
-        leftArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
+        dirArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
         // Rotate the arrow by 180 degrees such that the text is facing the user.
-        leftArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
-        addChild(leftArrow)
+        dirArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
+        addChild(dirArrow)
         // Same thing for the timer entity
-        timerEntity.transform = Transform(matrix: leftArrow.transform.matrix)
+        timerEntity.transform = Transform(matrix: dirArrow.transform.matrix)
         timerEntity.transform.translation.x += 2
+        // TODO Rotate it such that it faces the user and is readable.
+        
         addChild(timerEntity)
+        //timerEntity.transform.translation = leftArrow.convert(position: SIMD3<Float>(2,0,0), to: timerEntity.parent)
 
         self.setMaterials(materials: [uncompleteMaterial])
     }
@@ -190,9 +207,15 @@ class MovementTarget : Entity, HasModel, HasCollision {
                 self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
                     if(!self.active) {
                         timer.invalidate()
+                        self.timer = nil
                         return
                     }
-                    let timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
+                    var timeLeft : Double
+                    if (DispatchTime.now() <= self.end){
+                        timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
+                    } else {
+                        timeLeft = self.delay
+                    }
                     self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%.2f", min(self.delay, max(0, timeLeft))), font:
                     .systemFont(ofSize: 1)
                     , alignment: .center)
@@ -204,33 +227,39 @@ class MovementTarget : Entity, HasModel, HasCollision {
     
     /// Check if the time has exhausted and update as appropriate
     func onCollisionUpdated() {
-        if (active) {
+        if (self.active) {
             if (self.end < DispatchTime.now()) {
                 setMaterials(materials: [completeMaterial])
-                active = false
+                self.active = false
                 self.timerEntity.model?.mesh = MeshResource.generateText("0.0", font:
                 .systemFont(ofSize: 1)
                 , alignment: .center)
                 guard let game = self.parent as? MovementGame else {
                     return
                 }
-                game.completion = 1
-
+                game.completion += 1
+                reps -= 1
             }
         }
     }
     
     /// Set the appropriate material and reset the timer if needed.
     func onCollisionEnded() {
-        if (!active) {
-            setMaterials(materials: [completeMaterial])
+        if (!active && reps <= 0) {
+                setMaterials(materials: [completeMaterial])
         } else {
-            setMaterials(materials: [uncompleteMaterial])
-            self.end = DispatchTime.distantFuture
-            self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"$0.2f", self.delay), font:
-            .systemFont(ofSize: 1)
-            , alignment: .center)
+            reset()
         }
+    }
+    
+    /// Resets the target: materials, timer, etc.
+    func reset() {
+        self.active = true
+        setMaterials(materials: [uncompleteMaterial])
+        self.end = DispatchTime.distantFuture
+        self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%0.2f", self.delay), font:
+        .systemFont(ofSize: 1)
+        , alignment: .center)
     }
     
     /**

@@ -27,6 +27,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     var groundAncEntity: AnchorEntity!
     /// Minigame Controller Struct
     var minigameController: MinigameController!
+    var scoreSubscriber: Cancellable!
     
     /// Add the player entity and set the AR session to begin detecting the floor.
     override func viewDidLoad() {
@@ -70,6 +71,9 @@ class ViewController: UIViewController, ARSessionDelegate {
             
             self.arView.scene.addAnchor(groundAncEntity)
             minigameController = MinigameController(ground: groundAncEntity, player: cameraEntity)
+            scoreSubscriber = minigameController.$score.sink(receiveValue: { (score) in
+                self.minigameLabel.text = String(format:"Score: %0.0f", score)
+            })
             minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         }
     }
@@ -85,10 +89,8 @@ class ViewController: UIViewController, ARSessionDelegate {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            minigameLabel.text = "Minigame is On"
             minigameController.enableMinigame()
         } else {
-            minigameLabel.text = "Score \(minigameController.score())"
             minigameController.disableMinigame()
         }
     }

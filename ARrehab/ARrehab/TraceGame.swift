@@ -19,7 +19,7 @@ import Combine
 /**
 Trace Game Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
  */
-class TraceGame : Entity, Minigame {
+class TraceGame : Minigame {
     
     /// list of TracePoints that make up this target.
     var pointCloud : [TracePoint] = []
@@ -63,7 +63,7 @@ class TraceGame : Entity, Minigame {
     /// - Parameters:
     ///   - ground: entity to anchor the trace targets to. Typically a fixed plane anchor.
     ///   - player: entity to anchor the laser to. Typically the camera.
-    func attach(ground: Entity, player: Entity) {
+    override func attach(ground: Entity, player: Entity) {
         // All coordinates are relative to the ground anchor which will be the parent of the TraceGame.
         // Player position
         var playerPosition = player.position(relativeTo: ground)
@@ -86,7 +86,7 @@ class TraceGame : Entity, Minigame {
         player.addChild(self.getLaser())
     }
     
-    func run() -> Bool {
+    override func run() -> Bool {
         self.getLaser().addCollision()
         self.getLaser().isEnabled = true
         assert(self.getLaser().isActive == true, "Warning Laser is not active")
@@ -99,7 +99,7 @@ class TraceGame : Entity, Minigame {
         return true
     }
     
-    func endGame() -> Float {
+    override func endGame() -> Float {
         self.parent?.removeChild(self)
         self.getLaser().parent?.removeChild(self.getLaser())
         return score()
@@ -118,7 +118,8 @@ class TraceGame : Entity, Minigame {
                 }
             }
         }
-        return Float(total - active)/Float(total)
+        score = Float(total - active) * 100.0 / Float(total)
+        return score
     }
 }
 
