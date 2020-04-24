@@ -36,13 +36,13 @@ class GameBoard {
     //Minimum extents for a valid game board (in meters)
     //Does not distinguish between x and z directions
     static let EXTENT1 : Float = 2.0
-    static let EXTENT2 : Float = 2.0
+    static let EXTENT2 : Float = 3.0
     
     //Dimension of the board (in tiles)
-    static let DIMENSIONS = (4, 4)
+    static let DIMENSIONS = (3, 5)
     
     //List of colors for random selection at time of initialization
-    static let colorList : [SimpleMaterial.Color] = [SimpleMaterial.Color.blue, SimpleMaterial.Color.red, SimpleMaterial.Color.green, SimpleMaterial.Color.magenta, SimpleMaterial.Color.purple, SimpleMaterial.Color.cyan, SimpleMaterial.Color.orange]
+    static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
@@ -74,9 +74,9 @@ class GameBoard {
     
     /* Assigns every tile in self.tiles a random color and adds it to the self.board AnchorEntity */
     private func generateBoard() {
-        for tile in self.tilesDict {
-            tile.value.changeColor(color: GameBoard.colorList.randomElement()!)
-            board.addChild(tile.value)
+        for tile in self.tilesDict.values {
+            tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
+            board.addChild(tile)
         }
     }
     

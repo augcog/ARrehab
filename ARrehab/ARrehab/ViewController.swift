@@ -103,62 +103,60 @@ extension ViewController: ARSessionDelegate {
     }
     
     func startBoardPlacement() {
-
-        Timer.scheduledTimer(withTimeInterval: TimeInterval(exactly: 1.0)!, repeats: true, block: {timer in
+        
+        self.arView.scene.addAnchor(playerEntity)
+        self.playerEntity.addCollision()
+        
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(exactly: 1.0)!, repeats: true) {timer in
             
             if self.boardState == .placed {
                 timer.invalidate()
+            }
+                
+            else if (self.playerEntity.onTile != nil) {
+                self.tileGrid?.updateBoardOutline(centerTile: self.playerEntity.onTile)
+            }
+            
+            
+        }
+
+        /*Timer.scheduledTimer(withTimeInterval: TimeInterval(exactly: 1.0)!, repeats: true, block: {timer in
+            
+            if self.boardState == .placed {
+                timer.invalidate()
+            }
+            
+            for tile in (self.tileGrid?.possibleTiles.values)! {
+                tile.model = TileGrid.gridModel
             }
             
             //Get the current camera translation and direction via its transform matrix
             let cameraTransform = self.arView.session.currentFrame!.camera.transform
             let translation = SIMD3<Float>(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
             let direction = -SIMD3<Float>(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
+            
+            let direction2 = self.arView.cameraTransform.rotation
                         
             //Raycast from the camera outwards
-            let raycast = self.arView.scene.raycast(origin: translation, direction: direction)
+            let raycast = self.arView.scene.raycast(origin: translation, direction: direction2.act(SIMD3(0.0, 0.0, -1.0)))
             
             
             if raycast != [] {
+                for result in raycast {
+                    guard let tile = result.entity as? Tile else {return}
+                    tile.changeColor(color: SimpleMaterial.Color.green)
+                }
                 
                 //Get the "middle" element in the stack of raycast results and use it as the selected tile -- TODO: Figure out a better way to select which tile is being "pointed" at
                 /*if let hitTile = raycast[Int(raycast.count / 2)].entity as? Tile {
                     self.tileGrid!.updateBoardOutline(centerTile: hitTile)
                 }*/
                 
-                //Alternatively, try to find center-most tile and use it as selected tile
-                var tileList : [Tile] = []
-                for result in raycast {
-                    guard let tile = result.entity as? Tile else {return}
-                    tileList.append(tile)
-                }
-                
-                var sumX : Float = 0
-                var sumZ : Float = 0
-                for tile in tileList {
-                    sumX += tile.coords.x
-                    sumZ += tile.coords.z
-                }
-                
-                let meanX = sumX / Float(tileList.count)
-                let meanZ = sumZ / Float(tileList.count)
-                
-                var deviationX : Float = 100
-                var deviationZ : Float = 100
-                
-                var centerTile = tileList.first
-                for tile in tileList {
-                    if (tile.coords.x - meanX < deviationX) && (tile.coords.z - meanZ < deviationZ) {
-                        deviationX = tile.coords.x - meanX
-                        deviationZ = tile.coords.z - meanZ
-                        centerTile = tile
-                    }
-                }
                 //self.tileGrid?.updateBoardOutline(centerTile: centerTile!)
-                centerTile?.changeColor(color: SimpleMaterial.Color.blue)
+                //centerTile?.changeColor(color: SimpleMaterial.Color.blue)
             }
             
-        })
+        })*/
     }
     
 }

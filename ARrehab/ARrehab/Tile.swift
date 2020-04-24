@@ -40,8 +40,8 @@ class Tile : Entity, HasModel, HasCollision {
     }
     
     //Optional initializer: Allows specification of custom model components and translation adjustment
-    init(name: String, x: Float, z: Float, modelComp: ModelComponent = Tile.defaultTileModel, adjustTranslation: Bool = false) {
-        self.tileName = name
+    convenience init(name: String, x: Float, z: Float, materials: [Material]?, adjustTranslation: Bool = false) {
+        /*self.tileName = name
         
         self.coords = Coordinates(x: x, z: z)
         
@@ -49,13 +49,16 @@ class Tile : Entity, HasModel, HasCollision {
 
         self.components[ModelComponent] = modelComp
         self.components[CollisionComponent] = Tile.defaultCollisionComp
-        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP
+        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP*/
+        
+        self.init(name: name, x: x, z: z)
+        
+        if materials != nil {
+            self.changeMaterials(materials: materials!)
+        }
         
         if adjustTranslation {
             self.transform.translation = Tile.adjustTransformTranslation(coords: self.coords)
-        }
-        else {
-            self.transform.translation = SIMD3(x, 0.0, z)
         }
         
         print("Generated Tile: " + name)
@@ -90,8 +93,9 @@ extension Tile {
         return SIMD3(xTranslation, yTranslation, zTranslation)
     }
     
-    func changeColor(color: SimpleMaterial.Color) {
-        self.model?.materials = [SimpleMaterial(color: color, isMetallic: true)]
+    //Changes the material list of the tile's Model Component
+    func changeMaterials(materials: [Material]) {
+        self.model?.materials = materials
     }
     
 }

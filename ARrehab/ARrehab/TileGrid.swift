@@ -12,8 +12,8 @@ import RealityKit
 
 class TileGrid {
     
-    static let gridModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.red.withAlphaComponent(0.1), isMetallic: false)])
-    static let outlineModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false)])
+    static let gridMaterial = SimpleMaterial(color: SimpleMaterial.Color.red.withAlphaComponent(0.1), isMetallic: false)
+    static let outlineMaterial = SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false)
     
     var surfaceAnchor : ARPlaneAnchor
     var gridEntity : AnchorEntity
@@ -61,6 +61,16 @@ class TileGrid {
     }
     
     /*
+     Generates a tile with the given coordinates
+     Adds the tile to the possibleTiles dict. and to the gridEntity
+     */
+    func generateOneTile(currentX: Float, currentZ: Float) {
+        let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, materials: [TileGrid.gridMaterial], adjustTranslation: true)
+        self.possibleTiles[newTile.coords] = newTile
+        self.gridEntity.addChild(newTile)
+    }
+    
+    /*
      Updates the tile grid if the plane has expanded sufficiently
      */
     func updateBoard(updatedAnc: ARPlaneAnchor) {
@@ -75,23 +85,20 @@ class TileGrid {
         if (self.surfaceAnchor.extent.x > self.xLength * 2 + Tile.TILE_SIZE.x || self.surfaceAnchor.extent.z > self.zLength * 2 + Tile.TILE_SIZE.z) {
             
             self.gridEntity.children.removeAll()
-            generatePossibleTiles()
+            self.generatePossibleTiles()
             
             self.gridEntity.transform.translation = self.surfaceAnchor.center
         }
     }
     
-    //FIXME -- ACCURATELY IDENTIFY NECESSARY BOARD OUTLINE
+    //TODO -- IMPLEMENT DIRECTIONAL KNOWLEDGE
     func updateBoardOutline(centerTile: Tile) {
-        for tile in currentOutline {
-            tile.model = TileGrid.gridModel
-        }
-        self.currentOutline.removeAll()
         
-        print("X DISPLACEMENT: ", Int(GameBoard.DIMENSIONS.0 / 2))
-        print("Z DISPLACEMENT: ", Int(GameBoard.DIMENSIONS.1 / 2))
-        let cornerCoords = Tile.Coordinates(x: centerTile.coords.x + Float(Int(GameBoard.DIMENSIONS.0 / 2)) * Tile.TILE_SIZE.x, z: centerTile.coords.z + Float(Int(GameBoard.DIMENSIONS.1 / 2)) * Tile.TILE_SIZE.z)
-        print("COORDS:", cornerCoords)
+        //Clear current outline
+        self.clearOutline()
+        
+        //Find the tile that would form the upper-right corner of the board, with the given centerTile
+        let cornerCoords = Tile.Coordinates(x: centerTile.coords.x + (1 * Tile.TILE_SIZE.x), z: centerTile.coords.z + (2 * Tile.TILE_SIZE.z))
         
         let cornerTile = self.possibleTiles.first() {coords, tile in
             return TileGrid.isApproxEqual(value1: coords.x, value2: cornerCoords.x, error: 0.1) && TileGrid.isApproxEqual(value1: coords.z, value2: cornerCoords.z, error: 0.1)
@@ -101,27 +108,37 @@ class TileGrid {
             print("Invalid center")
             return
         }
-        else{
-            cornerTile!.value.model = TileGrid.outlineModel
-            currentOutline.append(cornerTile!.value)
+        
+        else {
+            for i in 0...2 {
+                for c in 0...5 {
+                    if (i == 0 || i == 2 || c == 0 || c == 5) {
+                        let currentCoords = Tile.Coordinates(x: (cornerTile?.key.x)! - (Float(i) * Tile.TILE_SIZE.x), z: (cornerTile?.key.z)! - (Float(c) * Tile.TILE_SIZE.z))
+                        guard let currentTile = self.possibleTiles[currentCoords] else {
+                            print("TILE DOESNT EXIST")
+                            self.clearOutline()
+                            return
+                        }
+                        currentTile.changeMaterials(materials: [TileGrid.outlineMaterial])
+                        self.currentOutline.append(currentTile)
+                    }
+                }
+            }
         }
         
+    }
+    
+    func clearOutline() {
+        for tile in self.currentOutline {
+            tile.changeMaterials(materials: [TileGrid.gridMaterial])
+        }
+        self.currentOutline.removeAll()
     }
     
 }
 
 //Helper Methods
 extension TileGrid {
-    
-    /*
-     Generates a tile with the given coordinates
-     Adds the tile to the possibleTiles dict. and to the gridEntity
-     */
-    func generateOneTile(currentX: Float, currentZ: Float) {
-        let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, modelComp: TileGrid.gridModel, adjustTranslation: true)
-        self.possibleTiles[newTile.coords] = newTile
-        self.gridEntity.addChild(newTile)
-    }
     
     /*
      getMaxX() and getMaxZ() return the tiles with the largest X and Z coordinates,
@@ -140,7 +157,7 @@ extension TileGrid {
     }
     
     static func isApproxEqual(value1: Float, value2: Float, error: Float) -> Bool {
-        return abs(value1 - value2) < (0.00 + error) && abs(value1 - value2) > (0.00 - error)
+        return abs(value1 - value2) <= (0.00 + error) && abs(value1 - value2) >= (0.00 - error)
     }
     
 }
