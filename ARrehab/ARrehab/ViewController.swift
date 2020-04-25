@@ -13,6 +13,7 @@ import Combine
 
 class ViewController: UIViewController {
     
+    /// AR View
     @IBOutlet var arView: ARView!
     
     var visualizedPlanes : [ARPlaneAnchor] = []
@@ -25,8 +26,22 @@ class ViewController: UIViewController {
     var tileGrid: TileGrid?
     var gameBoard: GameBoard?
     
+    /// The Player Entity that is attached to the camera.
     let playerEntity = Player(target: .camera)
-    
+
+    /// The ground anchor entity that holds the tiles and other fixed game objects
+//  var groundAncEntity: AnchorEntity!
+
+    /// Switch that turns on and off the Minigames, cycling through them.
+    @IBOutlet var minigameSwitch: UISwitch!
+    /// Label to display minigame output.
+    @IBOutlet var minigameLabel: UILabel!
+  
+    /// Minigame Controller Struct
+    var minigameController: MinigameController!
+    var scoreSubscriber: Cancellable!  
+  
+    /// Add the player entity and set the AR session to begin detecting the floor.
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -39,7 +54,29 @@ class ViewController: UIViewController {
         //arView.scene.addAnchor(playerEntity)
         //playerEntity.addCollision()
         
+        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
+//         minigameSwitch.setOn(false, animated: false)
+//         //groundAncEntity is the ground ARAnchorEntity of the board.
+//         minigameController = MinigameController(ground: groundAncEntity, player: playerEntity)
+//         scoreSubscriber = minigameController.$score.sink(receiveValue: { (score) in
+//             self.minigameLabel.text = String(format:"Score: %0.0f", score)
+//         })
+//         minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
+        
     }
+    
+//     /**
+//      Minigame switch logic.
+//      Switched on: a new game is created.
+//      Switched off: score is displayed and game is removed.
+//      */
+//     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
+//         if switchState.isOn {
+//             minigameController.enableMinigame()
+//         } else {
+//             minigameController.disableMinigame()
+//         }
+//     }
     
     private func startTracking() {
         //Define AR Configuration to detect horizontal surfaces
@@ -86,8 +123,7 @@ extension ViewController: ARSessionDelegate {
                     self.tileGrid?.updateBoard(updatedAnc: planeAnc)
                 }
             }
-        }
-        
+        }        
     }
     
     func initiateBoardLayout(surfaceAnchor: ARPlaneAnchor) {

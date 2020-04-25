@@ -66,11 +66,15 @@ class TileCollider : Entity, HasCollision {
     func onCollisionBegan(tile: Tile) {
         print("Collision Started")
         print("On Tile: \(tile.tileName)")
+        // used for debugging purposes.
+//         tile.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
     }
     
     func onCollisionEnded(tile: Tile) {
         print("Collision Ended")
         print("On Tile: \(tile.tileName)")
+        // used for debugging purposes.
+//         tile.model?.materials = [SimpleMaterial(color: .green, isMetallic: false)]
     }
     
 }
