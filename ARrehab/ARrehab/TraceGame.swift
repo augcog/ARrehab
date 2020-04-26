@@ -42,9 +42,10 @@ class TraceGame : Minigame {
         self.total = 11
         self.active = self.total
         super.init()
-        for i in (-total/2)...total/2 {
+        let fox = try? Entity.loadModel(named: "Fox")
+        for i in 1 ... total {
             // Create a line of points going from the upper left to the lower right.
-            let point : TracePoint = TracePoint(translation: SIMD3<Float>(Float(i)*0.1,Float(i)*0.1,0))
+            let point : TracePoint = TracePoint(model: fox?.model ?? ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)]), translation: SIMD3<Float>(Float.random(in: -3 ... 3), Float.random(in: -1.5 ... 0.5), Float.random(in:2.0 ... 5.0)))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
             
             // Make the center point a different color.
@@ -129,14 +130,27 @@ class TraceGame : Minigame {
  */
 class TracePoint : Entity, HasModel, HasCollision {
     var active = true
-    required init() {
+    required convenience init() {
+        self.init(model: ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .cyan, isMetallic: false)]))
+    }
+    
+    init(model : ModelComponent) {
         super.init()
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.05)], mode: .trigger, filter: .default)
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .cyan, isMetallic: false)])
+        let radius : Float = 0.5
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: model.mesh.bounds.boundingRadius / sqrtf(3)).offsetBy(translation: model.mesh.bounds.center)], mode: .trigger, filter: .default)
+        self.components[ModelComponent] = model
+        let scaleFactor = radius/model.mesh.bounds.boundingRadius
+        self.transform.scale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor)
+        self.transform.rotation = simd_quatf(angle: Float.random(in: 5.0 * .pi/6 ... 7.0 * .pi/6), axis: SIMD3<Float>(0,1,0))
     }
     
     required convenience init(translation: SIMD3<Float>) {
         self.init()
+        self.transform.translation = translation
+    }
+    
+    convenience init(model : ModelComponent, translation: SIMD3<Float>) {
+        self.init(model: model)
         self.transform.translation = translation
     }
     
@@ -159,19 +173,33 @@ class TracePoint : Entity, HasModel, HasCollision {
 /**
  Laser class is what the user controls typically via rotation of the camera. It interacts with TracePoints within a certain distance.
  */
-class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLight
+class Laser : Entity, HasCollision, HasModel  { // TODO: consider using a PointLight,    HasDirectionalLight HasSpotLight
     var subscriptions: [Cancellable] = []
     
     required init() {
         super.init()
-        // Create a 2 m long "laser"
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: 2.0, radius: 0.01)], mode: .trigger, filter: .default)
-        // Create a visual representation of this 2 m long laser.
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,2.0,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        let length : Float = 10
+        // Create a 10 m long "laser"
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: length, radius: 0.01)], mode: .trigger, filter: .default)
+        // Create a visual representation of this 10 m long laser.
+        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,length,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
         // Rotate this laser such that instead of pointing up, it points up and out.
-        self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
+//        self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
         // Position this laser a quarter meter in front of the user. (Note that becausue the capsule extends both above and below, the laser really ends behind the user.)
-        self.transform.translation = SIMD3<Float>(0,0,-0.25)
+//        self.transform.translation = SIMD3<Float>(0,0,-0.25)
+        let angle :Float = 3.0 * .pi / 8
+        self.transform.rotation = simd_quatf(angle: 2.0 * .pi - angle, axis: SIMD3<Float>(1, 0,0))
+        self.transform.translation = SIMD3<Float>(0,-0.2 + length/2*Float(cos(angle)), -length/2 * Float(sin(angle)))
+//
+//        self.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.blue, intensity: 10000, innerAngleInDegrees: 30, outerAngleInDegrees: 30, attenuationRadius: 1)
+        
+//
+//        self.components[DirectionalLightComponent] = DirectionalLightComponent(color: DirectionalLightComponent.Color.blue, intensity: 10000, isRealWorldProxy: false)
+//
+//        let spotlight : Entity = SpotLight()
+//        print(spotlight)
+//        addChild(spotlight)
+//        spotlight.look(at: SIMD3<Float>(0,0,-1), from: SIMD3<Float>(0,0,-0.25), relativeTo: self)
     }
     
     /**

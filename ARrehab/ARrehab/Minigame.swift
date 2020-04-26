@@ -115,8 +115,8 @@ class MinigameController {
              print("A Minigame is already active!")
              return
         }
-        //enableMinigame(game: .trace)
-        enableMinigame(game: .movement)
+        enableMinigame(game: .trace)
+        //enableMinigame(game: .movement)
     }
     
     /**
