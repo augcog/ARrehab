@@ -162,15 +162,15 @@ class TracePoint : Entity, HasModel, HasCollision {
     }
     
     func onCollisionBegan() {
-        if (active) {
-            self.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
-        }
+//        if (active) {
+//            self.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+//        }
     }
     
     func onCollisionEnded() {
-        self.model?.materials = [
-            SimpleMaterial(color: .clear, isMetallic: false)
-        ]
+//        self.model?.materials = [
+//            SimpleMaterial(color: .clear, isMetallic: false)
+//        ]
         if (active) {
             active = false
             (self.parent as! TraceGame).score()
@@ -181,7 +181,7 @@ class TracePoint : Entity, HasModel, HasCollision {
 /**
  Laser class is what the user controls typically via rotation of the camera. It interacts with TracePoints within a certain distance.
  */
-class Laser : Entity, HasCollision, HasModel  { // TODO: consider using a PointLight,    HasDirectionalLight HasSpotLight
+class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLight,   HasDirectionalLight, HasSpotLight
     var subscriptions: [Cancellable] = []
     
     required init() {
@@ -191,23 +191,31 @@ class Laser : Entity, HasCollision, HasModel  { // TODO: consider using a PointL
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: length, radius: 0.01)], mode: .trigger, filter: .default)
         // Create a visual representation of this 10 m long laser.
         self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,length,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
+
         // Rotate this laser such that instead of pointing up, it points up and out.
 //        self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
         // Position this laser a quarter meter in front of the user. (Note that becausue the capsule extends both above and below, the laser really ends behind the user.)
 //        self.transform.translation = SIMD3<Float>(0,0,-0.25)
-        let angle :Float = 3.0 * .pi / 8
+        
+//        let spotlight : Entity = SpotLight()
+//        spotlight.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.yellow, intensity: 100000, innerAngleInDegrees: 30, outerAngleInDegrees: 60, attenuationRadius: 100)
+//        //print(spotlight)
+//        //spotlight.transform.rotation = simd_quatf(angle: 1.5 * .pi, axis: SIMD3<Float>(1, 0,0))
+//        addChild(spotlight)
+    // Spotlight is currently looking a little under where we have the laser pointed to...
+//        spotlight.look(at: SIMD3<Float>(0,0,-1), from: SIMD3<Float>(0,0,0), relativeTo: self)
+        
+        // figure out how this rotation is happening
+        let angle : Float = 3.0 * .pi / 8
         self.transform.rotation = simd_quatf(angle: 2.0 * .pi - angle, axis: SIMD3<Float>(1, 0,0))
         self.transform.translation = SIMD3<Float>(0,-0.2 + length/2*Float(cos(angle)), -length/2 * Float(sin(angle)))
 //
-//        self.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.blue, intensity: 10000, innerAngleInDegrees: 30, outerAngleInDegrees: 30, attenuationRadius: 1)
+//        self.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.yellow, intensity: 100000, innerAngleInDegrees: 30, outerAngleInDegrees: 60, attenuationRadius: 10)
         
 //
 //        self.components[DirectionalLightComponent] = DirectionalLightComponent(color: DirectionalLightComponent.Color.blue, intensity: 10000, isRealWorldProxy: false)
 //
-//        let spotlight : Entity = SpotLight()
-//        print(spotlight)
-//        addChild(spotlight)
-//        spotlight.look(at: SIMD3<Float>(0,0,-1), from: SIMD3<Float>(0,0,-0.25), relativeTo: self)
+
     }
     
     /**
