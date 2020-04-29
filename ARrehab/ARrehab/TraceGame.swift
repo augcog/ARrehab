@@ -42,16 +42,22 @@ class TraceGame : Minigame {
         self.total = 11
         self.active = self.total
         super.init()
-        let fox = try? Entity.loadModel(named: "Fox")
+        var models : [ModelComponent] = []
+        do {
+            models.append(try Entity.loadModel(named: "Fox").model!)
+            models.append(try Entity.loadModel(named: "Bear").model!)
+        } catch {
+            models.append(ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)]))
+        }
         for i in 1 ... total {
             // Create a line of points going from the upper left to the lower right.
-            let point : TracePoint = TracePoint(model: fox?.model ?? ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)]), translation: SIMD3<Float>(Float.random(in: -3 ... 3), Float.random(in: -1.5 ... 0.5), Float.random(in:2.0 ... 5.0)))
+            let point : TracePoint = TracePoint(model: models.randomElement()!, translation: SIMD3<Float>(Float.random(in: -3 ... 3), Float.random(in: -1.5 ... 0.5), Float.random(in:2.0 ... 5.0)))
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
             
             // Make the center point a different color.
-            if (i == 0) {
-                point.model?.materials = [SimpleMaterial(color: .yellow, isMetallic: false)]
-            }
+//            if (i == 0) {
+//                point.model?.materials = [SimpleMaterial(color: .yellow, isMetallic: false)]
+//            }
             
             pointCloud.append(point)
             self.addChild(point)
@@ -119,7 +125,8 @@ class TraceGame : Minigame {
                 }
             }
         }
-        score = Float(total - active) * 100.0 / Float(total)
+        progress = Float(total - active) / Float(total)
+        score = progress * 100.0
         return score
     }
 }
@@ -166,6 +173,7 @@ class TracePoint : Entity, HasModel, HasCollision {
         ]
         if (active) {
             active = false
+            (self.parent as! TraceGame).score()
         }
     }
 }

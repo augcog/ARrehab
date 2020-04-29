@@ -41,6 +41,9 @@ class Minigame : Entity {
     /// Score / completion status of the minigame in the range [0.0, 100.0]
     @Published var score : Float
     
+    /// Progress of the minigame in the range [0.0, 100.0] to be displayed on the progres bar.
+    @Published var progress : Float
+    
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
     /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
@@ -52,6 +55,7 @@ class Minigame : Entity {
     
     required init() {
         self.score = 0
+        self.progress = 0
         super.init()
     }
     
@@ -98,12 +102,18 @@ class MinigameController {
      the score of the current minigame in progress [0, 100]. If no game in progress,  0 or last game's score.
      */
     @Published var score: Float
+    
+    /**
+     the progress of the current minigame [0, 1]. If no game in progress. this is an arbitrary value.
+     */
+    @Published var progress: Float
     var cancellable : [Cancellable]
     
     init(ground: Entity, player: Entity) {
         self.ground = ground
         self.player = player
         self.score = 0
+        self.progress = 0
         self.cancellable = []
     }
     
@@ -136,6 +146,13 @@ class MinigameController {
                 return
             }
             self.score = score
+        })
+        cancellable.append(currentMinigame!.$progress.sink{ progress in
+            guard self.currentMinigame != nil else {
+                self.progress = 0.0
+                return
+            }
+            self.progress = progress
         })
         currentMinigame!.attach(ground: ground, player: player)
         currentMinigame!.run()

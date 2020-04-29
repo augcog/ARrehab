@@ -34,7 +34,7 @@ class MovementGame : Minigame {
             score = Float(add)
         }
     }
-    // Number of total targets
+    // Number of movements to complete
     var total : Int
     
     convenience required init() {
