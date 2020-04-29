@@ -37,6 +37,8 @@ class MovementGame : Minigame {
     // Number of movements to complete
     var total : Int
     
+    var timer: Timer! = nil
+    
     convenience required init() {
         self.init(num: 1)
     }
@@ -47,15 +49,31 @@ class MovementGame : Minigame {
         self.total = num
         // For our purposes, we placed the player as a 2 centimeter sphere around the camera.
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:playerCollisionGroup, mask: targetCollisionGroup))
+        
         super.init()
+        
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+            self.progress = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
+        }
+        self.timer.tolerance = 0.1
+        
         // Create a target with a trigger time of 1 second
-        let target = MovementTarget(delay: 1, reps: num)
+        let target = MovementTarget(delay: 1, reps: num, arrow: true)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
         // Change the orientation to squating rather than to the left
         target.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
         // Move the squat target down by 0.2 m.
         target.transform.translation = SIMD3<Float>(0,-0.2,0)
         self.addChild(target)
+        
+        // Create a target with a trigger time of 1 second
+        let hardTarget = MovementTarget(delay: 1, reps: num, arrow: false)
+        hardTarget.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
+        // Change the orientation to squating rather than to the left
+        hardTarget.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
+        // Move the squat target down by 0.4 m.
+        hardTarget.transform.translation = SIMD3<Float>(0,-0.4,0)
+        self.addChild(hardTarget)
     }
     
     /// Attaches the Movement Game to the ground anchor with the same transformation as the player.
@@ -69,7 +87,7 @@ class MovementGame : Minigame {
         lookDirection.y = ground.convert(position: SIMD3<Float>(0,0,0), from: player).y
         var fromDirection = ground.convert(position: SIMD3<Float>(0,0,0), from: player)
         fromDirection.y = lookDirection.y
-        self.look(at: lookDirection, from: fromDirection,            relativeTo: ground)
+        self.look(at: lookDirection, from: fromDirection, relativeTo: ground)
         print(self.transform.translation)
         
         player.addChild(self.getPlayerCollisionEntity())
@@ -143,10 +161,10 @@ class MovementTarget : Entity, HasModel, HasCollision {
     let uncompleteMaterial = UnlitMaterial(color: UIColor.gray.withAlphaComponent(0.7))
     /// Material to use when the timer is counting down
     let inProgressMaterial = UnlitMaterial(color: UIColor.yellow.withAlphaComponent(0.5))
-    /// A text model with the timer attached
-    let timerEntity: ModelEntity
-    /// A timer that updates the timerEntity.
-    var timer:Timer?    //TODO: Consdsider switching from timer directly into the update frame.
+//    /// A text model with the timer attached
+//    let timerEntity: ModelEntity
+//    /// A timer that updates the timerEntity.
+//    var timer:Timer?    //TODO: Consdsider switching from timer directly into the update frame.
     var reps: Int
     
     /** Create a movement target that is completed upon delay seconds of contact.
@@ -154,11 +172,11 @@ class MovementTarget : Entity, HasModel, HasCollision {
      - Parameters:
      - delay: the number of seconds it takes to complete the target
      */
-    required init(delay: Double = 0, reps: Int) {
+    required init(delay: Double = 0, reps: Int, arrow: Bool) {
         self.delay = delay
         // Set the timer to delay seconds
         self.reps = reps
-        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right), materials: [uncompleteMaterial])
+//        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right), materials: [uncompleteMaterial])
         super.init()
         // Create the collision box of this target and shift the box to the left by half the width such that (0,0,0) lies on the edge of the box.
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 1, height: 1, depth: 2).offsetBy(translation: SIMD3<Float>(0.5,0,0))], mode: .trigger, filter: .default)
@@ -173,23 +191,25 @@ class MovementTarget : Entity, HasModel, HasCollision {
         thresholdPlane.transform.rotation = simd_quatf(ix: 0, iy: 0.7071, iz: 0, r: 0.7071)
         addChild(thresholdPlane)
         
-        // Create an indicator to move to the left
-        let dirArrow = ModelEntity(mesh:
-            MeshResource.generateText("<=", font:
-                .systemFont(ofSize: 1)
-                , alignment: .center)
-        )
-        dirArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
-        // Rotate the arrow by 180 degrees such that the text is facing the user.
-        dirArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
-        addChild(dirArrow)
-        // Same thing for the timer entity
-        timerEntity.transform = Transform(matrix: dirArrow.transform.matrix)
-        timerEntity.transform.translation.x += 2
-        // TODO Rotate it such that it faces the user and is readable.
-        
-        addChild(timerEntity)
-        //timerEntity.transform.translation = leftArrow.convert(position: SIMD3<Float>(2,0,0), to: timerEntity.parent)
+        if(arrow) {
+            // Create an indicator to move to the left
+            let dirArrow = ModelEntity(mesh:
+                MeshResource.generateText("<=", font:
+                    .systemFont(ofSize: 1)
+                    , alignment: .center)
+            )
+            dirArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
+            // Rotate the arrow by 180 degrees such that the text is facing the user.
+            dirArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
+            addChild(dirArrow)
+        }
+//        // Same thing for the timer entity
+//        timerEntity.transform = Transform(matrix: dirArrow.transform.matrix)
+//        timerEntity.transform.translation.x += 2
+//        // TODO Rotate it such that it faces the user and is readable.
+//
+//        addChild(timerEntity)
+//        //timerEntity.transform.translation = leftArrow.convert(position: SIMD3<Float>(2,0,0), to: timerEntity.parent)
 
         self.setMaterials(materials: [uncompleteMaterial])
     }
@@ -203,25 +223,25 @@ class MovementTarget : Entity, HasModel, HasCollision {
         if (active) {
             setMaterials(materials: [inProgressMaterial])
             self.end = DispatchTime.now() + self.delay
-            if (timer == nil) {
-                self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-                    if(!self.active) {
-                        timer.invalidate()
-                        self.timer = nil
-                        return
-                    }
-                    var timeLeft : Double
-                    if (DispatchTime.now() <= self.end){
-                        timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
-                    } else {
-                        timeLeft = self.delay
-                    }
-                    self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%.2f", min(self.delay, max(0, timeLeft))), font:
-                    .systemFont(ofSize: 1)
-                    , alignment: .center)
-                }
-                self.timer!.tolerance = 0.1
-            }
+//            if (timer == nil) {
+//                self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+//                    if(!self.active) {
+//                        timer.invalidate()
+//                        self.timer = nil
+//                        return
+//                    }
+//                    var timeLeft : Double
+//                    if (DispatchTime.now() <= self.end){
+//                        timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
+//                    } else {
+//                        timeLeft = self.delay
+//                    }
+//                    self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%.2f", min(self.delay, max(0, timeLeft))), font:
+//                    .systemFont(ofSize: 1)
+//                    , alignment: .center)
+//                }
+//                self.timer!.tolerance = 0.1
+//            }
         }
     }
     
@@ -231,9 +251,9 @@ class MovementTarget : Entity, HasModel, HasCollision {
             if (self.end < DispatchTime.now()) {
                 setMaterials(materials: [completeMaterial])
                 self.active = false
-                self.timerEntity.model?.mesh = MeshResource.generateText("0.0", font:
-                .systemFont(ofSize: 1)
-                , alignment: .center)
+//                self.timerEntity.model?.mesh = MeshResource.generateText("0.0", font:
+//                .systemFont(ofSize: 1)
+//                , alignment: .center)
                 guard let game = self.parent as? MovementGame else {
                     return
                 }
@@ -257,9 +277,9 @@ class MovementTarget : Entity, HasModel, HasCollision {
         self.active = true
         setMaterials(materials: [uncompleteMaterial])
         self.end = DispatchTime.distantFuture
-        self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%0.2f", self.delay), font:
-        .systemFont(ofSize: 1)
-        , alignment: .center)
+//        self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%0.2f", self.delay), font:
+//        .systemFont(ofSize: 1)
+//        , alignment: .center)
     }
     
     /**
