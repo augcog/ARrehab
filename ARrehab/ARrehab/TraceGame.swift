@@ -53,7 +53,6 @@ class TraceGame : Minigame {
         self.active = self.total
         
         super.init()
-        self.progressBar = false
         
         do {
             models.updateValue((try Entity.loadModel(named: "Fox").model!), forKey: "Fox")

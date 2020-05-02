@@ -5,10 +5,12 @@
 //  Created by Eric Wang on 3/19/20.
 //  Copyright © 2020 Eric Wang. All rights reserved.
 //
+//  Template and controller for all Minigames.
 
 import Foundation
 import RealityKit
 import Combine
+import UIKit
 
 /**
  Minigames available to play
@@ -34,7 +36,7 @@ enum Game : CaseIterable {
 }
 
 /**
- Protocol all Minigames conform to.
+ Base class for all minigames.
  */
 class Minigame : Entity {
         
@@ -44,7 +46,7 @@ class Minigame : Entity {
     /// Progress of the minigame in the range [0.0, 100.0] to be displayed on the progres bar.
     @Published var progress : Float
     
-    var progressBar : Bool = true
+    var viewController : MinigameViewController!
     
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
@@ -59,6 +61,16 @@ class Minigame : Entity {
         self.score = 0
         self.progress = 0
         super.init()
+        self.viewController = generateViewController()
+    }
+    
+    /**
+     Creates a new ViewController
+     */
+    func generateViewController() -> MinigameViewController {
+        let controller = MinigameViewController()
+        controller.attachMinigame(minigame: self)
+        return controller
     }
     
     /**
@@ -92,6 +104,39 @@ class Minigame : Entity {
 }
 
 /**
+ Minigame ViewController base classs.
+ Each minigame will implement its own view controller should it need anythiing more than a standard progress bar.
+ */
+class MinigameViewController : UIViewController {
+    /// Progress Bar
+    @IBOutlet var progressView: UIProgressView!
+    var subscribers: [Cancellable] = []
+    var minigame : Minigame? = nil
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        guard minigame != nil else {
+            return
+        }
+        // TODO: Fix Nil value of progressView.
+        subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
+            self.progressView.progress = progress
+        }))
+    }
+    
+    func attachMinigame(minigame: Minigame) {
+        self.minigame = minigame
+        if self.isViewLoaded {
+            // TODO cancel the previous score subscription
+            subscribers.append(minigame.$progress.sink(receiveValue: { (progress) in
+                self.progressView.progress = progress
+            }))
+        }
+    }
+}
+
+/**
  Minigame Controller. Manages minigame instances and their visibility.
  */
 class MinigameController {
@@ -99,6 +144,11 @@ class MinigameController {
     var currentMinigame : Minigame? = nil
     var ground: Entity
     var player: Entity
+    var controller : MinigameViewController? {
+        get {
+            currentMinigame?.viewController
+        }
+    }
     
     /**
      the score of the current minigame in progress [0, 100]. If no game in progress,  0 or last game's score.
@@ -122,12 +172,8 @@ class MinigameController {
     /**
      Sets up a new Trace Minigame if no game is currently in progress.
      */
-    func enableMinigame(){
-        guard currentMinigame == nil else {
-             print("A Minigame is already active!")
-             return
-        }
-        enableMinigame(game: .trace)
+    func enableMinigame() -> MinigameViewController {
+        return enableMinigame(game: .trace)
         //enableMinigame(game: .movement)
     }
     
@@ -136,10 +182,10 @@ class MinigameController {
      - Parameters:
         - game: the game to set up.
      */
-    func enableMinigame(game: Game){
+    func enableMinigame(game: Game) -> MinigameViewController {
         guard currentMinigame == nil else {
              print("A Minigame is already active!")
-             return
+            return self.controller!
         }
         currentMinigame = game.makeNewInstance()
         cancellable.append(currentMinigame!.$score.sink{ score in
@@ -158,12 +204,13 @@ class MinigameController {
         })
         currentMinigame!.attach(ground: ground, player: player)
         currentMinigame!.run()
+        return self.controller!
     }
     
     /**
      Removes the current game in progress, if any.
     */
-    func disableMinigame(){
+    func disableMinigame() {
         guard currentMinigame != nil else {
             print("No minigame active")
             return

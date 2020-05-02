@@ -31,10 +31,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="dAx-Ua-O5B">
-                                <rect key="frame" x="133" y="167" width="150" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="NNN-pb-9on"/>
@@ -43,7 +39,6 @@
                         <outlet property="arView" destination="8bC-Xf-vdC" id="TPV-4x-avp"/>
                         <outlet property="minigameLabel" destination="w3c-DV-q0N" id="F1G-fr-1to"/>
                         <outlet property="minigameSwitch" destination="j9r-7d-gK7" id="5ma-Id-UZc"/>
-                        <outlet property="progressView" destination="dAx-Ua-O5B" id="RhP-WY-g6N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

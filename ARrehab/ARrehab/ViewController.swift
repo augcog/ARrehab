@@ -19,8 +19,6 @@ class ViewController: UIViewController, ARSessionDelegate {
     @IBOutlet var minigameSwitch: UISwitch!
     /// Label to display minigame output.
     @IBOutlet var minigameLabel: UILabel!
-    /// Progress Bar
-    @IBOutlet var progressView: UIProgressView!
     /// If a ground anchor has been detected and added to the AR scene.
     var hasMapped: Bool!
     /// The Player Entity that is attached to the camera.
@@ -37,7 +35,6 @@ class ViewController: UIViewController, ARSessionDelegate {
         
         hasMapped = false
         minigameSwitch.setOn(false, animated: false)
-        progressView.isHidden = true
         
         arView.scene.addAnchor(cameraEntity)
 
@@ -77,10 +74,6 @@ class ViewController: UIViewController, ARSessionDelegate {
             subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
                 self.minigameLabel.text = String(format:"Score: %0.0f", score)
             }))
-            subscribers.append(minigameController.$progress.sink(receiveValue: { (progress) in
-                self.progressView.progress = progress
-                print(progress)
-            }))
             minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         }
     }
@@ -96,13 +89,15 @@ class ViewController: UIViewController, ARSessionDelegate {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            minigameController.enableMinigame()
-            if minigameController.currentMinigame?.progressBar ?? false {
-                progressView.isHidden = false
-            }
+            let controller = minigameController.enableMinigame()
+            addChild(controller)
+            controller.view.frame = self.view.frame
+            controller.didMove(toParent: self)
         } else {
-            progressView.isHidden = true
             minigameController.disableMinigame()
+            minigameController.controller?.willMove(toParent: nil)
+            minigameController.controller?.view.removeFromSuperview()
+            minigameController.controller?.removeFromParent()
         }
     }
 }
