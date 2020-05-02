@@ -44,6 +44,8 @@ class Minigame : Entity {
     /// Progress of the minigame in the range [0.0, 100.0] to be displayed on the progres bar.
     @Published var progress : Float
     
+    var progressBar : Bool = true
+    
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
     /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
@@ -125,8 +127,8 @@ class MinigameController {
              print("A Minigame is already active!")
              return
         }
-        //enableMinigame(game: .trace)
-        enableMinigame(game: .movement)
+        enableMinigame(game: .trace)
+        //enableMinigame(game: .movement)
     }
     
     /**

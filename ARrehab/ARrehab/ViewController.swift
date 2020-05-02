@@ -97,7 +97,9 @@ class ViewController: UIViewController, ARSessionDelegate {
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
             minigameController.enableMinigame()
-            progressView.isHidden = false
+            if minigameController.currentMinigame?.progressBar ?? false {
+                progressView.isHidden = false
+            }
         } else {
             progressView.isHidden = true
             minigameController.disableMinigame()

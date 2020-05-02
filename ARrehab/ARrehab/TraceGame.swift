@@ -15,6 +15,8 @@
 import Foundation
 import RealityKit
 import Combine
+import MultiProgressView
+import UIKit
 
 /**
 Trace Game Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
@@ -34,30 +36,44 @@ class TraceGame : Minigame {
     /// Total number of points still active
     var active : Int
     
+    /// Models of the targets.
+    var models : [String : ModelComponent] = [:]
+    /// Colors to use in the UI progress bar and upon laser contact.
+    var colorMap : [String : UIColor] = [:]
+    /// Positions to generate each model target. {name : [Min, Max]}
+    var positionMap : [String : [SIMD3<Float>]] = [:]
+
+    
     required init() {
         self.pointCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
         self.laserCollisionGroup = CollisionGroup(rawValue: self.pointCollisionGroup.rawValue+1)
         self.laser = Laser()
         self.laser.collision?.filter = CollisionFilter(group: self.laserCollisionGroup, mask: self.pointCollisionGroup)
-        self.total = 11
+        self.total = 10
         self.active = self.total
+        
         super.init()
-        var models : [ModelComponent] = []
+        self.progressBar = false
+        
         do {
-            models.append(try Entity.loadModel(named: "Fox").model!)
-            models.append(try Entity.loadModel(named: "Bear").model!)
+            models.updateValue((try Entity.loadModel(named: "Fox").model!), forKey: "Fox")
+            colorMap.updateValue(UIColor.red, forKey:"Fox")
+            positionMap.updateValue([SIMD3<Float>(-3, -1.5, 0), SIMD3<Float>(0, -0.5, 3)], forKey: "Fox")
+            models.updateValue((try Entity.loadModel(named: "Bear").model!), forKey: "Bear")
+            colorMap.updateValue(UIColor.blue, forKey:"Bear")
+            positionMap.updateValue([SIMD3<Float>(0, -0.5, 3), SIMD3<Float>(3, 0.5, 5)], forKey: "Bear")
         } catch {
-            models.append(ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)]))
+            models.updateValue((ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)])), forKey: "Default")
+            colorMap.updateValue(UIColor.gray, forKey:"Default")
+            positionMap.updateValue([SIMD3<Float>(-3, -1.5, 0), SIMD3<Float>(3, 0.5, 5)], forKey: "Default")
         }
-        for i in 1 ... total {
-            // Create a line of points going from the upper left to the lower right.
-            let point : TracePoint = TracePoint(model: models.randomElement()!, translation: SIMD3<Float>(Float.random(in: -3 ... 3), Float.random(in: -1.5 ... 0.5), Float.random(in:2.0 ... 5.0)))
+        
+        for _ in 1 ... total {
+            let (name, model) = models.randomElement()!
+            let posMin = positionMap[name]![0]
+            let posMax = positionMap[name]![1]
+            let point : TracePoint = TracePoint(model: model, translation: SIMD3<Float>(Float.random(in: posMin[0] ... posMax[0]), Float.random(in: posMin[1] ... posMax[1]), Float.random(in:posMin[2] ... posMax[2])), type: name, collisionColor: colorMap[name]!)
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
-            
-            // Make the center point a different color.
-//            if (i == 0) {
-//                point.model?.materials = [SimpleMaterial(color: .yellow, isMetallic: false)]
-//            }
             
             pointCloud.append(point)
             self.addChild(point)
@@ -137,11 +153,16 @@ class TraceGame : Minigame {
  */
 class TracePoint : Entity, HasModel, HasCollision {
     var active = true
+    var type : String
+    var collisionColor : UIColor
+    
     required convenience init() {
         self.init(model: ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .cyan, isMetallic: false)]))
     }
     
     init(model : ModelComponent) {
+        self.type = "Default"
+        self.collisionColor = .green
         super.init()
         let radius : Float = 0.5
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: model.mesh.bounds.boundingRadius / sqrtf(3)).offsetBy(translation: model.mesh.bounds.center)], mode: .trigger, filter: .default)
@@ -156,21 +177,23 @@ class TracePoint : Entity, HasModel, HasCollision {
         self.transform.translation = translation
     }
     
-    convenience init(model : ModelComponent, translation: SIMD3<Float>) {
+    convenience init(model : ModelComponent, translation: SIMD3<Float>, type: String, collisionColor: UIColor) {
         self.init(model: model)
+        self.type = type
+        self.collisionColor = collisionColor
         self.transform.translation = translation
     }
     
     func onCollisionBegan() {
-//        if (active) {
-//            self.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
-//        }
+        if (active) {
+            self.model?.materials = [SimpleMaterial(color: self.collisionColor, isMetallic: false)]
+        }
     }
     
     func onCollisionEnded() {
-//        self.model?.materials = [
-//            SimpleMaterial(color: .clear, isMetallic: false)
-//        ]
+        self.model?.materials = [
+            SimpleMaterial(color: .clear, isMetallic: false)
+        ]
         if (active) {
             active = false
             (self.parent as! TraceGame).score()
@@ -191,31 +214,11 @@ class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLi
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateCapsule(height: length, radius: 0.01)], mode: .trigger, filter: .default)
         // Create a visual representation of this 10 m long laser.
         self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(size: SIMD3<Float> (0.02,length,0.02)), materials: [SimpleMaterial(color: .green, isMetallic: false)])
-
-        // Rotate this laser such that instead of pointing up, it points up and out.
-//        self.transform = Transform(rotation: simd_quatf(from: SIMD3<Float>(0,1,0), to: SIMD3<Float>(0,0.5,-1)))
-        // Position this laser a quarter meter in front of the user. (Note that becausue the capsule extends both above and below, the laser really ends behind the user.)
-//        self.transform.translation = SIMD3<Float>(0,0,-0.25)
-        
-//        let spotlight : Entity = SpotLight()
-//        spotlight.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.yellow, intensity: 100000, innerAngleInDegrees: 30, outerAngleInDegrees: 60, attenuationRadius: 100)
-//        //print(spotlight)
-//        //spotlight.transform.rotation = simd_quatf(angle: 1.5 * .pi, axis: SIMD3<Float>(1, 0,0))
-//        addChild(spotlight)
-    // Spotlight is currently looking a little under where we have the laser pointed to...
-//        spotlight.look(at: SIMD3<Float>(0,0,-1), from: SIMD3<Float>(0,0,0), relativeTo: self)
         
         // figure out how this rotation is happening
         let angle : Float = 3.0 * .pi / 8
         self.transform.rotation = simd_quatf(angle: 2.0 * .pi - angle, axis: SIMD3<Float>(1, 0,0))
         self.transform.translation = SIMD3<Float>(0,-0.2 + length/2*Float(cos(angle)), -length/2 * Float(sin(angle)))
-//
-//        self.components[SpotLightComponent] = SpotLightComponent(color: SpotLightComponent.Color.yellow, intensity: 100000, innerAngleInDegrees: 30, outerAngleInDegrees: 60, attenuationRadius: 10)
-        
-//
-//        self.components[DirectionalLightComponent] = DirectionalLightComponent(color: DirectionalLightComponent.Color.blue, intensity: 10000, isRealWorldProxy: false)
-//
-
     }
     
     /**
