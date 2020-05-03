@@ -90,14 +90,19 @@ class ViewController: UIViewController, ARSessionDelegate {
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
             let controller = minigameController.enableMinigame()
+            
+            // Add the Minigame's View Controller as a subview programmatically.
             addChild(controller)
             controller.view.frame = self.view.frame
+            self.view.addSubview(controller.view)
             controller.didMove(toParent: self)
         } else {
-            minigameController.disableMinigame()
+            // Remove the Minigame's View Controller.
             minigameController.controller?.willMove(toParent: nil)
             minigameController.controller?.view.removeFromSuperview()
             minigameController.controller?.removeFromParent()
+            
+            minigameController.disableMinigame()
         }
     }
 }

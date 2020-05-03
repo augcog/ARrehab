@@ -68,7 +68,9 @@ class Minigame : Entity {
      Creates a new ViewController
      */
     func generateViewController() -> MinigameViewController {
-        let controller = MinigameViewController()
+        let storyboard = UIStoryboard.init(name: "Minigame", bundle: nil)
+        print(storyboard)
+        let controller = storyboard.instantiateViewController(identifier: "minigameViewController") as! MinigameViewController
         controller.attachMinigame(minigame: self)
         return controller
     }
@@ -144,6 +146,8 @@ class MinigameController {
     var currentMinigame : Minigame? = nil
     var ground: Entity
     var player: Entity
+    
+    /// The current Minigame's ViewController. Note that this returns nil once the Minigame is ended.
     var controller : MinigameViewController? {
         get {
             currentMinigame?.viewController
