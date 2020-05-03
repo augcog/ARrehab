@@ -30,13 +30,13 @@ extension ViewController {
         print("Button Clicked")
         self.boardState = .placed
         guard (self.playerEntity.onTile != nil) else {return}
-        /*self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
-        self.gameBoard?.addBoardToScene(arView: self.arView)*/
-        DispatchQueue.main.async {
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
+        self.gameBoard?.addBoardToScene(arView: self.arView)
+        /*DispatchQueue.main.async {
             let rkBackground = try? Background.loadScene()
             rkBackground?.transform.translation = self.playerEntity.onTile.transform.translation
             self.arView.scene.addAnchor(rkBackground!)
-        }
+        }*/
     }
     
 }
