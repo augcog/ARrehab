@@ -21,6 +21,7 @@
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
 		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
 		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
+		19899F4D245E61A900118409 /* TileScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 19899F4C245E61A900118409 /* TileScene.rcproject */; };
 		19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */; };
 		19989C40244AACBE001C1C7F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 19989C3F244AACBE001C1C7F /* README */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
@@ -65,6 +66,7 @@
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
 		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
+		19899F4C245E61A900118409 /* TileScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = TileScene.rcproject; path = ../../../../Desktop/TileScene.rcproject; sourceTree = "<group>"; };
 		19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateBoardButton.swift; sourceTree = "<group>"; };
 		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				15E002DD243AA3CD00BA6A96 /* MovementGame.swift */,
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
+				19899F4C245E61A900118409 /* TileScene.rcproject */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
@@ -301,6 +304,7 @@
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
+				19899F4D245E61A900118409 /* TileScene.rcproject in Sources */,
 				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
 				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
@@ -420,7 +424,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -474,7 +478,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;

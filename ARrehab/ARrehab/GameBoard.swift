@@ -44,6 +44,8 @@ class GameBoard {
     //List of colors for random selection at time of initialization
     static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
     
+    static let rkTileScene = try? TileScene.loadScene()
+        
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
@@ -60,7 +62,9 @@ class GameBoard {
         self.board = AnchorEntity(anchor: surfaceAnchor)
         self.board.transform.translation = surfaceAnchor.center
         
-        generateBoard()
+        DispatchQueue.main.async {
+            self.generateBoard()
+        }
         //assignGames(games: nil)
     }
     
@@ -75,8 +79,11 @@ class GameBoard {
     /* Assigns every tile in self.tiles a random color and adds it to the self.board AnchorEntity */
     private func generateBoard() {
         for tile in self.tilesDict.values {
-            tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
-            board.addChild(tile)
+            //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
+            let newTileEntity = try? TileScene.loadScene().findEntity(named: "tile")
+            newTileEntity?.transform.translation = SIMD3<Float>(0,0,0)
+            tile.addChild(newTileEntity!, preservingWorldTransform: false)
+            self.board.addChild(tile)
         }
     }
     

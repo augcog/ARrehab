@@ -29,6 +29,8 @@ extension ViewController {
     @objc func pbButtonClicked(sender: UIButton) {
         print("Button Clicked")
         self.boardState = .placed
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
+        self.gameBoard?.addBoardToScene(arView: self.arView)
     }
     
 }
