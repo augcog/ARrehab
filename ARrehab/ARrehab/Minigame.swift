@@ -108,6 +108,7 @@ class Minigame : Entity {
 /**
  Minigame ViewController base classs.
  Each minigame will implement its own view controller should it need anythiing more than a standard progress bar.
+ Please note that the UIView must be of the PassThroughView Class.
  */
 class MinigameViewController : UIViewController {
     /// Progress Bar
