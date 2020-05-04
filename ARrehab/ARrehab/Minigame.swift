@@ -70,7 +70,14 @@ class Minigame : Entity {
      Override this method if you are not using a storyboard.
      */
     func generateViewController() -> MinigameViewController {
-        let storyboard = UIStoryboard.init(name: String(describing: type(of: self)), bundle: nil)
+        let storyboard : UIStoryboard
+        
+        // FIXME UIStoryboard.init(name:bundle:) does not actually throw an error, instead the error dies inside of it.
+        do {
+            storyboard = try UIStoryboard.init(name: String(describing: type(of: self)), bundle: nil)
+        } catch is NSException {
+            storyboard = UIStoryboard.init(name: String(describing: "Minigame"), bundle: nil)
+        }
         // Be sure to set the ViewController's Storyboard ID as "minigameViewController"
         let controller = storyboard.instantiateViewController(identifier: "minigameViewController") as! MinigameViewController
         controller.attachMinigame(minigame: self)
@@ -190,8 +197,8 @@ class MinigameController {
      Sets up a new Trace Minigame if no game is currently in progress.
      */
     func enableMinigame() -> MinigameViewController {
-        return enableMinigame(game: .trace)
-        //enableMinigame(game: .movement)
+//        return enableMinigame(game: .trace)
+        return enableMinigame(game: .movement)
     }
     
     /**
