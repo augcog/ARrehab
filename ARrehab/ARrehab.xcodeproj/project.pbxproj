@@ -33,6 +33,9 @@
 		15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C84245F534D0033A18D /* TraceStackView.swift */; };
 		15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C86245F53870033A18D /* TraceTargetType.swift */; };
 		15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C88245F55130033A18D /* UIViewExtension.swift */; };
+		15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C8A245FA3410033A18D /* MovementViewController.swift */; };
+		15BB4C8E245FA4D60033A18D /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 15BB4C8C245FA4D50033A18D /* up.png */; };
+		15BB4C8F245FA4D60033A18D /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 15BB4C8D245FA4D50033A18D /* down.png */; };
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +88,9 @@
 		15BB4C84245F534D0033A18D /* TraceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceStackView.swift; sourceTree = "<group>"; };
 		15BB4C86245F53870033A18D /* TraceTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceTargetType.swift; sourceTree = "<group>"; };
 		15BB4C88245F55130033A18D /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		15BB4C8A245FA3410033A18D /* MovementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovementViewController.swift; sourceTree = "<group>"; };
+		15BB4C8C245FA4D50033A18D /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		15BB4C8D245FA4D50033A18D /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +149,9 @@
 				159A41EE23F49283000A5376 /* ViewController.swift */,
 				15986815241EE627009456EF /* TraceGame.swift */,
 				1594B460245E8D82008463BA /* TraceViewController.swift */,
+				15BB4C8D245FA4D50033A18D /* down.png */,
+				15BB4C8C245FA4D50033A18D /* up.png */,
+				15BB4C8A245FA3410033A18D /* MovementViewController.swift */,
 				15BB4C82245F53130033A18D /* TraceProgressSection.swift */,
 				15BB4C86245F53870033A18D /* TraceTargetType.swift */,
 				15BB4C84245F534D0033A18D /* TraceStackView.swift */,
@@ -305,9 +314,11 @@
 				15B4A791245E2EB8005CC9EC /* Minigame.storyboard in Resources */,
 				157AE5832455749400BE7809 /* Fox.usdz in Resources */,
 				157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */,
+				15BB4C8E245FA4D60033A18D /* up.png in Resources */,
 				157AE587245594FE00BE7809 /* Wolf.usdz in Resources */,
 				157AE5892455956000BE7809 /* RedPanda.usdz in Resources */,
 				157AE58B2455959800BE7809 /* Bear.usdz in Resources */,
+				15BB4C8F245FA4D60033A18D /* down.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +353,7 @@
 				15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */,
 				15986816241EE627009456EF /* TraceGame.swift in Sources */,
 				19B1736A2403475400845819 /* Tile.swift in Sources */,
+				15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */,
 				1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */,
 				15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */,
 				1594B461245E8D82008463BA /* TraceViewController.swift in Sources */,
