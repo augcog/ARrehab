@@ -13,12 +13,12 @@ import UIKit
  Set of TraceTarget types.
  */
 enum TraceTargetType {
-    case bear, fox, other
+    case bear, fox, other, puffer
     
     /**
      A list of all the possible target types.
      */
-    static var allTypes: [TraceTargetType] = [.bear, .fox, .other]
+    static var allTypes: [TraceTargetType] = [.bear, .fox, .puffer, .other]
     
     /**
      The names of each type.
@@ -31,6 +31,8 @@ enum TraceTargetType {
             return "Fox"
         case .other:
             return "Default"
+        case .puffer:
+            return "Puffer"
         }
     }
     
@@ -54,20 +56,26 @@ enum TraceTargetType {
             return .green
         case .other:
             return .gray
+        case .puffer:
+            return .orange
         }
     }
     
     /**
      Minimum spawn positions.
+     
+     Positive x points to the left. z away from the user.
      */
     var minPosition: SIMD3<Float> {
         switch self {
         case .fox:
-            return SIMD3<Float>(-3, -1.5, 0)
+            return SIMD3<Float>(-3, 0, 0)
         case .bear:
-            return SIMD3<Float>(0, -0.5, 3)
+            return SIMD3<Float>(0, 0, 1)
         case .other:
-            return SIMD3<Float>(-3, -1.5, 0)
+            return SIMD3<Float>(-3, 0, 0)
+        case .puffer:
+            return SIMD3<Float>(-3, 1, 0)
         }
     }
     
@@ -77,11 +85,13 @@ enum TraceTargetType {
     var maxPosition: SIMD3<Float> {
         switch self {
         case .fox:
-            return SIMD3<Float>(0, -0.5, 3)
+            return SIMD3<Float>(0, 0.5, 3)
         case .bear:
-            return SIMD3<Float>(3, 0.5, 5)
+            return SIMD3<Float>(3, 0.5, 4)
         case .other:
-            return SIMD3<Float>(3, 0.5, 5)
+            return SIMD3<Float>(3, 3, 5)
+        case .puffer:
+            return SIMD3<Float>(3, 3, 5)
         }
     }
 }

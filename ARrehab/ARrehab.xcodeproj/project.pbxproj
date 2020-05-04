@@ -29,6 +29,7 @@
 		159A420F23F49286000A5376 /* ARrehabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420E23F49286000A5376 /* ARrehabUITests.swift */; };
 		15B4A78F245DF51B005CC9EC /* MultiProgressView in Frameworks */ = {isa = PBXBuildFile; productRef = 15B4A78E245DF51B005CC9EC /* MultiProgressView */; };
 		15B4A791245E2EB8005CC9EC /* Minigame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15B4A790245E2EB8005CC9EC /* Minigame.storyboard */; };
+		15B8D1D0246086E500D0CBB6 /* Puffer.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 15B8D1CF246086E400D0CBB6 /* Puffer.usdz */; };
 		15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C82245F53130033A18D /* TraceProgressSection.swift */; };
 		15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C84245F534D0033A18D /* TraceStackView.swift */; };
 		15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C86245F53870033A18D /* TraceTargetType.swift */; };
@@ -84,6 +85,7 @@
 		159A420E23F49286000A5376 /* ARrehabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARrehabUITests.swift; sourceTree = "<group>"; };
 		159A421023F49286000A5376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15B4A790245E2EB8005CC9EC /* Minigame.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Minigame.storyboard; sourceTree = "<group>"; };
+		15B8D1CF246086E400D0CBB6 /* Puffer.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Puffer.usdz; sourceTree = "<group>"; };
 		15BB4C82245F53130033A18D /* TraceProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceProgressSection.swift; sourceTree = "<group>"; };
 		15BB4C84245F534D0033A18D /* TraceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceStackView.swift; sourceTree = "<group>"; };
 		15BB4C86245F53870033A18D /* TraceTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceTargetType.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				157AE5882455956000BE7809 /* RedPanda.usdz */,
 				157AE586245594FE00BE7809 /* Wolf.usdz */,
 				157AE5822455749400BE7809 /* Fox.usdz */,
+				15B8D1CF246086E400D0CBB6 /* Puffer.usdz */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -313,6 +316,7 @@
 				159A41F423F49283000A5376 /* Main.storyboard in Resources */,
 				15B4A791245E2EB8005CC9EC /* Minigame.storyboard in Resources */,
 				157AE5832455749400BE7809 /* Fox.usdz in Resources */,
+				15B8D1D0246086E500D0CBB6 /* Puffer.usdz in Resources */,
 				157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */,
 				15BB4C8E245FA4D60033A18D /* up.png in Resources */,
 				157AE587245594FE00BE7809 /* Wolf.usdz in Resources */,

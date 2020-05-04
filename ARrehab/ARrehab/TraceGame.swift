@@ -37,14 +37,14 @@ class TraceGame : Minigame {
     var active : Int
     
     /// List of target types to try and load.
-    var targets : [TraceTargetType] = [.fox, .bear]
+    var targets : [TraceTargetType] = [.fox, .bear, .puffer]
     
     required init() {
         self.pointCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
         self.laserCollisionGroup = CollisionGroup(rawValue: self.pointCollisionGroup.rawValue+1)
         self.laser = Laser()
         self.laser.collision?.filter = CollisionFilter(group: self.laserCollisionGroup, mask: self.pointCollisionGroup)
-        self.total = 10
+        self.total = 20
         self.active = self.total
         
         super.init()
@@ -75,7 +75,7 @@ class TraceGame : Minigame {
     }
     
     /// Updates traceGame with the new TraceGame.
-    /// Attaches the new TraceGame 1 m away from the camera and 1.5 meters high in the air.
+    /// Attaches the new TraceGame 1 m away from the camera and 0 meters high in the air.
     /// Attaches the Laser to the cameraEntity.
     /// - Parameters:
     ///   - ground: entity to anchor the trace targets to. Typically a fixed plane anchor.
@@ -91,12 +91,10 @@ class TraceGame : Minigame {
         targetPosition = targetPosition - playerPosition
         // Extract the x and z values of the transform (Find the projection to the ground plane)
         targetPosition.y = 0
-        // Fix the player position at a height of 1.5 m.
-        playerPosition.y = 1.5
+        playerPosition.y = 0
         // Get a unit vector of our target projection then add it to our player position
         targetPosition = simd_normalize(targetPosition) + playerPosition
-        // This should result in a position denoted by a 1m vector extending out from the player in the XZ direction the player is facing. This position is fixed at a height of 1.5 m.
-//      print(targetPosition)
+        // This should result in a position denoted by a 1m vector extending out from the player in the XZ direction the player is facing. This position is fixed at a height of 0 m.
         // Set the target at thee desired position and orient it towards the player.
         self.look(at: playerPosition, from: targetPosition, relativeTo: ground)
         ground.addChild(self)
@@ -166,7 +164,7 @@ class TracePoint : Entity, HasModel, HasCollision {
         self.targetType = .other
         super.init()
         let radius : Float = 0.5
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: model.mesh.bounds.boundingRadius / sqrtf(3)).offsetBy(translation: model.mesh.bounds.center)], mode: .trigger, filter: .default)
+        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: model.mesh.bounds.boundingRadius / sqrtf(5)).offsetBy(translation: model.mesh.bounds.center)], mode: .trigger, filter: .default)
         self.components[ModelComponent] = model
         let scaleFactor = radius/model.mesh.bounds.boundingRadius
         self.transform.scale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor)
