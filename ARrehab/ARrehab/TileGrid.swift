@@ -23,6 +23,14 @@ class TileGrid {
     
     var xLength: Float = 0.0
     var zLength: Float = 0.0
+    
+    enum RotateValue {
+        case north
+        case east
+        case south
+        case west
+    }
+    var rotated : RotateValue = .north
         
     init(surfaceAnchor: ARPlaneAnchor) {
         self.surfaceAnchor = surfaceAnchor
@@ -97,34 +105,77 @@ class TileGrid {
         //Clear current outline
         self.clearOutline()
         
-        //Find the tile that would form the upper-right corner of the board, with the given centerTile
-        let cornerCoords = Tile.Coordinates(x: centerTile.coords.x + (1 * Tile.TILE_SIZE.x), z: centerTile.coords.z + (2 * Tile.TILE_SIZE.z))
+        //Find the tile that would form the upper-right corner of the board (relative to direction of 'self.rotated'), with the given centerTile
+        let halfBoardX = floor(Double(GameBoard.DIMENSIONS.0 / 2))
+        let halfBoardZ = floor(Double(GameBoard.DIMENSIONS.1 / 2))
         
-        let cornerTile = self.possibleTiles.first() {coords, tile in
-            return TileGrid.isApproxEqual(value1: coords.x, value2: cornerCoords.x, error: 0.1) && TileGrid.isApproxEqual(value1: coords.z, value2: cornerCoords.z, error: 0.1)
+        var rotationMultiplier : Float
+        switch self.rotated {
+        case .north, .east:
+            rotationMultiplier = -1.0
+        case .south, .west:
+            rotationMultiplier = 1.0
         }
         
-        if cornerTile == nil {
+        var cornerCoords : Tile.Coordinates
+        switch self.rotated {
+        case .north, .south:
+            cornerCoords = Tile.Coordinates(x: centerTile.coords.x + (Float(halfBoardX) * rotationMultiplier * Tile.TILE_SIZE.x), z: centerTile.coords.z + (Float(halfBoardZ) * rotationMultiplier * Tile.TILE_SIZE.z))
+        case .east, .west:
+            cornerCoords = Tile.Coordinates(x: centerTile.coords.x + (Float(halfBoardZ) * rotationMultiplier * Tile.TILE_SIZE.x), z: centerTile.coords.z + (Float(halfBoardX) * rotationMultiplier * Tile.TILE_SIZE.z))
+        }
+        
+        let cornerTile = self.possibleTiles.first() {coords, tile in
+            return TileGrid.isApproxEqual(value1: coords.x, value2: cornerCoords.x, error: 0.05) && TileGrid.isApproxEqual(value1: coords.z, value2: cornerCoords.z, error: 0.05)
+        }
+        
+        guard cornerTile != nil else {
             print("Invalid center")
             return
         }
         
-        else {
-            for i in 0...2 {
-                for c in 0...5 {
-                    if (i == 0 || i == 2 || c == 0 || c == 5) {
-                        let currentCoords = Tile.Coordinates(x: (cornerTile?.key.x)! - (Float(i) * Tile.TILE_SIZE.x), z: (cornerTile?.key.z)! - (Float(c) * Tile.TILE_SIZE.z))
-                        guard let currentTile = self.possibleTiles[currentCoords] else {
-                            print("TILE DOESNT EXIST")
-                            self.clearOutline()
-                            return
-                        }
-                        currentTile.changeMaterials(materials: [TileGrid.outlineMaterial])
-                        self.currentOutline.append(currentTile)
-                    }
+        cornerTile!.value.changeMaterials(materials: [SimpleMaterial(color: .green, isMetallic: false)])        
+        
+        var xRange : ClosedRange<Int>
+        var zRange : ClosedRange<Int>
+        switch self.rotated {
+        case .north, .south:
+            xRange = 0...2
+            zRange = 0...4
+        case .east, .west:
+            xRange = 0...4
+            zRange = 0...2
+        }
+        
+        for x in xRange {
+            for z in zRange {
+                let currentCoords = Tile.Coordinates(x: (cornerTile!.key.x) - (rotationMultiplier * Float(x) * Tile.TILE_SIZE.x), z: (cornerTile!.key.z) - (rotationMultiplier * Float(z) * Tile.TILE_SIZE.z))
+                let currentTile = self.possibleTiles[currentCoords]
+                guard currentTile != nil else {
+                    print("TILE DOESN'T EXIST")
+                    self.clearOutline()
+                    return
                 }
+                currentTile!.changeMaterials(materials: [TileGrid.outlineMaterial])
+                self.currentOutline.append(currentTile!)
             }
         }
+        cornerTile?.value.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
+        
+//        for i in xRange {
+//            for c in zRange {
+//                if (i == 0 || i == 2 || c == 0 || c == 5) {
+//                    let currentCoords = Tile.Coordinates(x: (cornerTile?.key.x)! - (Float(i) * Tile.TILE_SIZE.x), z: (cornerTile?.key.z)! - (Float(c) * rotationMultiplier * Tile.TILE_SIZE.z))
+//                    guard let currentTile = self.possibleTiles[currentCoords] else {
+//                        print("TILE DOESNT EXIST")
+//                        self.clearOutline()
+//                        return
+//                    }
+//                    currentTile.changeMaterials(materials: [TileGrid.outlineMaterial])
+//                    self.currentOutline.append(currentTile)
+//                }
+//            }
+//        }
         
     }
     
@@ -132,7 +183,7 @@ class TileGrid {
         for tile in self.currentOutline {
             tile.changeMaterials(materials: [TileGrid.gridMaterial])
         }
-        self.currentOutline.removeAll()
+        self.currentOutline.removeAll(keepingCapacity: true)
     }
     
 }

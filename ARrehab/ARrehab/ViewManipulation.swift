@@ -32,11 +32,36 @@ extension ViewController {
         guard (self.playerEntity.onTile != nil) else {return}
         self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
         self.gameBoard?.addBoardToScene(arView: self.arView)
-        /*DispatchQueue.main.async {
-            let rkBackground = try? Background.loadScene()
-            rkBackground?.transform.translation = self.playerEntity.onTile.transform.translation
-            self.arView.scene.addAnchor(rkBackground!)
-        }*/
+    }
+    
+    func addRbButton() {
+        let rbButton = RotateBoardButton()
+        rbButton.addTarget(self, action: #selector(rbButtonClicked(sender:)), for: .touchUpInside)
+        
+        self.view.addSubview(rbButton)
+        self.view.bringSubviewToFront(rbButton)
+        
+        self.activeButtons.append(rbButton)
+    }
+    
+    @objc func rbButtonClicked(sender: UIButton) {
+        print("Button Clicked")
+        switch self.tileGrid?.rotated {
+        case .north:
+            self.tileGrid?.rotated = .east
+            self.activeButtons[1].setTitle("East", for: .normal)
+        case .east:
+            self.tileGrid?.rotated = .south
+            self.activeButtons[1].setTitle("South", for: .normal)
+        case .south:
+            self.tileGrid?.rotated = .west
+            self.activeButtons[1].setTitle("West", for: .normal)
+        case .west:
+            self.tileGrid?.rotated = .north
+            self.activeButtons[1].setTitle("North", for: .normal)
+        case .none:
+            return
+        }
     }
     
 }

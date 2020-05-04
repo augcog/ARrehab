@@ -14,10 +14,10 @@ class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
     static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5)
-    static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1)
+    static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])
-    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.5, height: 4.0, depth: 0.5)], mode: .trigger, filter: .sensor)
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.5, height: 4.0, depth: 0.5)], mode: .trigger, filter: CollisionFilter(group: Tile.TILE_COLLISION_GROUP, mask: Player.PLAYER_COLLISION_GROUP))
     
     //Instance variables
     var tileName: String
@@ -33,7 +33,6 @@ class Tile : Entity, HasModel, HasCollision {
 
         self.components[ModelComponent] = Tile.defaultTileModel
         self.components[CollisionComponent] = Tile.defaultCollisionComp
-        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP
         
         self.transform.translation = SIMD3(x, 0.0, z)
         print("Generated Tile: " + name)
@@ -41,15 +40,6 @@ class Tile : Entity, HasModel, HasCollision {
     
     //Optional initializer: Allows specification of custom model components and translation adjustment
     convenience init(name: String, x: Float, z: Float, materials: [Material]?, adjustTranslation: Bool = false) {
-        /*self.tileName = name
-        
-        self.coords = Coordinates(x: x, z: z)
-        
-        super.init()
-
-        self.components[ModelComponent] = modelComp
-        self.components[CollisionComponent] = Tile.defaultCollisionComp
-        self.collision?.filter.group = Tile.TILE_COLLISION_GROUP*/
         
         self.init(name: name, x: x, z: z)
         
