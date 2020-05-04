@@ -13,7 +13,7 @@ import MultiProgressView
 
 /**
  Trace Minigame ViewController.
- Just has a standard progress bar.
+ Uses MultiProgressView to break down the different kinds of targets.
  */
 class TraceGameViewController : MinigameViewController {
     

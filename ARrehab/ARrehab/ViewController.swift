@@ -93,6 +93,7 @@ class ViewController: UIViewController, ARSessionDelegate {
             
             // Add the Minigame's View Controller as a subview programmatically.
             addChild(controller)
+            // TODO Make a better frame depending on what UI elements are going to persist such that the Minigame Controller will not confict with the Persistent UI.
             var frame = self.view.frame.insetBy(dx: 0, dy: 100)
             controller.view.frame = frame
             self.view.addSubview(controller.view)
