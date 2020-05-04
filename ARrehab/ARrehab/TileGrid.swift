@@ -101,7 +101,7 @@ class TileGrid {
         let cornerCoords = Tile.Coordinates(x: centerTile.coords.x + (1 * Tile.TILE_SIZE.x), z: centerTile.coords.z + (2 * Tile.TILE_SIZE.z))
         
         let cornerTile = self.possibleTiles.first() {coords, tile in
-            return TileGrid.isApproxEqual(value1: coords.x, value2: cornerCoords.x, error: 0.1) && TileGrid.isApproxEqual(value1: coords.z, value2: cornerCoords.z, error: 0.1)
+            return TileGrid.isApproxEqual(value1: coords.x, value2: cornerCoords.x, error: 0.1 / Tile.SCALE) && TileGrid.isApproxEqual(value1: coords.z, value2: cornerCoords.z, error: 0.1 / Tile.SCALE)
         }
         
         if cornerTile == nil {
@@ -110,9 +110,9 @@ class TileGrid {
         }
         
         else {
-            for i in 0...2 {
-                for c in 0...5 {
-                    if (i == 0 || i == 2 || c == 0 || c == 5) {
+            for i in 0...(GameBoard.DIMENSIONS.0 - 1) {
+                for c in 0...(GameBoard.DIMENSIONS.1 - 1) {
+                    if (i == 0 || i == (GameBoard.DIMENSIONS.0 - 1) || c == 0 || c == (GameBoard.DIMENSIONS.1 - 1)) {
                         let currentCoords = Tile.Coordinates(x: (cornerTile?.key.x)! - (Float(i) * Tile.TILE_SIZE.x), z: (cornerTile?.key.z)! - (Float(c) * Tile.TILE_SIZE.z))
                         guard let currentTile = self.possibleTiles[currentCoords] else {
                             print("TILE DOESNT EXIST")

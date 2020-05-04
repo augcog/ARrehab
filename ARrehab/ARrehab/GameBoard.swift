@@ -35,8 +35,9 @@ class GameBoard {
     
     //Minimum extents for a valid game board (in meters)
     //Does not distinguish between x and z directions
-    static let EXTENT1 : Float = 2.0
-    static let EXTENT2 : Float = 3.0
+
+    static let EXTENT1 : Float = 2.0 / Tile.SCALE
+    static let EXTENT2 : Float = 3.0 / Tile.SCALE
     
     //Dimension of the board (in tiles)
     static let DIMENSIONS = (3, 5)
