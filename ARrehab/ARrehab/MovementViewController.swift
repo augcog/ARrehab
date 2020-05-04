@@ -21,18 +21,18 @@ class MovementGameViewController : MinigameViewController {
     /// Progress subscribers
     var subscribers: [Cancellable] = []
     
-//    private let backgroundView: UIView = {
-//        let view = PassThroughView()
-//        return view
-//    }()
-//
-//    private lazy var progressView: MultiProgressView = {
-//        let progress = MultiProgressView()
-//        progress.trackBackgroundColor = UIColor.white
-//        //progress.lineCap = .round
-//        progress.cornerRadius = progressViewHeight / 4
-//        return progress
-//    }()
+    private let backgroundView: UIView = {
+        let view = PassThroughView()
+        return view
+    }()
+
+    private lazy var progressView: MultiProgressView = {
+        let progress = MultiProgressView()
+        progress.trackBackgroundColor = UIColor.white
+        progress.lineCap = .round
+        progress.cornerRadius = progressViewHeight / 4
+        return progress
+    }()
 //
 //    private let stackView: UIStackView = {
 //        let sv = UIStackView()
@@ -40,38 +40,42 @@ class MovementGameViewController : MinigameViewController {
 //        sv.alignment = .center
 //        return sv
 //    }()
-//
-//    private let padding: CGFloat = 15
-//    private let progressViewHeight: CGFloat = 20
-//    private let progressViewWidth: CGFloat = 300
-//
+
+    private let padding: CGFloat = 15
+    private let progressViewHeight: CGFloat = 20
+    private let progressViewWidth: CGFloat = 500
+
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.addSubview(backgroundView)
-//        backgroundView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-//                              left: view.safeAreaLayoutGuide.leftAnchor,
-//                              right: view.safeAreaLayoutGuide.rightAnchor,
-//                              paddingTop: 50)
-//
-//        setupProgressBar()
+        view.addSubview(backgroundView)
+        backgroundView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                left: view.safeAreaLayoutGuide.leftAnchor,
+                              bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                              //right: view.safeAreaLayoutGuide.rightAnchor,
+                              paddingTop: 50,
+                              paddingBottom: 50,
+                              width: progressViewWidth
+                            )
+        backgroundView.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
+        setupProgressBar()
 //        setupStackView()
         addMinigameSubscriber()
     }
     
-//    private func setupProgressBar() {
-//        backgroundView.addSubview(progressView)
-//        progressView.anchor(top: backgroundView.topAnchor,
-//                            left: backgroundView.leftAnchor,
-//                            //right: backgroundView.rightAnchor,
-//                            paddingTop: padding,
-//                            paddingLeft: padding,
-//                            paddingRight: padding,
-//                            width: progressViewWidth,
-//                            height: progressViewHeight)
-//        //progressView.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
-//        progressView.dataSource = self
-//        progressView.delegate = self
-//    }
+    private func setupProgressBar() {
+        backgroundView.addSubview(progressView)
+        progressView.anchor(top: backgroundView.topAnchor,
+                            left: backgroundView.leftAnchor,
+                            //right: backgroundView.rightAnchor,
+                            paddingTop: padding,
+                            paddingLeft: padding,
+                            paddingRight: padding,
+                            width: progressViewWidth,
+                            height: progressViewHeight)
+        progressView.dataSource = self
+        progressView.delegate = self
+        //backgroundView.translatesAutoresizingMaskIntoConstraints = true
+    }
 //
 //    private func setupStackView() {
 //        backgroundView.addSubview(stackView)
@@ -93,25 +97,25 @@ class MovementGameViewController : MinigameViewController {
 //        stackView.addArrangedSubview(UIView())
 //    }
 //
-//    private func animateProgress(progress: [Float]) {
-//        UIView.animate(withDuration: 0.4,
-//                       delay: 0,
-//                       usingSpringWithDamping: 0.6,
-//                       initialSpringVelocity: 0,
-//                       options: .curveLinear,
-//                       animations: {
-//                        self.progressView.setProgress(section: 0, to: progress[0])
-//        })
-////        dataUsedLabel.text = "56.5 GB of 64 GB Used"
-//    }
-//
-//    private func resetProgress() {
-//        UIView.animate(withDuration: 0.1) {
-//            self.progressView.resetProgress()
-//        }
-////        dataUsedLabel.text = "0 GB of 64 GB Used"
-//    }
-//
+    private func animateProgress(progress: [Float]) {
+        UIView.animate(withDuration: 0.4,
+                       delay: 0,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0,
+                       options: .curveLinear,
+                       animations: {
+                        self.progressView.setProgress(section: 0, to: progress[1])
+        })
+//        dataUsedLabel.text = "56.5 GB of 64 GB Used"
+    }
+
+    private func resetProgress() {
+        UIView.animate(withDuration: 0.1) {
+            self.progressView.resetProgress()
+        }
+//        dataUsedLabel.text = "0 GB of 64 GB Used"
+    }
+
     override func attachMinigame(minigame: Minigame) {
         super.attachMinigame(minigame: minigame)
         
@@ -127,12 +131,11 @@ class MovementGameViewController : MinigameViewController {
             return
         }
         
-//        subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
-//            self.animateProgress(progress: progress)
-//        }))
+        subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
+            self.animateProgress(progress: progress)
+        }))
         subscribers.append(minigame().$coachingState.sink(receiveValue: { (state) in
             // TODO
-            print(state)
             self.coachImageView.image = state.image
         }))
     }

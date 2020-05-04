@@ -32,6 +32,7 @@ class MovementGame : Minigame {
         set(add) {
             //score = min(100.0, Float(add) * 100.0 / Float(total))
             score = Float(add)
+            progress[0] = score / Float(total)
         }
     }
     /// Number of movements to complete
@@ -55,9 +56,9 @@ class MovementGame : Minigame {
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:playerCollisionGroup, mask: targetCollisionGroup))
         self.coachingState = .other
         super.init()
-        
+        self.progress = [0, 0]
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-            self.progress[0] = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
+            self.progress[1] = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
             var stateIsDown : MovementState? = nil
             self.children.forEach { (entity) in
                 guard let target = entity as? MovementTarget else {
@@ -202,40 +203,9 @@ class MovementTarget : Entity, HasModel, HasCollision {
         self.delay = delay
         // Set the timer to delay seconds
         self.reps = reps
-//        self.timerEntity = ModelEntity(mesh: MeshResource.generateText(String(format:"%0.2f", self.delay), font: .systemFont(ofSize: 1), alignment: .right), materials: [uncompleteMaterial])
         super.init()
         // Create the collision box of this target and shift the box to the left by half the width such that (0,0,0) lies on the edge of the box.
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 1, height: 1, depth: 2).offsetBy(translation: SIMD3<Float>(0.5,0,0))], mode: .trigger, filter: .default)
-        // TODO: Make this box render even when inside. Most likely need to break into separate plane meshes.
-        // Create a visual box for the user with the same dimensions and transformations aas teh collision box.
-//        let targetBox = ModelEntity(mesh: MeshResource.generateBox(width: 1, height: 1, depth: 2))
-//        targetBox.transform.translation = SIMD3<Float>(0.5, 0, 0)
-//        addChild(targetBox)
-//        // Create a visual plane to complement the targetBox. Note that the box rendering will disappear upon contact so this is critical.
-//        let thresholdPlane = ModelEntity(mesh: MeshResource.generatePlane(width: 2, height: 1, cornerRadius: 0))
-//        // Rotate about the y axis such that the plane is now on the yz dimension.
-//        thresholdPlane.transform.rotation = simd_quatf(ix: 0, iy: 0.7071, iz: 0, r: 0.7071)
-//        addChild(thresholdPlane)
-        
-//        if(arrow) {
-//            // Create an indicator to move to the left
-//            let dirArrow = ModelEntity(mesh:
-//                MeshResource.generateText("<=", font:
-//                    .systemFont(ofSize: 1)
-//                    , alignment: .center)
-//            )
-//            dirArrow.transform.translation = SIMD3<Float>(0.25,-0.5,3) - self.transform.translation
-//            // Rotate the arrow by 180 degrees such that the text is facing the user.
-//            dirArrow.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0,1,0))
-//            addChild(dirArrow)
-//        }
-//        // Same thing for the timer entity
-//        timerEntity.transform = Transform(matrix: dirArrow.transform.matrix)
-//        timerEntity.transform.translation.x += 2
-//        // TODO Rotate it such that it faces the user and is readable.
-//
-//        addChild(timerEntity)
-//        //timerEntity.transform.translation = leftArrow.convert(position: SIMD3<Float>(2,0,0), to: timerEntity.parent)
 
         self.setMaterials(materials: [uncompleteMaterial])
     }
@@ -250,25 +220,6 @@ class MovementTarget : Entity, HasModel, HasCollision {
         if (active) {
             setMaterials(materials: [inProgressMaterial])
             self.end = DispatchTime.now() + self.delay
-//            if (timer == nil) {
-//                self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-//                    if(!self.active) {
-//                        timer.invalidate()
-//                        self.timer = nil
-//                        return
-//                    }
-//                    var timeLeft : Double
-//                    if (DispatchTime.now() <= self.end){
-//                        timeLeft = Double((self.end.uptimeNanoseconds-DispatchTime.now().uptimeNanoseconds)/1000000)/1000.0
-//                    } else {
-//                        timeLeft = self.delay
-//                    }
-//                    self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%.2f", min(self.delay, max(0, timeLeft))), font:
-//                    .systemFont(ofSize: 1)
-//                    , alignment: .center)
-//                }
-//                self.timer!.tolerance = 0.1
-//            }
         }
     }
     
@@ -279,9 +230,6 @@ class MovementTarget : Entity, HasModel, HasCollision {
             if (self.end < DispatchTime.now()) {
                 setMaterials(materials: [completeMaterial])
                 self.active = false
-//                self.timerEntity.model?.mesh = MeshResource.generateText("0.0", font:
-//                .systemFont(ofSize: 1)
-//                , alignment: .center)
                 guard let game = self.parent as? MovementGame else {
                     return
                 }
@@ -306,9 +254,6 @@ class MovementTarget : Entity, HasModel, HasCollision {
         self.active = true
         setMaterials(materials: [uncompleteMaterial])
         self.end = DispatchTime.distantFuture
-//        self.timerEntity.model?.mesh = MeshResource.generateText(String(format:"%0.2f", self.delay), font:
-//        .systemFont(ofSize: 1)
-//        , alignment: .center)
     }
     
     /**
