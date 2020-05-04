@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Minigame View Controller-->
+        <!--Default View Controller-->
         <scene sceneID="aCP-G3-SgA">
             <objects>
-                <viewController storyboardIdentifier="minigameViewController" id="eKD-b6-VZz" customClass="MinigameViewController" customModule="ARrehab" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="minigameViewController" id="eKD-b6-VZz" customClass="DefaultViewController" customModule="ARrehab" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="001-wG-zks" customClass="PassThroughView" customModule="ARrehab" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -30,7 +30,7 @@
                         <viewLayoutGuide key="safeArea" id="tFv-Kz-fgi"/>
                     </view>
                     <connections>
-                        <outlet property="progressView" destination="wU5-oG-a3b" id="VOO-pY-xCp"/>
+                        <outlet property="progressView" destination="wU5-oG-a3b" id="3TZ-ze-0ju"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nwo-lB-Rkl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

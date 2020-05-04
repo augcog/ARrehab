@@ -53,7 +53,7 @@ class MovementGame : Minigame {
         super.init()
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-            self.progress = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
+            self.progress[0] = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
         }
         self.timer.tolerance = 0.1
         

@@ -36,13 +36,8 @@ class TraceGame : Minigame {
     /// Total number of points still active
     var active : Int
     
-    /// Models of the targets.
-    var models : [String : ModelComponent] = [:]
-    /// Colors to use in the UI progress bar and upon laser contact.
-    var colorMap : [String : UIColor] = [:]
-    /// Positions to generate each model target. {name : [Min, Max]}
-    var positionMap : [String : [SIMD3<Float>]] = [:]
-
+    /// List of target types to try and load.
+    var targets : [TraceTargetType] = [.fox, .bear]
     
     required init() {
         self.pointCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
@@ -53,29 +48,29 @@ class TraceGame : Minigame {
         self.active = self.total
         
         super.init()
+        generateTargets()
+    }
+    
+    func generateTargets() {
+        var models : [TraceTargetType : ModelComponent] = [:]
         
-        do {
-            models.updateValue((try Entity.loadModel(named: "Fox").model!), forKey: "Fox")
-            colorMap.updateValue(UIColor.red, forKey:"Fox")
-            positionMap.updateValue([SIMD3<Float>(-3, -1.5, 0), SIMD3<Float>(0, -0.5, 3)], forKey: "Fox")
-            models.updateValue((try Entity.loadModel(named: "Bear").model!), forKey: "Bear")
-            colorMap.updateValue(UIColor.blue, forKey:"Bear")
-            positionMap.updateValue([SIMD3<Float>(0, -0.5, 3), SIMD3<Float>(3, 0.5, 5)], forKey: "Bear")
-        } catch {
-            models.updateValue((ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)])), forKey: "Default")
-            colorMap.updateValue(UIColor.gray, forKey:"Default")
-            positionMap.updateValue([SIMD3<Float>(-3, -1.5, 0), SIMD3<Float>(3, 0.5, 5)], forKey: "Default")
+        targets.forEach { (targetType) in
+            do {
+                models.updateValue((try Entity.loadModel(named: targetType.modelName).model!), forKey: targetType)
+            } catch {
+                models.updateValue((ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .purple, isMetallic: false)])), forKey: TraceTargetType.other)
+            }
         }
-        
+
         for _ in 1 ... total {
-            let (name, model) = models.randomElement()!
-            let posMin = positionMap[name]![0]
-            let posMax = positionMap[name]![1]
-            let point : TracePoint = TracePoint(model: model, translation: SIMD3<Float>(Float.random(in: posMin[0] ... posMax[0]), Float.random(in: posMin[1] ... posMax[1]), Float.random(in:posMin[2] ... posMax[2])), type: name, collisionColor: colorMap[name]!)
+            let (targetType, model) = models.randomElement()!
+            let posMin = targetType.minPosition
+            let posMax = targetType.maxPosition
+            let point : TracePoint = TracePoint(model: model, translation: SIMD3<Float>(Float.random(in: posMin[0] ... posMax[0]), Float.random(in: posMin[1] ... posMax[1]), Float.random(in:posMin[2] ... posMax[2])), targetType: targetType)
             point.collision?.filter = CollisionFilter(group: self.pointCollisionGroup, mask: self.laserCollisionGroup)
-            
-            pointCloud.append(point)
-            self.addChild(point)
+           
+           pointCloud.append(point)
+           self.addChild(point)
         }
     }
     
@@ -131,17 +126,26 @@ class TraceGame : Minigame {
         return laser
     }
     
+    // TODO change it so that we don't recalculate everything every time.
     func score() -> Float{
+        var tempProgress : [Float] = Array(repeating: 0, count: targets.count + 1)
         active = 0
         for child in self.children {
             if let tracePoint = child as? TracePoint {
                 if (tracePoint.active) {
                     active += 1
                 }
+                else {
+                    tempProgress[targets.firstIndex(of: tracePoint.targetType)! + 1] += 1
+                }
             }
         }
-        progress = Float(total - active) / Float(total)
-        score = progress * 100.0
+        tempProgress[0] = Float(total - active)
+        for (i, value) in tempProgress.enumerated() {
+            tempProgress[i] = value / Float(total)
+        }
+        progress = tempProgress
+        score = progress[0] * 100.0
         return score
     }
 }
@@ -152,16 +156,14 @@ class TraceGame : Minigame {
  */
 class TracePoint : Entity, HasModel, HasCollision {
     var active = true
-    var type : String
-    var collisionColor : UIColor
+    var targetType : TraceTargetType
     
     required convenience init() {
         self.init(model: ModelComponent(mesh: MeshResource.generateSphere(radius: 0.05), materials: [SimpleMaterial(color: .cyan, isMetallic: false)]))
     }
     
     init(model : ModelComponent) {
-        self.type = "Default"
-        self.collisionColor = .green
+        self.targetType = .other
         super.init()
         let radius : Float = 0.5
         self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: model.mesh.bounds.boundingRadius / sqrtf(3)).offsetBy(translation: model.mesh.bounds.center)], mode: .trigger, filter: .default)
@@ -176,16 +178,15 @@ class TracePoint : Entity, HasModel, HasCollision {
         self.transform.translation = translation
     }
     
-    convenience init(model : ModelComponent, translation: SIMD3<Float>, type: String, collisionColor: UIColor) {
+    convenience init(model : ModelComponent, translation: SIMD3<Float>, targetType: TraceTargetType) {
         self.init(model: model)
-        self.type = type
-        self.collisionColor = collisionColor
+        self.targetType = targetType
         self.transform.translation = translation
     }
     
     func onCollisionBegan() {
         if (active) {
-            self.model?.materials = [SimpleMaterial(color: self.collisionColor, isMetallic: false)]
+            self.model?.materials = [SimpleMaterial(color: self.targetType.color, isMetallic: false)]
         }
     }
     

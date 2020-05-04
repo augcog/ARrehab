@@ -93,7 +93,8 @@ class ViewController: UIViewController, ARSessionDelegate {
             
             // Add the Minigame's View Controller as a subview programmatically.
             addChild(controller)
-            controller.view.frame = self.view.frame
+            var frame = self.view.frame.insetBy(dx: 0, dy: 100)
+            controller.view.frame = frame
             self.view.addSubview(controller.view)
             controller.didMove(toParent: self)
         } else {

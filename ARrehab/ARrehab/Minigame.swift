@@ -44,7 +44,7 @@ class Minigame : Entity {
     @Published var score : Float
     
     /// Progress of the minigame in the range [0.0, 100.0] to be displayed on the progres bar.
-    @Published var progress : Float
+    @Published var progress : [Float]
     
     var viewController : MinigameViewController!
     
@@ -59,17 +59,19 @@ class Minigame : Entity {
     
     required init() {
         self.score = 0
-        self.progress = 0
+        self.progress = [0]
         super.init()
         self.viewController = generateViewController()
     }
     
     /**
-     Creates a new ViewController
+     Creates a new ViewController from a storyboard named the same name as this class.
+     
+     Override this method if you are not using a storyboard.
      */
     func generateViewController() -> MinigameViewController {
-        let storyboard = UIStoryboard.init(name: "Minigame", bundle: nil)
-        print(storyboard)
+        let storyboard = UIStoryboard.init(name: String(describing: type(of: self)), bundle: nil)
+        // Be sure to set the ViewController's Storyboard ID as "minigameViewController"
         let controller = storyboard.instantiateViewController(identifier: "minigameViewController") as! MinigameViewController
         controller.attachMinigame(minigame: self)
         return controller
@@ -107,36 +109,51 @@ class Minigame : Entity {
 
 /**
  Minigame ViewController base classs.
- Each minigame will implement its own view controller should it need anythiing more than a standard progress bar.
+ Each minigame will implement its own view controller.
  Please note that the UIView must be of the PassThroughView Class.
  */
 class MinigameViewController : UIViewController {
-    /// Progress Bar
-    @IBOutlet var progressView: UIProgressView!
-    var subscribers: [Cancellable] = []
     var minigame : Minigame? = nil
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        guard minigame != nil else {
-            return
-        }
-        // TODO: Fix Nil value of progressView.
-        subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
-            self.progressView.progress = progress
-        }))
-    }
     
     func attachMinigame(minigame: Minigame) {
         self.minigame = minigame
+    }
+}
+
+/**
+ Default Minigame ViewController.
+ Just has a standard progress bar.
+ Please note that the UIView must be of the PassThroughView Class.
+ */
+class DefaultViewController : MinigameViewController {
+    // TODO check if this progressView is connected to anything
+    @IBOutlet var progressView: UIProgressView!
+    var subscribers: [Cancellable] = []
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addProgressSubscriber()
+    }
+    
+    override func attachMinigame(minigame: Minigame) {
+        super.attachMinigame(minigame: minigame)
+        
         if self.isViewLoaded {
             // TODO cancel the previous score subscription
-            subscribers.append(minigame.$progress.sink(receiveValue: { (progress) in
-                self.progressView.progress = progress
-            }))
+            addProgressSubscriber()
         }
     }
+    
+    func addProgressSubscriber() {
+        guard minigame != nil else {
+            return
+        }
+
+        subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
+            self.progressView.progress = progress[0]
+        }))
+    }
+    
 }
 
 /**
@@ -160,17 +177,12 @@ class MinigameController {
      */
     @Published var score: Float
     
-    /**
-     the progress of the current minigame [0, 1]. If no game in progress. this is an arbitrary value.
-     */
-    @Published var progress: Float
     var cancellable : [Cancellable]
     
     init(ground: Entity, player: Entity) {
         self.ground = ground
         self.player = player
         self.score = 0
-        self.progress = 0
         self.cancellable = []
     }
     
@@ -199,13 +211,6 @@ class MinigameController {
                 return
             }
             self.score = score
-        })
-        cancellable.append(currentMinigame!.$progress.sink{ progress in
-            guard self.currentMinigame != nil else {
-                self.progress = 0.0
-                return
-            }
-            self.progress = progress
         })
         currentMinigame!.attach(ground: ground, player: player)
         currentMinigame!.run()
