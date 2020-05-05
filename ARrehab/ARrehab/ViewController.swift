@@ -104,26 +104,43 @@ extension ViewController: ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        
         if self.boardState == .notMapped {
-            for anc in anchors {
-                guard let planeAnc = anc as? ARPlaneAnchor else {break}
-                if self.boardState == .notMapped {
-                    if isValidSurface(plane: planeAnc) {
-                        self.initiateBoardLayout(surfaceAnchor: planeAnc)
-                    }
-                }
+            if let validPlaneAnc = checkForValid(anchors: anchors) {
+                self.initiateBoardLayout(surfaceAnchor: validPlaneAnc)
             }
         }
             
         else if self.boardState == .mapped {
-            for anc in anchors {
-                if anc == self.tileGrid?.surfaceAnchor {
-                    let planeAnc = anc as! ARPlaneAnchor
-                    self.tileGrid?.updateBoard(updatedAnc: planeAnc)
-                }
+            if let updatedAnchor = checkForUpdate(anchors: anchors) {
+                self.tileGrid?.updateBoard(updatedAnc: updatedAnchor)
             }
         }        
+    }
+    
+    //Checks a list of anchors for one that meets the valid surface requirements described by the GameBoard's EXTENT constants
+    func checkForValid(anchors: [ARAnchor]) -> ARPlaneAnchor? {
+        guard self.boardState == .notMapped else {return nil}
+        for anc in anchors {
+            if let planeAnc = anc as? ARPlaneAnchor {
+                if isValidSurface(plane: planeAnc) {
+                    return planeAnc
+                }
+            }
+        }
+        return nil
+    }
+    
+    //Checks a list of anchors for one that matches the surface anchor of the tileGrid's surfaceAnchor
+    func checkForUpdate(anchors: [ARAnchor]) -> ARPlaneAnchor? {
+        guard self.boardState == .mapped else {return nil}
+        for anc in anchors {
+            if let planeAnc = anc as? ARPlaneAnchor {
+                if planeAnc == self.tileGrid?.surfaceAnchor {
+                    return planeAnc
+                }
+            }
+        }
+        return nil
     }
     
     func initiateBoardLayout(surfaceAnchor: ARPlaneAnchor) {
@@ -135,6 +152,7 @@ extension ViewController: ARSessionDelegate {
         self.boardState = .mapped
         
         self.addPbButton()
+        self.addRbButton()
         self.startBoardPlacement()
     }
     
@@ -153,46 +171,7 @@ extension ViewController: ARSessionDelegate {
                 self.tileGrid?.updateBoardOutline(centerTile: self.playerEntity.onTile)
             }
             
-            
         }
-
-        /*Timer.scheduledTimer(withTimeInterval: TimeInterval(exactly: 1.0)!, repeats: true, block: {timer in
-            
-            if self.boardState == .placed {
-                timer.invalidate()
-            }
-            
-            for tile in (self.tileGrid?.possibleTiles.values)! {
-                tile.model = TileGrid.gridModel
-            }
-            
-            //Get the current camera translation and direction via its transform matrix
-            let cameraTransform = self.arView.session.currentFrame!.camera.transform
-            let translation = SIMD3<Float>(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
-            let direction = -SIMD3<Float>(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
-            
-            let direction2 = self.arView.cameraTransform.rotation
-                        
-            //Raycast from the camera outwards
-            let raycast = self.arView.scene.raycast(origin: translation, direction: direction2.act(SIMD3(0.0, 0.0, -1.0)))
-            
-            
-            if raycast != [] {
-                for result in raycast {
-                    guard let tile = result.entity as? Tile else {return}
-                    tile.changeColor(color: SimpleMaterial.Color.green)
-                }
-                
-                //Get the "middle" element in the stack of raycast results and use it as the selected tile -- TODO: Figure out a better way to select which tile is being "pointed" at
-                /*if let hitTile = raycast[Int(raycast.count / 2)].entity as? Tile {
-                    self.tileGrid!.updateBoardOutline(centerTile: hitTile)
-                }*/
-                
-                //self.tileGrid?.updateBoardOutline(centerTile: centerTile!)
-                //centerTile?.changeColor(color: SimpleMaterial.Color.blue)
-            }
-            
-        })*/
     }
     
 }

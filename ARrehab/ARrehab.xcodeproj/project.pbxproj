@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03F1111B24609C9300ECEEAB /* TileScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 03F111192460995F00ECEEAB /* TileScene.rcproject */; };
+		03F1111C24609C9600ECEEAB /* background.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 03F1111A2460996E00ECEEAB /* background.rcproject */; };
 		15264C962404DA4B00E4F2BB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15264C952404DA4A00E4F2BB /* Player.swift */; };
 		15986816241EE627009456EF /* TraceGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986815241EE627009456EF /* TraceGame.swift */; };
 		1598681A242451FA009456EF /* Minigame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986819242451FA009456EF /* Minigame.swift */; };
@@ -19,13 +21,13 @@
 		159A420423F49286000A5376 /* ARrehabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420323F49286000A5376 /* ARrehabTests.swift */; };
 		159A420F23F49286000A5376 /* ARrehabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420E23F49286000A5376 /* ARrehabUITests.swift */; };
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
+		1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1901C560245FE1E900896EE4 /* RotateBoardButton.swift */; };
 		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
 		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
 		19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */; };
 		19989C40244AACBE001C1C7F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 19989C3F244AACBE001C1C7F /* README */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
-		19B5BC96245E906E00D882F6 /* TileScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 19B5BC95245E906E00D882F6 /* TileScene.rcproject */; };
-		19B5BC98245E919100D882F6 /* background.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 19B5BC97245E919100D882F6 /* background.rcproject */; };
+		19CF4E14245EA49700EC7177 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03F111192460995F00ECEEAB /* TileScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = TileScene.rcproject; path = /Users/woojinko/research/ARHealthCare/ARrehab/ARrehab/ARrehab/TileScene.rcproject; sourceTree = "<absolute>"; };
+		03F1111A2460996E00ECEEAB /* background.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = background.rcproject; path = /Users/woojinko/research/ARHealthCare/ARrehab/ARrehab/ARrehab/background.rcproject; sourceTree = "<absolute>"; };
 		15264C952404DA4A00E4F2BB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		15986815241EE627009456EF /* TraceGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceGame.swift; sourceTree = "<group>"; };
 		15986819242451FA009456EF /* Minigame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minigame.swift; sourceTree = "<group>"; };
@@ -65,13 +69,12 @@
 		159A420E23F49286000A5376 /* ARrehabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARrehabUITests.swift; sourceTree = "<group>"; };
 		159A421023F49286000A5376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
+		1901C560245FE1E900896EE4 /* RotateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateBoardButton.swift; sourceTree = "<group>"; };
 		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
 		19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateBoardButton.swift; sourceTree = "<group>"; };
 		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
-		19B5BC95245E906E00D882F6 /* TileScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = TileScene.rcproject; path = "../RK Assets/TileScene.rcproject"; sourceTree = "<group>"; };
-		19B5BC97245E919100D882F6 /* background.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = background.rcproject; path = "../RK Assets/background.rcproject"; sourceTree = "<group>"; };
 		19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManipulation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,10 +135,10 @@
 				15E002DD243AA3CD00BA6A96 /* MovementGame.swift */,
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
-				19B5BC95245E906E00D882F6 /* TileScene.rcproject */,
-				19B5BC97245E919100D882F6 /* background.rcproject */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
+				03F111192460995F00ECEEAB /* TileScene.rcproject */,
+				03F1111A2460996E00ECEEAB /* background.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -168,6 +171,7 @@
 			children = (
 				19989C3F244AACBE001C1C7F /* README */,
 				19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */,
+				1901C560245FE1E900896EE4 /* RotateBoardButton.swift */,
 			);
 			path = "2D Elements";
 			sourceTree = "<group>";
@@ -304,6 +308,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03F1111B24609C9300ECEEAB /* TileScene.rcproject in Sources */,
+				19CF4E14245EA49700EC7177 /* (null) in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
@@ -312,11 +318,11 @@
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				193AC61C2443E7050046C872 /* TileGrid.swift in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
+				1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */,
 				1598681A242451FA009456EF /* Minigame.swift in Sources */,
 				15986816241EE627009456EF /* TraceGame.swift in Sources */,
-				19B5BC98245E919100D882F6 /* background.rcproject in Sources */,
-				19B5BC96245E906E00D882F6 /* TileScene.rcproject in Sources */,
 				19B1736A2403475400845819 /* Tile.swift in Sources */,
+				03F1111C24609C9600ECEEAB /* background.rcproject in Sources */,
 				15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

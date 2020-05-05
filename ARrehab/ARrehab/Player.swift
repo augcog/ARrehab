@@ -10,12 +10,15 @@ import Foundation
 import RealityKit
 import Combine
 
-class Player : TileCollider, HasModel, HasAnchoring{
+class Player : TileCollider, HasModel, HasAnchoring {
+    
+    static let PLAYER_COLLISION_GROUP = CollisionGroup(rawValue: 2)
     
     var onTile: Tile!
         
     required init(target: AnchoringComponent.Target) {
         super.init()
+        self.collision?.filter.group = Player.PLAYER_COLLISION_GROUP
         self.components[AnchoringComponent] = AnchoringComponent(target)
     }
     
@@ -25,12 +28,13 @@ class Player : TileCollider, HasModel, HasAnchoring{
     
     override func onCollisionBegan(tile: Tile) {
         self.onTile = tile
+        self.onTile.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
         super.onCollisionBegan(tile: tile)
     }
     
     override func onCollisionEnded(tile: Tile) {
-        if self.onTile == tile {
-            self.onTile = nil
+        if tile != self.onTile {
+            tile.changeMaterials(materials: [SimpleMaterial(color: .clear, isMetallic: false)])
         }
         super.onCollisionEnded(tile: tile)
     }
@@ -38,7 +42,7 @@ class Player : TileCollider, HasModel, HasAnchoring{
 
 class TileCollider : Entity, HasCollision {
     
-    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.0, height: 0.1 / Tile.SCALE, depth: 0.0)], mode: .trigger, filter: CollisionFilter(group: .default, mask: Tile.TILE_COLLISION_GROUP))
     
     var subscriptions: [Cancellable] = []
 
@@ -66,15 +70,11 @@ class TileCollider : Entity, HasCollision {
     func onCollisionBegan(tile: Tile) {
         print("Collision Started")
         print("On Tile: \(tile.tileName)")
-        // used for debugging purposes.
-//         tile.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
     }
     
     func onCollisionEnded(tile: Tile) {
         print("Collision Ended")
         print("On Tile: \(tile.tileName)")
-        // used for debugging purposes.
-//         tile.model?.materials = [SimpleMaterial(color: .green, isMetallic: false)]
     }
     
 }
