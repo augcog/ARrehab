@@ -17,6 +17,7 @@
 		1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594B45E245E86B8008463BA /* PassThroughView.swift */; };
 		1594B461245E8D82008463BA /* TraceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594B460245E8D82008463BA /* TraceViewController.swift */; };
 		1594B465245E9290008463BA /* TraceGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1594B464245E9290008463BA /* TraceGame.storyboard */; };
+		1572133D2462009D006E6BBC /* Block.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1572133C2462009D006E6BBC /* Block.usdz */; };
 		15986816241EE627009456EF /* TraceGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986815241EE627009456EF /* TraceGame.swift */; };
 		1598681A242451FA009456EF /* Minigame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986819242451FA009456EF /* Minigame.swift */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
@@ -40,7 +41,13 @@
 		15CE526524608E7300A22B0B /* MovementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CE526424608E7300A22B0B /* MovementState.swift */; };
 		15CE52672460A88500A22B0B /* MovementGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15CE52662460A88500A22B0B /* MovementGame.storyboard */; };
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
+		1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1901C560245FE1E900896EE4 /* RotateBoardButton.swift */; };
+		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
+		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
+		19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */; };
+		19989C40244AACBE001C1C7F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 19989C3F244AACBE001C1C7F /* README */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
+		19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +77,7 @@
 		1594B45E245E86B8008463BA /* PassThroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassThroughView.swift; sourceTree = "<group>"; };
 		1594B460245E8D82008463BA /* TraceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceViewController.swift; sourceTree = "<group>"; };
 		1594B464245E9290008463BA /* TraceGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TraceGame.storyboard; sourceTree = "<group>"; };
+		1572133C2462009D006E6BBC /* Block.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Block.usdz; sourceTree = "<group>"; };
 		15986815241EE627009456EF /* TraceGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceGame.swift; sourceTree = "<group>"; };
 		15986819242451FA009456EF /* Minigame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minigame.swift; sourceTree = "<group>"; };
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +106,13 @@
 		15CE526424608E7300A22B0B /* MovementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementState.swift; sourceTree = "<group>"; };
 		15CE52662460A88500A22B0B /* MovementGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MovementGame.storyboard; sourceTree = "<group>"; };
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
+		1901C560245FE1E900896EE4 /* RotateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateBoardButton.swift; sourceTree = "<group>"; };
+		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
+		19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateBoardButton.swift; sourceTree = "<group>"; };
+		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManipulation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +167,9 @@
 			children = (
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
+				19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */,
+				193AC61B2443E7050046C872 /* TileGrid.swift */,
+				19089AEC24380DF70054EFED /* GameBoard.swift */,
 				15986815241EE627009456EF /* TraceGame.swift */,
 				1594B460245E8D82008463BA /* TraceViewController.swift */,
 				15BB4C8D245FA4D50033A18D /* down.png */,
@@ -166,6 +183,7 @@
 				15CE526424608E7300A22B0B /* MovementState.swift */,
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
+				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
 				157AE5802452C4DA00BE7809 /* Deer.usdz */,
 				157AE58A2455959800BE7809 /* Bear.usdz */,
@@ -173,6 +191,7 @@
 				157AE586245594FE00BE7809 /* Wolf.usdz */,
 				157AE5822455749400BE7809 /* Fox.usdz */,
 				15B8D1CF246086E400D0CBB6 /* Puffer.usdz */,
+				1572133C2462009D006E6BBC /* Block.usdz */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -202,6 +221,16 @@
 				159A421023F49286000A5376 /* Info.plist */,
 			);
 			path = ARrehabUITests;
+			sourceTree = "<group>";
+		};
+		19989C39244A9B90001C1C7F /* 2D Elements */ = {
+			isa = PBXGroup;
+			children = (
+				19989C3F244AACBE001C1C7F /* README */,
+				19989C3C244AA617001C1C7F /* GenerateBoardButton.swift */,
+				1901C560245FE1E900896EE4 /* RotateBoardButton.swift */,
+			);
+			path = "2D Elements";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,7 +300,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Eric Wang";
 				TargetAttributes = {
 					159A41E823F49283000A5376 = {
@@ -316,7 +345,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19989C40244AACBE001C1C7F /* README in Resources */,
 				159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */,
+				1572133D2462009D006E6BBC /* Block.usdz in Resources */,
 				159A41F623F49286000A5376 /* Assets.xcassets in Resources */,
 				1594B465245E9290008463BA /* TraceGame.storyboard in Resources */,
 				159A41F423F49283000A5376 /* Main.storyboard in Resources */,
@@ -356,10 +387,15 @@
 			files = (
 				15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
+				19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
+				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
+				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */,
+				193AC61C2443E7050046C872 /* TileGrid.swift in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
+				1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */,
 				1598681A242451FA009456EF /* Minigame.swift in Sources */,
 				15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */,
 				15986816241EE627009456EF /* TraceGame.swift in Sources */,
@@ -480,7 +516,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -534,6 +572,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -581,7 +620,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehabTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -589,7 +628,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -604,7 +643,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehabTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -612,7 +651,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -624,8 +663,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARrehabUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -634,6 +675,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARrehab;
@@ -644,8 +687,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARrehabUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -654,6 +699,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARrehab;

@@ -10,13 +10,15 @@ import Foundation
 import RealityKit
 import Combine
 
-class Player : TileCollider, HasModel, HasAnchoring{
+class Player : TileCollider, HasModel, HasAnchoring {
     
-    var onTile: Tile!
+    static let PLAYER_COLLISION_GROUP = CollisionGroup(rawValue: 2)
+    
+    var onTile: Tile?
         
     required init(target: AnchoringComponent.Target) {
         super.init()
-        self.components[ModelComponent] = ModelComponent(mesh: MeshResource.generateBox(width: 0.5, height: 2, depth: 0.5), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
+        self.collision?.filter.group = Player.PLAYER_COLLISION_GROUP
         self.components[AnchoringComponent] = AnchoringComponent(target)
     }
     
@@ -26,57 +28,53 @@ class Player : TileCollider, HasModel, HasAnchoring{
     
     override func onCollisionBegan(tile: Tile) {
         self.onTile = tile
-        super.onCollisionBegan(tile: tile)
+        print("CURRENTLY ON:",onTile?.tileName)
+        self.onTile!.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
+        //super.onCollisionBegan(tile: tile)
     }
     
     override func onCollisionEnded(tile: Tile) {
-        if self.onTile == tile {
-            self.onTile = nil
-        }
-        super.onCollisionEnded(tile: tile)
+        //print("CURRENTLY ON:",onTile?.tileName)
+        tile.changeMaterials(materials: [SimpleMaterial(color: .clear, isMetallic: false)])
+        //super.onCollisionEnded(tile: tile)
     }
 }
 
 class TileCollider : Entity, HasCollision {
     
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.0, height: 0.0, depth: 0.0)], mode: .trigger, filter: CollisionFilter(group: .default, mask: Tile.TILE_COLLISION_GROUP))
+    
     var subscriptions: [Cancellable] = []
 
     required init() {
         super.init()
-        self.components[CollisionComponent] = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.1, height: 0.1, depth: 0.1)], mode: .trigger, filter: .sensor)
+        self.components[CollisionComponent] = TileCollider.defaultCollisionComp
     }
     
     func addCollision() {
         guard let scene = self.scene else {return}
-        subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-//            print("Collision Started")
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionBegan(tile: tile)
-            
-        })
-        subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
-//            print("Collision Ended")
+            })
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionEnded(tile: tile)
-
-        })
+            })
     }
     
     func onCollisionBegan(tile: Tile) {
-//        print("On Tile: \(tile.tileName)")
-        tile.model?.materials = [
-            SimpleMaterial(color: .red, isMetallic: false)
-        ]
+        print("Collision Started")
+        print("On Tile: \(tile.tileName)")
     }
     
     func onCollisionEnded(tile: Tile) {
-//        print("On Tile: \(tile.tileName)")
-        tile.model?.materials = [
-            SimpleMaterial(color: .green, isMetallic: false)
-        ]
+        print("Collision Ended")
+        print("On Tile: \(tile.tileName)")
     }
+    
 }

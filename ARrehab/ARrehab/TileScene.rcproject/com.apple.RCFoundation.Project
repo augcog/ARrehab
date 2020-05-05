@@ -1,0 +1,186 @@
+{
+  "__content" : [
+    {
+      "scenes" : [
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "horizontal",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                -9.8000001907348633,
+                0
+              ],
+              "identifier" : "6AD81101-7636-4008-87BD-B7ED43EBCF19",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "0BCB4337-DF01-4E84-B112-4AB4FCEDBE7E" : null,
+                  "4D75E72A-0FE8-4B6F-98F0-A7EF1E651DCA" : null,
+                  "6C6BFF1B-F34E-4989-A379-7214D6189203" : null,
+                  "6E48BA26-08F0-443F-A17E-F64DEBDFB3F7" : null,
+                  "9B8EB875-59E1-4DFD-8133-3A0C0B0C4F12" : null,
+                  "48C89100-970D-41E3-9D74-214388C91105" : null,
+                  "148A6615-533A-4B37-8EAB-D76C7BFD5F3D" : null,
+                  "311D3C5C-2EF7-4B94-9656-6E849785DB8F" : null,
+                  "340ABDC7-C141-41EE-AA80-37EAAB677288" : null,
+                  "9610A2B5-D3B3-4BF7-A94C-C902FE182A62" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "includeSceneScaling",
+                          {
+                            "typeName" : "Bool",
+                            "value" : false
+                          }
+                        ],
+                        [
+                          "subpath",
+                          {
+                            "typeName" : "String",
+                            "value" : ""
+                          }
+                        ],
+                        [
+                          "url",
+                          {
+                            "typeName" : "String",
+                            "value" : "model:722e09d626c0f10b2456202dd9a0bab7\/block.reality"
+                          }
+                        ],
+                        [
+                          "withDescendants",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.af.FileImportAssetFactory",
+                        "version" : "0.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "3F694806-BEFE-498E-9E19-03B0C01AA4F0"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "tile"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        0.50037050247192383,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.50037050247192383,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.50037050247192383,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                      ]
+                    }
+                  },
+                  "A754178C-7388-4E4C-9FAF-433AB6738901" : null,
+                  "AE505E95-5CB0-437C-925B-BA05B7481652" : null,
+                  "B100437E-5CAF-47F8-A126-03076D088CF5" : null,
+                  "BB18D738-2C42-477F-A73E-31731684632A" : null,
+                  "BE3B63BB-D16F-4C9D-BDC8-D4BE1AA8BF49" : null,
+                  "CD42A0D0-31A3-41E9-89C9-01FEC27DCC89" : null,
+                  "Cube" : null,
+                  "FFC681A5-A09D-4821-845A-55448E3B46D5" : null,
+                  "Plate" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "none",
+              "title" : "scene",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.88516861200332642,
+                  -0.4652702808380127,
+                  0,
+                  0,
+                  0.4652702808380127,
+                  0.88516861200332642,
+                  0,
+                  0.44272640347480774,
+                  1.0586603879928589,
+                  1.6472331285476685,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        }
+      ],
+      "tags" : {
+        "__content" : [
+          {
+            "tagsStore" : {
+
+            }
+          }
+        ],
+        "__version" : 1
+      }
+    }
+  ],
+  "__version" : 1
+}
