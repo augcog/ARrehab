@@ -39,8 +39,6 @@ class TileGrid {
         self.gridEntity.transform.translation = surfaceAnchor.center
         
         self.generatePossibleTiles()
-        // Scales the grid appropriately.
-        self.gridEntity.transform.scale = SIMD3<Float>(Tile.SCALE, Tile.SCALE, Tile.SCALE)
     }
     
     /*
