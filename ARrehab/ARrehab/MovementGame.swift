@@ -9,6 +9,7 @@ import Foundation
 import RealityKit
 import Combine
 import UIKit
+import Dispatch
 
 /**
 Movement Game Entity holds a representatioin of where the user needs to go and the detection mechanism to determine if the user has completed the action.
@@ -37,7 +38,6 @@ class MovementGame : Minigame {
     }
     /// Number of movements to complete
     var total : Int
-    
     /// Coaching state
     @Published
     var coachingState : MovementState
@@ -83,7 +83,8 @@ class MovementGame : Minigame {
         // Create a target with a trigger time of 1 second
         let target = MovementTarget(delay: 1, reps: num, arrow: true)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
-        // Change the orientation to squating rather than to the left
+        // Change the orientation to squating rather than to the left (the default target orientation).
+        // This is done by rotating by 90 degrees counter clockwise about the z axis.
         target.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
         // Move the squat target down by 0.2 m.
         target.transform.translation = SIMD3<Float>(0,-0.2,0)
