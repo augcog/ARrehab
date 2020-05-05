@@ -36,8 +36,8 @@ class GameBoard {
     //Minimum extents for a valid game board (in meters)
     //Does not distinguish between x and z directions
 
-    static let EXTENT1 : Float = 2.0 / Tile.SCALE
-    static let EXTENT2 : Float = 3.0 / Tile.SCALE
+    static let EXTENT1 : Float = 2.0 * Tile.SCALE
+    static let EXTENT2 : Float = 3.0 * Tile.SCALE
     
     //Dimension of the board (in tiles)
     static let DIMENSIONS = (3, 5)
@@ -45,8 +45,8 @@ class GameBoard {
     //List of colors for random selection at time of initialization
     static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
     
-    static let rkTileScene = try? TileScene.loadScene()
-        
+    static let rkTileScene = try? Experience.loadBox()
+    
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
