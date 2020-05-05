@@ -45,7 +45,7 @@ class GameBoard {
     //List of colors for random selection at time of initialization
     static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
     
-    static let rkTileScene = try? TileScene.loadScene()
+//    static let rkTileScene = try? TileScene.loadScene()
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
@@ -81,9 +81,10 @@ class GameBoard {
     private func generateBoard() {
         for tile in self.tilesDict.values {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
-            let newTileEntity = try? TileScene.loadScene().findEntity(named: "tile")
-            newTileEntity?.transform.translation = SIMD3<Float>(0,0,0)
-            tile.addChild(newTileEntity!, preservingWorldTransform: false)
+            let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
+            newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
+            newTileEntity.transform.scale = Tile.TILE_SIZE_UNSACLED / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
+            tile.addChild(newTileEntity, preservingWorldTransform: false)
             self.board.addChild(tile)
         }
     }

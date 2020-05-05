@@ -13,8 +13,9 @@ import CoreGraphics
 class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
-    static let SCALE: Float = 1
-    static let TILE_SIZE = SIMD3<Float>(0.5 * SCALE, 0.01 * SCALE, 0.5 * SCALE)
+    static let SCALE: Float = 0.25
+    static let TILE_SIZE_UNSACLED = SIMD3<Float>(0.5, 0.01, 0.5)
+    static let TILE_SIZE = Tile.TILE_SIZE_UNSACLED //* Tile.SCALE
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])
