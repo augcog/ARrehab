@@ -168,22 +168,6 @@ class TileGrid {
             }
         }
         cornerTile?.value.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
-        
-//        for i in xRange {
-//            for c in zRange {
-//                if (i == 0 || i == 2 || c == 0 || c == 5) {
-//                    let currentCoords = Tile.Coordinates(x: (cornerTile?.key.x)! - (Float(i) * Tile.TILE_SIZE.x), z: (cornerTile?.key.z)! - (Float(c) * rotationMultiplier * Tile.TILE_SIZE.z))
-//                    guard let currentTile = self.possibleTiles[currentCoords] else {
-//                        print("TILE DOESNT EXIST")
-//                        self.clearOutline()
-//                        return
-//                    }
-//                    currentTile.changeMaterials(materials: [TileGrid.outlineMaterial])
-//                    self.currentOutline.append(currentTile)
-//                }
-//            }
-//        }
-        
     }
     
     func clearOutline() {
