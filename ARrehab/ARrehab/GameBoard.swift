@@ -45,7 +45,7 @@ class GameBoard {
     //List of colors for random selection at time of initialization
     static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
     
-    static let rkTileScene = try? Experience.loadBox()
+    static let rkTileScene = try? TileScene.loadScene()
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
