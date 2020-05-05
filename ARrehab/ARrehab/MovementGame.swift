@@ -18,8 +18,6 @@ class MovementGame : Minigame {
     
     /// Collision group for the MovementTarget
     var targetCollisionGroup : CollisionGroup
-    /// Collision group for the player.
-    var playerCollisionGroup : CollisionGroup
     /// Collision subscriptions
     var subscriptions: [Cancellable] = []
     /// The player. As long as it collides with the target it counts.
@@ -49,11 +47,12 @@ class MovementGame : Minigame {
     }
     
     required init(num: Int) {
-        self.targetCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
-        self.playerCollisionGroup = CollisionGroup(rawValue: self.targetCollisionGroup.rawValue + 1)
+        //TODO: Find some way to not rely on generating a random integer
+        self.targetCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max))
         self.total = num
         // For our purposes, we placed the player as a 2 centimeter sphere around the camera.
-        self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:playerCollisionGroup, mask: targetCollisionGroup))
+        // TODO see if we even need to create this entity given that our player is already such an entity?
+        self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:Player.PLAYER_COLLISION_GROUP, mask: targetCollisionGroup))
         self.coachingState = .other
         super.init()
         self.progress = [0, 0]
@@ -82,7 +81,7 @@ class MovementGame : Minigame {
         
         // Create a target with a trigger time of 1 second
         let target = MovementTarget(delay: 1, reps: num, arrow: true)
-        target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
+        target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
         // Change the orientation to squating rather than to the left (the default target orientation).
         // This is done by rotating by 90 degrees counter clockwise about the z axis.
         target.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
@@ -92,7 +91,7 @@ class MovementGame : Minigame {
         
         // Create a target with a trigger time of 1 second
         let hardTarget = MovementTarget(delay: 1, reps: num, arrow: false)
-        hardTarget.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: self.playerCollisionGroup)
+        hardTarget.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
         // Change the orientation to squating rather than to the left
         hardTarget.transform.rotation = simd_quatf(angle: -.pi/2, axis: SIMD3<Float>(0,0,1))
         // Move the squat target down by 0.4 m.
