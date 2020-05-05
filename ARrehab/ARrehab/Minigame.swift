@@ -232,6 +232,11 @@ class MinigameController {
             print("No minigame active")
             return
         }
+        // Remove the Minigame's View Controller.
+        controller?.willMove(toParent: nil)
+        controller?.view.removeFromSuperview()
+        controller?.removeFromParent()
+        
         currentMinigame?.endGame()
         currentMinigame = nil
         cancellable.forEach { (subscription) in

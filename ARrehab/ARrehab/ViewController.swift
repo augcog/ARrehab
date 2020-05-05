@@ -63,8 +63,6 @@ class ViewController: UIViewController {
 //         })
 //         minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
         
-        
-/// Mark - Setup Minigame
 //        self.arView.scene.addAnchor(groundAncEntity)
 //        minigameController = MinigameController(ground: groundAncEntity, player: cameraEntity)
 //        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
@@ -72,33 +70,6 @@ class ViewController: UIViewController {
 //        }))
 //        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
     }
-    
-    
-//    /**
-//     Minigame switch logic.
-//     Switched on: a new game is created.
-//     Switched off: score is displayed and game is removed.
-//     */
-//    @objc func minigameSwitchStateChanged(switchState: UISwitch) {
-//        if switchState.isOn {
-//            let controller = minigameController.enableMinigame()
-//
-//            // Add the Minigame's View Controller as a subview programmatically.
-//            addChild(controller)
-//            // TODO Make a better frame depending on what UI elements are going to persist such that the Minigame Controller will not confict with the Persistent UI.
-//            var frame = self.view.frame.insetBy(dx: 0, dy: 100)
-//            controller.view.frame = frame
-//            self.view.addSubview(controller.view)
-//            controller.didMove(toParent: self)
-//        } else {
-//            // Remove the Minigame's View Controller.
-//            minigameController.controller?.willMove(toParent: nil)
-//            minigameController.controller?.view.removeFromSuperview()
-//            minigameController.controller?.removeFromParent()
-//
-//            minigameController.disableMinigame()
-//            }
-//        }
     
     private func startTracking() {
         //Define AR Configuration to detect horizontal surfaces
@@ -289,5 +260,37 @@ extension ViewController {
             
             planeAnchorEntity.addChild(modelEntity)
         }
+    }
+}
+
+/**
+ Minigame Helper Functions
+ */
+extension ViewController {
+    /**
+     Minigame switch logic.
+     Switched on: a new game is created.
+     Switched off: score is displayed and game is removed.
+     */
+    @objc func minigameSwitchStateChanged(switchState: UISwitch) {
+        if switchState.isOn {
+            let controller = minigameController.enableMinigame()
+            addController(controller: controller)
+        } else {
+            minigameController.disableMinigame()
+        }
+    }
+    
+    /**
+     Adds the controller as a subview programmatically.
+     */
+    private func addController(controller: UIViewController) {
+        // Add the View Controller as a subview programmatically.
+        addChild(controller)
+        // TODO Make a better frame depending on what UI elements are going to persist such that the Minigame Controller will not confict with the Persistent UI.
+        var frame = self.view.frame.insetBy(dx: 0, dy: 100)
+        controller.view.frame = frame
+        self.view.addSubview(controller.view)
+        controller.didMove(toParent: self)
     }
 }

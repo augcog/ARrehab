@@ -185,10 +185,7 @@ class MovementTarget : Entity, HasModel, HasCollision {
     let uncompleteMaterial = UnlitMaterial(color: UIColor.gray.withAlphaComponent(0.7))
     /// Material to use when the timer is counting down
     let inProgressMaterial = UnlitMaterial(color: UIColor.yellow.withAlphaComponent(0.5))
-//    /// A text model with the timer attached
-//    let timerEntity: ModelEntity
-//    /// A timer that updates the timerEntity.
-//    var timer:Timer?    //TODO: Consdsider switching from timer directly into the update frame.
+    /// Number of reps to do.
     var reps: Int
     
     var state: MovementState
@@ -201,7 +198,6 @@ class MovementTarget : Entity, HasModel, HasCollision {
     required init(delay: Double = 0, reps: Int, arrow: Bool) {
         self.state = .up
         self.delay = delay
-        // Set the timer to delay seconds
         self.reps = reps
         super.init()
         // Create the collision box of this target and shift the box to the left by half the width such that (0,0,0) lies on the edge of the box.
