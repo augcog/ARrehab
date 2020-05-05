@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/woojinko/research/ARHealthCare/ARrehab/ARrehab/ARrehab/background.rcproject">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/woojinko/research/ARHealthCare/ARrehab/ARrehab/ARrehab/TileScene.rcproject">
-   </FileRef>
-   <FileRef
       location = "self:">
    </FileRef>
 </Workspace>

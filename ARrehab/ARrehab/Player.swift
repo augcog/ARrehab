@@ -14,7 +14,7 @@ class Player : TileCollider, HasModel, HasAnchoring {
     
     static let PLAYER_COLLISION_GROUP = CollisionGroup(rawValue: 2)
     
-    var onTile: Tile!
+    var onTile: Tile?
         
     required init(target: AnchoringComponent.Target) {
         super.init()
@@ -28,15 +28,15 @@ class Player : TileCollider, HasModel, HasAnchoring {
     
     override func onCollisionBegan(tile: Tile) {
         self.onTile = tile
-        self.onTile.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
-        super.onCollisionBegan(tile: tile)
+        print("CURRENTLY ON:",onTile?.tileName)
+        self.onTile!.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
+        //super.onCollisionBegan(tile: tile)
     }
     
     override func onCollisionEnded(tile: Tile) {
-        if tile != self.onTile {
-            tile.changeMaterials(materials: [SimpleMaterial(color: .clear, isMetallic: false)])
-        }
-        super.onCollisionEnded(tile: tile)
+        //print("CURRENTLY ON:",onTile?.tileName)
+        tile.changeMaterials(materials: [SimpleMaterial(color: .clear, isMetallic: false)])
+        //super.onCollisionEnded(tile: tile)
     }
 }
 

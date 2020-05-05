@@ -66,23 +66,27 @@ class Tile : Entity, HasModel, HasCollision {
 extension Tile {
     
     struct Coordinates : Hashable, Equatable {
+        
         var x : Float
         var z : Float
+        var coordVec : SIMD2<Float>
+        
+        init(x: Float, z: Float) {
+            self.x = x
+            self.z = z
+            self.coordVec = SIMD2(x, z)
+        }
+        
     }
     
     //Adjusts the translation of the tiles so that the appropriate vertex of the tile is at the coordinates it is initialized with (rather than the center)
     static func adjustTransformTranslation(coords: Coordinates) -> SIMD3<Float> {
+       
         let yTranslation: Float = 0
-        var xTranslation: Float
-        var zTranslation: Float
+        let xTranslation: Float = coords.x - (Tile.TILE_SIZE.x / 2)
+        let zTranslation: Float = coords.z - (Tile.TILE_SIZE.z / 2)
         
-        if coords.x >= 0 {xTranslation = coords.x - (Tile.TILE_SIZE.x / 2)}
-        else {xTranslation = coords.x + (Tile.TILE_SIZE.x / 2)}
-        
-        if coords.z >= 0 {zTranslation = coords.z - (Tile.TILE_SIZE.z / 2)}
-        else {zTranslation = coords.z + (Tile.TILE_SIZE.z / 2)}
-        
-        return SIMD3(xTranslation, yTranslation, zTranslation)
+        return SIMD3<Float>(xTranslation, yTranslation, zTranslation)
     }
     
     //Changes the material list of the tile's Model Component

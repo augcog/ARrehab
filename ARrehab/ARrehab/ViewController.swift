@@ -168,7 +168,7 @@ extension ViewController: ARSessionDelegate {
             }
                 
             else if (self.playerEntity.onTile != nil) {
-                self.tileGrid?.updateBoardOutline(centerTile: self.playerEntity.onTile)
+                self.tileGrid?.updateBoardOutline(centerTile: self.playerEntity.onTile!)
             }
             
         }
@@ -189,7 +189,6 @@ extension ViewController {
         case mapped
         case placed
     }
-    
     
     //Checks if plane is valid surface, according to x and z extent
     func isValidSurface(plane: ARPlaneAnchor) -> Bool {
@@ -222,7 +221,7 @@ extension ViewController {
             }
             
             let planeModel = ModelEntity()
-            planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
+            planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
             planeModel.transform.translation = planeAnchor.center
             planeAnchorEntity.addChild(planeModel)
             
@@ -263,7 +262,7 @@ extension ViewController {
             
             planeAnchorEntity.children.replaceAll(newBoundaries)
             
-            let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue.withAlphaComponent(CGFloat(0.1)), isMetallic: true)])
+            let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
             modelEntity.transform.translation = planeAnchor.center
             
             planeAnchorEntity.addChild(modelEntity)

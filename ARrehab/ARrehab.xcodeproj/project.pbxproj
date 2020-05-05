@@ -27,6 +27,7 @@
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
 		19CF4E14245EA49700EC7177 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */; };
+		19EA85F624612467002A65C2 /* TileScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 19EA85F524612467002A65C2 /* TileScene.rcproject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManipulation.swift; sourceTree = "<group>"; };
+		19EA85F524612467002A65C2 /* TileScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = TileScene.rcproject; path = ../../../../TileScene.rcproject; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				19B173692403475400845819 /* Tile.swift */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
+				19EA85F524612467002A65C2 /* TileScene.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EA85F624612467002A65C2 /* TileScene.rcproject in Sources */,
 				19CF4E14245EA49700EC7177 /* (null) in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				19989C3D244AA617001C1C7F /* GenerateBoardButton.swift in Sources */,
