@@ -44,10 +44,10 @@ class GameBoard {
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
-    //var games: [Tile:Minigame] = [:]
+    var gamesDict: [Tile:Game] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor) {
-        
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
+       
         self.surfaceAnchor = surfaceAnchor
         
         for tile in tiles {
@@ -60,35 +60,41 @@ class GameBoard {
         DispatchQueue.main.async {
             self.generateBoard()
         }
-        //assignGames(games: nil)
+        assignGames(games: games)
     }
-    
-    /*
-     init(tiles: [Tile], anchor: ARAnchor, games: [Minigame]) {
-        self.tiles = tiles
-        //assignGames(games: games)
-        generateBoard()
-    }
-     */
     
     /* Adds every tile in self.tilesDict to the self.board AnchorEntity, modifying aesthetics as desired */
     private func generateBoard() {
         for tile in self.tilesDict.values {
-            // TODO Design choice should we load the block as a model for the tile or as a separate entity?
+            //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
+            // FIXME load the models directly into tile. Assert that the mesh is actually the size of the model.
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
-            newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
-            newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
-            tile.addChild(newTileEntity, preservingWorldTransform: false)
-            tile.model = nil
+            //newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
+            //newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
+            //tile.addChild(newTileEntity, preservingWorldTransform: false)
+            tile.model = newTileEntity.model
+            tile.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
+            tile.collision?.shapes = [ShapeResource.generateBox(width: tile.model?.mesh.bounds.extents[0] ?? Tile.TILE_SIZE.x, height: 4.0 / tile.transform.scale.y, depth: tile.model?.mesh.bounds.extents[2] ?? Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2 / tile.transform.scale.y,0))]
             self.board.addChild(tile)
         }
     }
     
-    /*
-     private func assignGames(games: [Minigame]) {
-        
+    private func assignGames(games: [Game]) {
+        for (coord, tile) in tilesDict {
+            gamesDict[tile] = games.randomElement()
+            if (gamesDict[tile] == nil) {
+                continue
+            } else {
+                let icon = gamesDict[tile]!.icon
+                let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z)
+                // TODO For some reason the scaling isn't quite scaling down as far as I'd like...
+                let scale = tileRadius / (icon.model?.mesh.bounds.boundingRadius ?? tileRadius)
+                icon.scale = SIMD3<Float>(scale, scale, scale) / tile.scale
+                icon.transform.translation.y = Tile.TILE_SIZE.y
+                tile.addChild(icon)
+            }
+        }
     }
-     */
     
     func addBoardToScene(arView: ARView) {
         print("Trying")
