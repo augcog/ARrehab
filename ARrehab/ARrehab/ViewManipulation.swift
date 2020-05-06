@@ -35,17 +35,7 @@ extension ViewController {
         self.gameBoard?.addBoardToScene(arView: self.arView)
         self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
         
-        minigameController = MinigameController(ground: self.gameBoard!.board.clone(recursive: false), player: self.playerEntity)
-        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
-            self.minigameLabel.text = String(format:"Score: %0.0f", score)
-        }))
-        
-        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
-        minigameLabel.isHidden = false
-        minigameSwitch.isHidden = false
-        minigameSwitch.setOn(false, animated: false)
-        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
-        addCollision()
+        setupMinigames()
     }
     
     func addRbButton() {

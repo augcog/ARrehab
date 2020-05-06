@@ -105,12 +105,12 @@ class TraceGame : Minigame {
         self.getLaser().addCollision()
         self.getLaser().isEnabled = true
         assert(self.getLaser().isActive == true, "Warning Laser is not active")
-//        for child in self.children {
-//            if let tracePoint = child as? TracePoint {
-//                tracePoint.active = true
-//                assert(tracePoint.isActive == true, "Warning tracePoint is not active")
-//            }
-//        }
+        for child in self.children {
+            if let tracePoint = child as? TracePoint {
+                tracePoint.active = true
+                assert(tracePoint.isActive == true, "Warning tracePoint is not active")
+            }
+        }
         return true
     }
     
