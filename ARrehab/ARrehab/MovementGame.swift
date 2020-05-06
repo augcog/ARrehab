@@ -57,9 +57,7 @@ class MovementGame : Minigame {
         super.init()
         self.progress = [0, 0]
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-            print("Timer loop running")
             self.progress[1] = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
-            print("Progress array access complete")
             var stateIsDown : MovementState? = nil
             self.children.forEach { (entity) in
                 guard let target = entity as? MovementTarget else {

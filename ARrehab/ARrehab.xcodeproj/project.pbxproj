@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		15264C962404DA4B00E4F2BB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15264C952404DA4A00E4F2BB /* Player.swift */; };
-		153C59E0245969EF00945D46 /* SwiftyGif in Frameworks */ = {isa = PBXBuildFile; productRef = 153C59DF245969EF00945D46 /* SwiftyGif */; };
 		1572133D2462009D006E6BBC /* Block.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1572133C2462009D006E6BBC /* Block.usdz */; };
 		157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE5802452C4DA00BE7809 /* Deer.usdz */; };
 		157AE5832455749400BE7809 /* Fox.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE5822455749400BE7809 /* Fox.usdz */; };
@@ -121,7 +120,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				15B4A78F245DF51B005CC9EC /* MultiProgressView in Frameworks */,
-				153C59E0245969EF00945D46 /* SwiftyGif in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +248,6 @@
 			);
 			name = ARrehab;
 			packageProductDependencies = (
-				153C59DF245969EF00945D46 /* SwiftyGif */,
 				15B4A78E245DF51B005CC9EC /* MultiProgressView */,
 			);
 			productName = ARrehab;
@@ -326,7 +323,6 @@
 			);
 			mainGroup = 159A41E023F49283000A5376;
 			packageReferences = (
-				153C59DE245969EF00945D46 /* XCRemoteSwiftPackageReference "SwiftyGif" */,
 				15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */,
 			);
 			productRefGroup = 159A41EA23F49283000A5376 /* Products */;
@@ -749,14 +745,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		153C59DE245969EF00945D46 /* XCRemoteSwiftPackageReference "SwiftyGif" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kirualex/SwiftyGif.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
-			};
-		};
 		15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-gallagher/MultiProgressView.git";
@@ -768,11 +756,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		153C59DF245969EF00945D46 /* SwiftyGif */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 153C59DE245969EF00945D46 /* XCRemoteSwiftPackageReference "SwiftyGif" */;
-			productName = SwiftyGif;
-		};
 		15B4A78E245DF51B005CC9EC /* MultiProgressView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */;

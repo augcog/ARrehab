@@ -28,16 +28,23 @@ extension ViewController {
     
     @objc func pbButtonClicked(sender: UIButton) {
         print("Button Clicked")
-        guard self.boardState == .mapped else {return}
+        guard self.boardState == .mapped else {
+            print("Not Mapped")
+            return
+        }
         self.boardState = .placed
-        guard (self.playerEntity.onTile != nil) else {return}
+        guard (self.playerEntity.onTile != nil) else {
+            print("Not on a tile")
+            return
+        }
         self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
         self.gameBoard?.addBoardToScene(arView: self.arView)
         self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
         self.activeButtons.forEach { (button) in
             button.removeFromSuperview()
         }
-        setupMinigames()
+        setupMinigames(ground: self.gameBoard!.board.clone(recursive: false))
+//        setupMinigames(ground: self.gameBoard!.board)
     }
     
     func addRbButton() {
