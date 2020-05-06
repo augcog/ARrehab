@@ -293,10 +293,10 @@ extension ViewController {
             }
             guard let gameType : Game = self.gameBoard?.gamesDict[tile] else {return}
             self.gameBoard?.gamesDict[tile] = nil
-            let controller = self.minigameController.enableMinigame(game: gameType)
-            self.addController(controller: controller)
             self.gameBoard?.board.isEnabled = false
             self.minigameController.ground.isEnabled = true
+            let controller = self.minigameController.enableMinigame(game: gameType)
+            self.addController(controller: controller)
             self.minigameSwitch.setOn(true, animated: true)
         })
     }

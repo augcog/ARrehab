@@ -70,12 +70,14 @@ class GameBoard {
     private func generateBoard() {
         for tile in self.tilesDict.values {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
-            // FIXME load the models directly into tile.
+            // FIXME load the models directly into tile. Assert that the mesh is actually the size of the model.
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
-            newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
-            newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
-            tile.addChild(newTileEntity, preservingWorldTransform: false)
-            tile.model = nil
+            //newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
+            //newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
+            //tile.addChild(newTileEntity, preservingWorldTransform: false)
+            tile.model = newTileEntity.model
+            tile.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
+            tile.collision?.shapes = [ShapeResource.generateBox(width: tile.model?.mesh.bounds.extents[0] ?? Tile.TILE_SIZE.x, height: 4.0 / tile.transform.scale.y, depth: tile.model?.mesh.bounds.extents[2] ?? Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2 / tile.transform.scale.y,0))]
             self.board.addChild(tile)
         }
     }
@@ -90,7 +92,7 @@ class GameBoard {
                 let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z)
                 // TODO For some reason the scaling isn't quite scaling down as far as I'd like...
                 let scale = tileRadius / (icon.model?.mesh.bounds.boundingRadius ?? tileRadius)
-                icon.scale = SIMD3<Float>(scale, scale, scale)
+                icon.scale = SIMD3<Float>(scale, scale, scale) / tile.scale
                 icon.transform.translation.y = Tile.TILE_SIZE.y
                 tile.addChild(icon)
             }

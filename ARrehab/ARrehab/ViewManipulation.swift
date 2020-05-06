@@ -45,6 +45,7 @@ extension ViewController {
         minigameSwitch.isHidden = false
         minigameSwitch.setOn(false, animated: false)
         minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
+        addCollision()
     }
     
     func addRbButton() {

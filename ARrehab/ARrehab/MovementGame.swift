@@ -120,12 +120,12 @@ class MovementGame : Minigame {
         self.addCollision()
         self.getPlayerCollisionEntity().isEnabled = true
         assert(self.getPlayerCollisionEntity().isActive == true, "Warning PlayerCollisionEntity is not active")
-        for child in self.children {
-            if let entity = child as? MovementTarget {
-                entity.active = true
-                assert(entity.isActive == true, "Warning MovementTarget is not active")
-            }
-        }
+//        for child in self.children {
+//            if let entity = child as? MovementTarget {
+//                entity.active = true
+//                assert(entity.isActive == true, "Warning MovementTarget is not active")
+//            }
+//        }
         self.coachingState = .down
         return true
     }
