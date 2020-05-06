@@ -34,6 +34,11 @@ extension ViewController {
         self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
         self.gameBoard?.addBoardToScene(arView: self.arView)
         self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
+        
+        minigameController = MinigameController(ground: self.gameBoard!.board.clone(recursive: false), player: self.playerEntity)
+        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
+            self.minigameLabel.text = String(format:"Score: %0.0f", score)
+        }))
     }
     
     func addRbButton() {

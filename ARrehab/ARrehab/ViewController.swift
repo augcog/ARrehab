@@ -50,24 +50,8 @@ class ViewController: UIViewController {
         arView.session.delegate = self
         startTracking()
         
-        //Set up the player entity
-        //arView.scene.addAnchor(playerEntity)
-        //playerEntity.addCollision()
-        
         //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
 //         minigameSwitch.setOn(false, animated: false)
-//         //groundAncEntity is the ground ARAnchorEntity of the board.
-//         minigameController = MinigameController(ground: groundAncEntity.copy(recursive: false), player: playerEntity)
-//         scoreSubscriber = minigameController.$score.sink(receiveValue: { (score) in
-//             self.minigameLabel.text = String(format:"Score: %0.0f", score)
-//         })
-//         minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
-        
-//        self.arView.scene.addAnchor(groundAncEntity)
-//        minigameController = MinigameController(ground: groundAncEntity, player: cameraEntity)
-//        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
-//            self.minigameLabel.text = String(format:"Score: %0.0f", score)
-//        }))
 //        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
     }
     

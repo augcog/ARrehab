@@ -43,16 +43,14 @@ class GameBoard {
     
     //List of colors for random selection at time of initialization
     static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
-    
-//    static let rkTileScene = try? TileScene.loadScene()
-    
+        
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
-    //var games: [Tile:Minigame] = [:]
+    var gamesDict: [Tile:Minigame.Type] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor) {
-        
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Minigame.Type] = [TraceGame.self, MovementGame.self]) {
+       
         self.surfaceAnchor = surfaceAnchor
         
         for tile in tiles {
@@ -65,16 +63,8 @@ class GameBoard {
         DispatchQueue.main.async {
             self.generateBoard()
         }
-        //assignGames(games: nil)
+        assignGames(games: games)
     }
-    
-    /*
-     init(tiles: [Tile], anchor: ARAnchor, games: [Minigame]) {
-        self.tiles = tiles
-        //assignGames(games: games)
-        generateBoard()
-    }
-     */
     
     /* Assigns every tile in self.tiles a random color and adds it to the self.board AnchorEntity */
     private func generateBoard() {
@@ -90,11 +80,21 @@ class GameBoard {
         }
     }
     
-    /*
-     private func assignGames(games: [Minigame]) {
-        
+    private func assignGames(games: [Minigame.Type]) {
+        for (coord, tile) in tilesDict {
+            gamesDict[tile] = games.randomElement()
+            if (gamesDict[tile] == nil) {
+                continue
+            } else {
+                let icon = gamesDict[tile]!.icon
+                let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z)
+                let scale = tileRadius / (icon.model?.mesh.bounds.boundingRadius ?? tileRadius)
+                icon.scale = SIMD3<Float>(scale, scale, scale)
+                icon.transform.translation.y = Tile.TILE_SIZE.y
+                tile.addChild(icon)
+            }
+        }
     }
-     */
     
     func addBoardToScene(arView: ARView) {
         print("Trying")
