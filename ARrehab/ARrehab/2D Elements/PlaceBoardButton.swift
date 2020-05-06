@@ -1,5 +1,5 @@
 //
-//  GenerateBoardButton.swift
+//  PlaceBoardButton.swift
 //  ARrehab
 //
 //  Created by Sanath Sengupta on 4/17/20.

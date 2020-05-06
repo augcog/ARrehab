@@ -80,10 +80,12 @@ class GameBoard {
     private func generateBoard() {
         for tile in self.tilesDict.values {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
+            // TODO Design choice should we load the block as a model for the tile or as a separate entity?
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
             newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
             newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
             tile.addChild(newTileEntity, preservingWorldTransform: false)
+            tile.model = nil
             self.board.addChild(tile)
         }
     }

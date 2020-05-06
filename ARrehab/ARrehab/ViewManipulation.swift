@@ -28,10 +28,12 @@ extension ViewController {
     
     @objc func pbButtonClicked(sender: UIButton) {
         print("Button Clicked")
+        guard self.boardState == .mapped else {return}
         self.boardState = .placed
         guard (self.playerEntity.onTile != nil) else {return}
         self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
         self.gameBoard?.addBoardToScene(arView: self.arView)
+        self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
     }
     
     func addRbButton() {
