@@ -13,12 +13,12 @@ import CoreGraphics
 class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
-    static let SCALE: Float = 0.25
-    static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5) * Tile.SCALE
+    static let SCALE: Float = 1
+    static let TILE_SIZE = SIMD3<Float>(0.5 / SCALE, 0.01, 0.5 / SCALE)
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])
-    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: Tile.TILE_SIZE.x, height: 4.0, depth: Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2,0))], mode: .trigger, filter: CollisionFilter(group: Tile.TILE_COLLISION_GROUP, mask: Player.PLAYER_COLLISION_GROUP))
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: Tile.TILE_SIZE.x, height: 4.0, depth: Tile.TILE_SIZE.z)], mode: .trigger, filter: CollisionFilter(group: Tile.TILE_COLLISION_GROUP, mask: Player.PLAYER_COLLISION_GROUP))
 
     
     //Instance variables

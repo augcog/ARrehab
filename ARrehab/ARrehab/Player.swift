@@ -42,7 +42,7 @@ class Player : TileCollider, HasModel, HasAnchoring {
 
 class TileCollider : Entity, HasCollision {
     
-    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.0, height: 0.0, depth: 0.0)], mode: .trigger, filter: CollisionFilter(group: .default, mask: Tile.TILE_COLLISION_GROUP))
+    static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.0, height: 0.1 / Tile.SCALE, depth: 0.0)], mode: .trigger, filter: CollisionFilter(group: .default, mask: Tile.TILE_COLLISION_GROUP))
     
     var subscriptions: [Cancellable] = []
 
