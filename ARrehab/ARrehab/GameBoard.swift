@@ -49,7 +49,7 @@ class GameBoard {
     var surfaceAnchor: ARPlaneAnchor
     var gamesDict: [Tile:Game] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.movement]) {
        
         self.surfaceAnchor = surfaceAnchor
         

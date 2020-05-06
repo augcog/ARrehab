@@ -53,11 +53,13 @@ class MovementGame : Minigame {
         // For our purposes, we placed the player as a 2 centimeter sphere around the camera.
         // TODO see if we even need to create this entity given that our player is already such an entity?
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:Player.PLAYER_COLLISION_GROUP, mask: targetCollisionGroup))
-        self.coachingState = .other
+        self.coachingState = .up
         super.init()
         self.progress = [0, 0]
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+            print("Timer loop running")
             self.progress[1] = (-self.playerCollisionEntity.convert(position: SIMD3<Float>(0,0,0), to: self).y)/0.4
+            print("Progress array access complete")
             var stateIsDown : MovementState? = nil
             self.children.forEach { (entity) in
                 guard let target = entity as? MovementTarget else {

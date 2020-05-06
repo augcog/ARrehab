@@ -34,7 +34,9 @@ extension ViewController {
         self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
         self.gameBoard?.addBoardToScene(arView: self.arView)
         self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
-        
+        self.activeButtons.forEach { (button) in
+            button.removeFromSuperview()
+        }
         setupMinigames()
     }
     
