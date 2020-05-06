@@ -50,9 +50,8 @@ class ViewController: UIViewController {
         arView.session.delegate = self
         startTracking()
         
-        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
-//         minigameSwitch.setOn(false, animated: false)
-//        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
+        minigameSwitch.isHidden = true
+        minigameLabel.isHidden = true
     }
     
     private func startTracking() {
@@ -153,8 +152,8 @@ extension ViewController: ARSessionDelegate {
     
 }
 
-/*
- Helper functions
+/**
+ Board Generation Helper functions
  */
 extension ViewController {
     
@@ -258,10 +257,12 @@ extension ViewController {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            let controller = minigameController.enableMinigame()
-            addController(controller: controller)
+//            let controller = minigameController.enableMinigame()
+//            addController(controller: controller)
         } else {
             minigameController.disableMinigame()
+            self.minigameController.ground.isEnabled = false
+            self.gameBoard?.board.isEnabled = true
         }
     }
     
@@ -277,4 +278,27 @@ extension ViewController {
         self.view.addSubview(controller.view)
         controller.didMove(toParent: self)
     }
+}
+
+/**
+Switching between Board and Minigame
+ */
+extension ViewController {
+    func addCollision() {
+        let scene = self.arView.scene
+        self.subscribers.append(scene.subscribe(to: CollisionEvents.Began.self, on: self.playerEntity) { event in
+            print("Collision")
+            guard let tile = event.entityB as? Tile else {
+                return
+            }
+            guard let gameType : Game = self.gameBoard?.gamesDict[tile] else {return}
+            self.gameBoard?.gamesDict[tile] = nil
+            let controller = self.minigameController.enableMinigame(game: gameType)
+            self.addController(controller: controller)
+            self.gameBoard?.board.isEnabled = false
+            self.minigameController.ground.isEnabled = true
+            self.minigameSwitch.setOn(true, animated: true)
+        })
+    }
+    
 }

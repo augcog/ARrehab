@@ -47,9 +47,9 @@ class GameBoard {
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
-    var gamesDict: [Tile:Minigame.Type] = [:]
+    var gamesDict: [Tile:Game] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Minigame.Type] = [TraceGame.self, MovementGame.self]) {
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
        
         self.surfaceAnchor = surfaceAnchor
         
@@ -70,7 +70,7 @@ class GameBoard {
     private func generateBoard() {
         for tile in self.tilesDict.values {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
-            // TODO Design choice should we load the block as a model for the tile or as a separate entity?
+            // FIXME load the models directly into tile.
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
             newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
             newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
@@ -80,7 +80,7 @@ class GameBoard {
         }
     }
     
-    private func assignGames(games: [Minigame.Type]) {
+    private func assignGames(games: [Game]) {
         for (coord, tile) in tilesDict {
             gamesDict[tile] = games.randomElement()
             if (gamesDict[tile] == nil) {
@@ -88,6 +88,7 @@ class GameBoard {
             } else {
                 let icon = gamesDict[tile]!.icon
                 let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z)
+                // TODO For some reason the scaling isn't quite scaling down as far as I'd like...
                 let scale = tileRadius / (icon.model?.mesh.bounds.boundingRadius ?? tileRadius)
                 icon.scale = SIMD3<Float>(scale, scale, scale)
                 icon.transform.translation.y = Tile.TILE_SIZE.y

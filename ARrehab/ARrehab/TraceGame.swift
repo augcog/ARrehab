@@ -39,16 +39,6 @@ class TraceGame : Minigame {
     /// List of target types to try and load.
     var targets : [TraceTargetType] = [.fox, .bear, .puffer]
     
-    override class var icon : ModelEntity {
-        get {
-            do {
-                return try Entity.loadModel(named: TraceTargetType.bear.modelName)
-            } catch {
-                return super.icon
-            }
-        }
-    }
-    
     required init() {
         self.pointCollisionGroup = CollisionGroup(rawValue: UInt32.random(in: UInt32.min...UInt32.max)) //TODO: Find some way to not rely on generating a random integer
         self.laserCollisionGroup = CollisionGroup(rawValue: self.pointCollisionGroup.rawValue+1)

@@ -39,6 +39,12 @@ extension ViewController {
         subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
             self.minigameLabel.text = String(format:"Score: %0.0f", score)
         }))
+        
+        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
+        minigameLabel.isHidden = false
+        minigameSwitch.isHidden = false
+        minigameSwitch.setOn(false, animated: false)
+        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
     }
     
     func addRbButton() {

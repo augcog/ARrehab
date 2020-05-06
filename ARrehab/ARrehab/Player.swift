@@ -58,13 +58,13 @@ class TileCollider : Entity, HasCollision {
                 return
             }
             self.onCollisionBegan(tile: tile)
-            })
+        })
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionEnded(tile: tile)
-            })
+        })
     }
     
     func onCollisionBegan(tile: Tile) {

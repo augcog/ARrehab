@@ -33,6 +33,23 @@ enum Game : CaseIterable {
             return MovementGame(num: 3)
         }
     }
+    
+    /// Preview Icon to be attached to each host tile.
+    var icon : ModelEntity {
+        get {
+            do{
+                switch self {
+                case .trace:
+                    return try Entity.loadModel(named: TraceTargetType.bear.modelName)
+                default:
+                    return ModelEntity(mesh: MeshResource.generateSphere(radius: 0.1), materials: [SimpleMaterial(color: .darkGray, isMetallic: false)])
+                }
+            }
+            catch {
+                return ModelEntity(mesh: MeshResource.generateSphere(radius: 0.1), materials: [SimpleMaterial(color: .darkGray, isMetallic: false)])
+            }
+        }
+    }
 }
 
 /**
@@ -47,12 +64,6 @@ class Minigame : Entity {
     @Published var progress : [Float]
     /// View Controller of the Minigame 2D UI
     var viewController : MinigameViewController!
-    /// Preview Icon to be attached to each host tile.
-    class var icon : ModelEntity {
-        get {
-            return ModelEntity(mesh: MeshResource.generateSphere(radius: 0.1), materials: [SimpleMaterial(color: .darkGray, isMetallic: false)])
-        }
-    }
     
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
