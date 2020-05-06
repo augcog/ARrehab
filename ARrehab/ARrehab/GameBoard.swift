@@ -41,11 +41,6 @@ class GameBoard {
     static let EXTENT1 : Float = Float(GameBoard.DIMENSIONS.0) * Tile.TILE_SIZE.x
     static let EXTENT2 : Float = Float(GameBoard.DIMENSIONS.1) * Tile.TILE_SIZE.z
     
-    //List of colors for random selection at time of initialization
-    static let colorList : [Material] = [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.red, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.green, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.magenta, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.purple, isMetallic: false), SimpleMaterial(color: SimpleMaterial.Color.cyan, isMetallic: false)]
-    
-//    static let rkTileScene = try? TileScene.loadScene()
-    
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
@@ -76,10 +71,9 @@ class GameBoard {
     }
      */
     
-    /* Assigns every tile in self.tiles a random color and adds it to the self.board AnchorEntity */
+    /* Adds every tile in self.tilesDict to the self.board AnchorEntity, modifying aesthetics as desired */
     private func generateBoard() {
         for tile in self.tilesDict.values {
-            //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
             // TODO Design choice should we load the block as a model for the tile or as a separate entity?
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
             newTileEntity.transform.translation = SIMD3<Float>(0,0,0)

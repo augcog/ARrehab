@@ -13,7 +13,7 @@ import CoreGraphics
 class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
-    static let SCALE: Float = 0.25
+    static let SCALE: Float = 1.00
     static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5) * Tile.SCALE
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    
@@ -40,17 +40,13 @@ class Tile : Entity, HasModel, HasCollision {
         print("Generated Tile: " + name)
     }
     
-    //Optional initializer: Allows specification of custom model components and translation adjustment
-    convenience init(name: String, x: Float, z: Float, materials: [Material]?, adjustTranslation: Bool = false) {
+    //Optional initializer: Allows specification of custom model components
+    convenience init(name: String, x: Float, z: Float, materials: [Material]?) {
         
         self.init(name: name, x: x, z: z)
         
         if materials != nil {
             self.changeMaterials(materials: materials!)
-        }
-        
-        if adjustTranslation {
-            self.transform.translation = Tile.adjustTransformTranslation(coords: self.coords)
         }
         
         print("Generated Tile: " + name)
@@ -77,16 +73,6 @@ extension Tile {
             self.coordVec = SIMD2(x, z)
         }
         
-    }
-    
-    //Adjusts the translation of the tiles so that the appropriate vertex of the tile is at the coordinates it is initialized with (rather than the center)
-    static func adjustTransformTranslation(coords: Coordinates) -> SIMD3<Float> {
-       
-        let yTranslation: Float = 0
-        let xTranslation: Float = coords.x - (Tile.TILE_SIZE.x / 2)
-        let zTranslation: Float = coords.z - (Tile.TILE_SIZE.z / 2)
-        
-        return SIMD3<Float>(xTranslation, yTranslation, zTranslation)
     }
     
     //Changes the material list of the tile's Model Component
