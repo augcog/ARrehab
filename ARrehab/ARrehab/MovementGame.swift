@@ -53,7 +53,7 @@ class MovementGame : Minigame {
         // For our purposes, we placed the player as a 2 centimeter sphere around the camera.
         // TODO see if we even need to create this entity given that our player is already such an entity?
         self.playerCollisionEntity = TriggerVolume(shape: ShapeResource.generateSphere(radius: 0.01), filter: CollisionFilter(group:Player.PLAYER_COLLISION_GROUP, mask: targetCollisionGroup))
-        self.coachingState = .other
+        self.coachingState = .up
         super.init()
         self.progress = [0, 0]
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in

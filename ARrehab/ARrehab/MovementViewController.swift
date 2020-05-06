@@ -20,7 +20,7 @@ class MovementGameViewController : MinigameViewController {
     @IBOutlet var coachImageView: UIImageView!
     /// Progress subscribers
     var subscribers: [Cancellable] = []
-    
+
     private let backgroundView: UIView = {
         let view = PassThroughView()
         return view
@@ -125,12 +125,12 @@ class MovementGameViewController : MinigameViewController {
 //            setupStackView()
         }
     }
-    
+
     func addMinigameSubscriber() {
         guard minigame != nil else {
             return
         }
-        
+
         subscribers.append(minigame!.$progress.sink(receiveValue: { (progress) in
             self.animateProgress(progress: progress)
         }))
@@ -141,20 +141,20 @@ class MovementGameViewController : MinigameViewController {
     }
 }
 
-//MARK: - UtilityFunctions
+// MARK: - UtilityFunctions
 extension MovementGameViewController {
     func minigame() -> MovementGame {
         return self.minigame as! MovementGame
     }
 }
 
-//MARK: - MultiProgressViewDataSource
+// MARK: - MultiProgressViewDataSource
 
 extension MovementGameViewController: MultiProgressViewDataSource {
     public func numberOfSections(in progressBar: MultiProgressView) -> Int {
         return 1
     }
-    
+
     public func progressView(_ progressView: MultiProgressView, viewForSection section: Int) -> ProgressViewSection {
         let bar = ProgressViewSection()
         // FIXME
@@ -166,7 +166,7 @@ extension MovementGameViewController: MultiProgressViewDataSource {
 // MARK: - MultiProgressViewDelegate
 
 extension MovementGameViewController: MultiProgressViewDelegate {
-    
+
     func progressView(_ progressView: MultiProgressView, didTapSectionAt index: Int) {
         print("Tapped section \(index)")
     }

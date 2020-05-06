@@ -41,6 +41,8 @@ enum Game : CaseIterable {
                 switch self {
                 case .trace:
                     return try Entity.loadModel(named: TraceTargetType.bear.modelName)
+                case .movement:
+                    return ModelEntity(mesh: MeshResource.generateText("M"), materials:[SimpleMaterial(color: .orange, isMetallic: false)])
                 default:
                     return ModelEntity(mesh: MeshResource.generateSphere(radius: 0.1), materials: [SimpleMaterial(color: .darkGray, isMetallic: false)])
                 }
@@ -228,7 +230,9 @@ class MinigameController {
              print("A Minigame is already active!")
             return self.controller!
         }
+        print("Enabling", game)
         currentMinigame = game.makeNewInstance()
+        print("Subscribing to score")
         cancellable.append(currentMinigame!.$score.sink{ score in
             guard self.currentMinigame != nil else {
                 self.score = 0.0
@@ -236,8 +240,11 @@ class MinigameController {
             }
             self.score = score
         })
+        print("Attaching")
         currentMinigame!.attach(ground: ground, player: player)
+        print("Running")
         currentMinigame!.run()
+        print("Returning controller")
         return self.controller!
     }
     
@@ -249,6 +256,7 @@ class MinigameController {
             print("No minigame active")
             return
         }
+        
         // Remove the Minigame's View Controller.
         controller?.willMove(toParent: nil)
         controller?.view.removeFromSuperview()

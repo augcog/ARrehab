@@ -13,7 +13,7 @@ import CoreGraphics
 class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
-    static let SCALE: Float = 1.00
+    static let SCALE: Float = 0.5
     static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5) * Tile.SCALE
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    

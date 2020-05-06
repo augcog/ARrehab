@@ -130,6 +130,9 @@ extension ViewController: ARSessionDelegate {
         self.addPbButton()
         self.addRbButton()
         self.startBoardPlacement()
+        
+        
+//        setupMinigames(ground: self.tileGrid!.gridEntity)
     }
     
     func startBoardPlacement() {
@@ -257,8 +260,13 @@ extension ViewController {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-//            let controller = minigameController.enableMinigame()
-//            addController(controller: controller)
+//            self.minigameController.ground.isEnabled = true
+//            let controller = self.minigameController.enableMinigame(game: .movement)
+//            print("Adding Controller")
+//            self.addController(controller: controller)
+//            print("Turning minigame switch on")
+//            self.minigameSwitch.setOn(true, animated: true)
+//            print("Switch is On")
         } else {
             minigameController.disableMinigame()
             self.minigameController.ground.isEnabled = false
@@ -273,14 +281,17 @@ extension ViewController {
         // Add the View Controller as a subview programmatically.
         addChild(controller)
         // TODO Make a better frame depending on what UI elements are going to persist such that the Minigame Controller will not confict with the Persistent UI.
+        print("Added child, creating frame.")
         var frame = self.view.frame.insetBy(dx: 0, dy: 100)
+        print("Setting frame")
         controller.view.frame = frame
+        print("Adding as subview")
         self.view.addSubview(controller.view)
+        print("Setting Moved state")
         controller.didMove(toParent: self)
     }
     
-    func setupMinigames() {
-        var ground : AnchorEntity = self.gameBoard!.board.clone(recursive: false)
+    func setupMinigames(ground: AnchorEntity) {
         arView.scene.addAnchor(ground)
         ground.isEnabled = false
         minigameController = MinigameController(ground: ground, player: self.playerEntity)
@@ -309,12 +320,15 @@ extension ViewController {
                 return
             }
             guard let gameType : Game = self.gameBoard?.gamesDict[tile] else {return}
-            self.gameBoard?.gamesDict[tile] = nil
+            self.gameBoard?.removeGame(tile)
             self.gameBoard?.board.isEnabled = false
             self.minigameController.ground.isEnabled = true
             let controller = self.minigameController.enableMinigame(game: gameType)
+            print("Adding Controller")
             self.addController(controller: controller)
+            print("Turning minigame switch on")
             self.minigameSwitch.setOn(true, animated: true)
+            print("Switch is On")
         })
     }
     

@@ -44,9 +44,11 @@ class GameBoard {
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
     var surfaceAnchor: ARPlaneAnchor
+    // TODO Considier making these dicts attributes of the tiles instead.
     var gamesDict: [Tile:Game] = [:]
+    var iconDict: [Tile:Entity] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace]) {
        
         self.surfaceAnchor = surfaceAnchor
         
@@ -59,8 +61,8 @@ class GameBoard {
         
         DispatchQueue.main.async {
             self.generateBoard()
+            self.assignGames(games: games)
         }
-        assignGames(games: games)
     }
     
     /* Adds every tile in self.tilesDict to the self.board AnchorEntity, modifying aesthetics as desired */
@@ -86,12 +88,13 @@ class GameBoard {
                 continue
             } else {
                 let icon = gamesDict[tile]!.icon
-                let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z)
+                let tileRadius = min(Tile.TILE_SIZE.x, Tile.TILE_SIZE.z) / 2
                 // TODO For some reason the scaling isn't quite scaling down as far as I'd like...
                 let scale = tileRadius / (icon.model?.mesh.bounds.boundingRadius ?? tileRadius)
                 icon.scale = SIMD3<Float>(scale, scale, scale) / tile.scale
                 icon.transform.translation.y = Tile.TILE_SIZE.y
                 tile.addChild(icon)
+                iconDict[tile] = icon
             }
         }
     }
@@ -105,6 +108,11 @@ class GameBoard {
     func removeBoard() {
         guard self.board.scene != nil else {return}
         self.board.scene?.removeAnchor(self.board)
+    }
+    
+    func removeGame(_ tile: Tile) {
+        self.gamesDict[tile] = nil
+        tile.removeChild(iconDict[tile] ?? Entity())
     }
     
 }
