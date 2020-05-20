@@ -146,19 +146,22 @@ class MovementGame : Minigame {
      */
     func addCollision() {
         guard let scene = self.scene else {return}
-        subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: getPlayerCollisionEntity()) { event in
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: getPlayerCollisionEntity()) { event in
             guard let target = event.entityB as? MovementTarget else {
                 return
             }
             target.onCollisionBegan()
         })
-        subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: getPlayerCollisionEntity()) { event in
-            guard let target = event.entityB as? MovementTarget else {
-                return
-            }
-            target.onCollisionUpdated()
-        })
-        subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: getPlayerCollisionEntity()) { event in
+        // TODO this runs into a EXC_BAD_ACCESS Error
+        
+//        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: getPlayerCollisionEntity()) { event in
+////            guard let target = event.entityB as? MovementTarget else {
+////                return
+////            }
+////            target.onCollisionUpdated()
+//        })
+        
+        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: getPlayerCollisionEntity()) { event in
             guard let target = event.entityB as? MovementTarget else {
                 return
             }

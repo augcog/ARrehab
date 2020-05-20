@@ -48,7 +48,7 @@ class GameBoard {
     var gamesDict: [Tile:Game] = [:]
     var iconDict: [Tile:Entity] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace]) {
+    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
        
         self.surfaceAnchor = surfaceAnchor
         
