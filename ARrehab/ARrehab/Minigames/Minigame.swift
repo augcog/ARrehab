@@ -95,7 +95,7 @@ class Minigame : Entity {
         do {
             storyboard = try UIStoryboard.init(name: String(describing: type(of: self)), bundle: nil)
         } catch is NSException {
-            storyboard = UIStoryboard.init(name: String(describing: "Minigame"), bundle: nil)
+            storyboard = UIStoryboard.init(name: String(describing: "Default"), bundle: nil)
         }
         // Be sure to set the ViewController's Storyboard ID as "minigameViewController"
         let controller = storyboard.instantiateViewController(identifier: "minigameViewController") as! MinigameViewController
