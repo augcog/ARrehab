@@ -245,7 +245,7 @@ class MinigameController {
         print("Running")
         currentMinigame!.run()
         print("Returning controller")
-        return self.controller!
+        return self.controller ?? DefaultViewController()
     }
     
     /**

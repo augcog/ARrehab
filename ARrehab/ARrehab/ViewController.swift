@@ -155,9 +155,7 @@ extension ViewController: ARSessionDelegate {
     
 }
 
-/**
- Board Generation Helper functions
- */
+// MARK: Board Generation Helper functions
 extension ViewController {
     
     
@@ -249,9 +247,8 @@ extension ViewController {
     }
 }
 
-/**
- Minigame Helper Functions
- */
+
+// MARK: Minigame Helper Functions
 extension ViewController {
     /**
      Minigame switch logic.
@@ -260,13 +257,8 @@ extension ViewController {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-//            self.minigameController.ground.isEnabled = true
-//            let controller = self.minigameController.enableMinigame(game: .movement)
-//            print("Adding Controller")
-//            self.addController(controller: controller)
-//            print("Turning minigame switch on")
-//            self.minigameSwitch.setOn(true, animated: true)
-//            print("Switch is On")
+            // TODO: Disable when done debugging Movement Game loading.
+            self.startMinigame(gameType: .movement)
         } else {
             minigameController.disableMinigame()
             self.minigameController.ground.isEnabled = false
@@ -308,28 +300,35 @@ extension ViewController {
     }
 }
 
-/**
-Switching between Board and Minigame
- */
+
+// MARK: Switching between Board and Minigame
 extension ViewController {
     func addCollision() {
         let scene = self.arView.scene
         self.subscribers.append(scene.subscribe(to: CollisionEvents.Began.self, on: self.playerEntity) { event in
+            
+// TODO: This line of code mirrors the line of code in the minigame switch. Unfortunately it still crashes when the minigame switch doesn't
+//            self.startMinigame(gameType: .movement)
+
             print("Collision")
             guard let tile = event.entityB as? Tile else {
                 return
             }
-            guard let gameType : Game = self.gameBoard?.gamesDict[tile] else {return}
+            guard let gameType = self.gameBoard?.gamesDict[tile] as? Game else {return}
+            self.startMinigame(gameType: gameType)
             self.gameBoard?.removeGame(tile)
-            self.gameBoard?.board.isEnabled = false
-            self.minigameController.ground.isEnabled = true
-            let controller = self.minigameController.enableMinigame(game: gameType)
-            print("Adding Controller")
-            self.addController(controller: controller)
-            print("Turning minigame switch on")
-            self.minigameSwitch.setOn(true, animated: true)
-            print("Switch is On")
         })
+    }
+    
+    func startMinigame(gameType: Game) {
+        self.gameBoard?.board.isEnabled = false
+        self.minigameController.ground.isEnabled = true
+        let controller = self.minigameController.enableMinigame(game: gameType)
+        print("Adding Controller")
+        self.addController(controller: controller)
+        print("Turning minigame switch on")
+        self.minigameSwitch.setOn(true, animated: true)
+        print("Switch is On")
     }
     
 }
