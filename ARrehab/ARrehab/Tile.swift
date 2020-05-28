@@ -26,7 +26,7 @@ class Tile : Entity, HasModel, HasCollision {
     let coords : Coordinates
     
     
-    //Default initializer: Uses default model and collision componenets, does not adjust translation
+    //Default initializer: Uses default model and collision componenets
     required init(name: String, x: Float, z: Float) {
         self.tileName = name
         self.coords = Coordinates(x: x, z: z)
