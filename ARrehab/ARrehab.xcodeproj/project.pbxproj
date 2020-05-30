@@ -19,6 +19,7 @@
 		1594B465245E9290008463BA /* TraceGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1594B464245E9290008463BA /* TraceGame.storyboard */; };
 		15986816241EE627009456EF /* TraceGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986815241EE627009456EF /* TraceGame.swift */; };
 		1598681A242451FA009456EF /* Minigame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986819242451FA009456EF /* Minigame.swift */; };
+		159994D92481CA8500BC40AA /* Background.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159994D82481CA8500BC40AA /* Background.rcproject */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
 		159A41EF23F49283000A5376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EE23F49283000A5376 /* ViewController.swift */; };
 		159A41F123F49283000A5376 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159A41F023F49283000A5376 /* Experience.rcproject */; };
@@ -79,6 +80,7 @@
 		1594B464245E9290008463BA /* TraceGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TraceGame.storyboard; sourceTree = "<group>"; };
 		15986815241EE627009456EF /* TraceGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceGame.swift; sourceTree = "<group>"; };
 		15986819242451FA009456EF /* Minigame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minigame.swift; sourceTree = "<group>"; };
+		159994D82481CA8500BC40AA /* Background.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Background.rcproject; sourceTree = "<group>"; };
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A41EC23F49283000A5376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		159A41EE23F49283000A5376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				19B173692403475400845819 /* Tile.swift */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
+				159994D82481CA8500BC40AA /* Background.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -423,6 +426,7 @@
 				15986816241EE627009456EF /* TraceGame.swift in Sources */,
 				19B1736A2403475400845819 /* Tile.swift in Sources */,
 				15CE526524608E7300A22B0B /* MovementState.swift in Sources */,
+				159994D92481CA8500BC40AA /* Background.rcproject in Sources */,
 				15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */,
 				1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */,
 				15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */,

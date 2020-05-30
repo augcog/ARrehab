@@ -17,7 +17,6 @@
                 -9.8000001907348633,
                 0
               ],
-              "hasGroundPlane" : true,
               "identifier" : "02FF9182-D487-4C46-BF5D-5FD276397276",
               "material" : "concrete",
               "overrides" : {
@@ -6465,21 +6464,31 @@
                   "FE3D4059-1E70-4148-9372-755246625A43" : null,
                   "Plate" : null
                 },
-                "factory" : null
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
               },
-              "title" : "Scene",
+              "physicsMode" : "grid",
+              "title" : "Background",
               "viewTransform" : {
                 "cameraTransform" : [
                   -0.9245874285697937,
                   -3.7252902984619141e-08,
                   -0.38096985220909119,
                   0,
-                  -0.18212816119194031,
-                  0.87832498550415039,
-                  0.44201177358627319,
+                  -0.18212814629077911,
+                  0.87832492589950562,
+                  0.44201174378395081,
                   0,
-                  0.3346150815486908,
-                  0.47806409001350403,
+                  0.33461505174636841,
+                  0.47806406021118164,
                   -0.8120882511138916,
                   0,
                   1.691303014755249,
@@ -6508,7 +6517,7 @@
               }
             }
           ],
-          "__version" : 4
+          "__version" : 5
         }
       ],
       "tags" : {

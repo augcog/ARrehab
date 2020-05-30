@@ -26,6 +26,8 @@ extension ViewController {
         self.activeButtons.append(pbButton)
     }
     
+    /// Generates the Gameboard, transitioning away from the Tile Placement view.
+    /// - Parameter sender: Button that was clicked.
     @objc func pbButtonClicked(sender: UIButton) {
         print("Button Clicked")
         guard self.boardState == .mapped else {
@@ -38,7 +40,7 @@ extension ViewController {
         }
         self.boardState = .placed
         
-        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false))
         self.gameBoard?.addBoardToScene(arView: self.arView)
         
         self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
@@ -54,11 +56,20 @@ extension ViewController {
         self.arView.session.run(newConfig)
         
         //Here is code to load in the background model. Currently not recommended -- causes iPad to heat significantly and doesn't blend with scene well
-        /*
-        guard let backgroundModel = try? Backgroudn.loadScene() else {return}
-        backgroundModel.transform.translation = self.gameBoard!.surfaceAnchor.center
-        self.arView.scene.addAnchor(backgroundModel)
-         */
+        subscribers.append(Entity.loadAsync(named: "Background").sink(receiveCompletion: { (loadCompletion) in
+            // Handle Errors
+            print(loadCompletion)
+        }, receiveValue: { (backgroundModel) in
+            // Create a background entity in which we apply our transforms depending on board placement and game settings.
+            let background = Entity()
+            background.addChild(backgroundModel)
+            self.gameBoard!.board.addChild(background)
+            //  Correction for the model to be centered. Other than centering the model, no other transform needs to be done on backgroundModel
+            backgroundModel.transform.translation = SIMD3<Float>(0.0779, -0.01, 0.2977)
+            background.transform.translation = (self.tileGrid?.centerTile?.transform.translation ?? SIMD3<Float>(0,0,0))
+            background.transform.rotation = simd_quatf(angle: self.tileGrid?.rotated.angle ?? 0, axis: SIMD3<Float>(0, 1, 0))
+            background.transform.scale = SIMD3(Tile.SCALE, Tile.SCALE, Tile.SCALE)
+        }))
     }
     
     func addRbButton() {

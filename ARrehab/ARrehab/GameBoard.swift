@@ -43,21 +43,17 @@ class GameBoard {
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
-    var surfaceAnchor: ARPlaneAnchor
     // TODO Considier making these dicts attributes of the tiles instead.
     var gamesDict: [Tile:Game] = [:]
     var iconDict: [Tile:Entity] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
-       
-        self.surfaceAnchor = surfaceAnchor
+    init(tiles: [Tile], surfaceAnchor: AnchorEntity, games: [Game] = [.trace]) {
         
         for tile in tiles {
             tilesDict[tile.coords] = tile
         }
        
-        self.board = AnchorEntity(anchor: surfaceAnchor)
-        self.board.transform.translation = surfaceAnchor.center
+        self.board = surfaceAnchor
         
         DispatchQueue.main.async {
             self.generateBoard()
@@ -71,9 +67,6 @@ class GameBoard {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
             // FIXME load the models directly into tile. Assert that the mesh is actually the size of the model.
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
-            //newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
-            //newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
-            //tile.addChild(newTileEntity, preservingWorldTransform: false)
             tile.model = newTileEntity.model
             tile.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
             tile.collision?.shapes = [ShapeResource.generateBox(width: tile.model?.mesh.bounds.extents[0] ?? Tile.TILE_SIZE.x, height: 4.0 / tile.transform.scale.y, depth: tile.model?.mesh.bounds.extents[2] ?? Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2 / tile.transform.scale.y,0))]
@@ -100,7 +93,7 @@ class GameBoard {
     }
     
     func addBoardToScene(arView: ARView) {
-        print("Trying")
+        print("Trying to add board to scene")
         arView.scene.addAnchor(self.board)
     }
     
