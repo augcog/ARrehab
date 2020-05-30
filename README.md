@@ -18,7 +18,8 @@ This is a research project done under the advisement of Professor Allen Yang and
 
 ## Testing out Different Background Models
 1. Add new model to the File hierarchy on the left panel. (Make sure ARrehab is a target)
-2. Edit (ViewManipulation.swift)[ARrehab/ARrehab/ViewManipulation.swift] line 59. Change the `named` field to the name of the Entity you are trying to load.
+2. Edit [ViewManipulation.swift](ARrehab/ARrehab/ViewManipulation.swift)line 59. Change the `named` field to the name of the Entity you are trying to load.
+3. Launch and enjoy! Large models may take a while to load.
 
 ## Branch Structure:
 - content
