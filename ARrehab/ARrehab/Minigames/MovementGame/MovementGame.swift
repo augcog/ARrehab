@@ -40,7 +40,7 @@ class MovementGame : Minigame {
     @Published
     var coachingState : MovementState
     
-    var timer: Timer! = nil
+    var timer: Timer? = nil
     
     convenience required init() {
         self.init(num: 1)
@@ -77,7 +77,7 @@ class MovementGame : Minigame {
             }
             self.coachingState = stateIsDown ?? .other
         }
-        self.timer.tolerance = 0.1
+        self.timer?.tolerance = 0.1
         
         // Create a target with a trigger time of 1 second
         let target = MovementTarget(delay: 1, reps: num, arrow: true)
@@ -117,7 +117,6 @@ class MovementGame : Minigame {
     }
     
     override func run() -> Bool {
-        self.addCollision()
         self.getPlayerCollisionEntity().isEnabled = true
         assert(self.getPlayerCollisionEntity().isActive == true, "Warning PlayerCollisionEntity is not active")
         for child in self.children {
@@ -127,12 +126,19 @@ class MovementGame : Minigame {
             }
         }
         self.coachingState = .down
+        print("Adding Collision")
+        self.addCollision()
+        print("Collision Added")
         return true
     }
     
     override func endGame() -> Float {
         self.parent?.removeChild(self)
         self.getPlayerCollisionEntity().parent?.removeChild(self.getPlayerCollisionEntity())
+        subscriptions.forEach { (subscription) in
+            subscription.cancel()
+        }
+        subscriptions = []
         return score
     }
     
@@ -147,10 +153,12 @@ class MovementGame : Minigame {
     func addCollision() {
         guard let scene = self.scene else {return}
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: getPlayerCollisionEntity()) { event in
+            print("Movement Game Collision began")
             guard let target = event.entityB as? MovementTarget else {
                 return
             }
             target.onCollisionBegan()
+            print("Movement Game Collision Began Ended")
         })
         // TODO this runs into a EXC_BAD_ACCESS Error
         
@@ -250,9 +258,11 @@ class MovementTarget : Entity, HasModel, HasCollision {
     
     /// Resets the target: materials, timer, etc.
     func reset() {
+        print("Resetting")
         self.active = true
         setMaterials(materials: [uncompleteMaterial])
         self.end = DispatchTime.distantFuture
+        print("Resetted")
     }
     
     /**
@@ -261,11 +271,13 @@ class MovementTarget : Entity, HasModel, HasCollision {
         - materials: the materials to give to all children entities
      */
     func setMaterials(materials:[Material]) {
+        print("Setting Materials")
         for child in self.children {
             guard let modelEntity = child as? HasModel else {
                 continue
             }
             modelEntity.model?.materials = materials
         }
+        print("materials set")
     }
 }
