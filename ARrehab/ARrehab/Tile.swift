@@ -14,7 +14,7 @@ class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
     static let SCALE: Float = 0.5
-    static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5) * Tile.SCALE
+    static let TILE_SIZE = SIMD3<Float>(0.5, 0.1, 0.5) * Tile.SCALE
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])

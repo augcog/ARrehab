@@ -19,8 +19,8 @@ import UIKit
  */
 enum Game : CaseIterable {
     // List of minigames.
-    case trace
     case movement
+    case trace
     
     /**
      Returns a new instance of the minigame.

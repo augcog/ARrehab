@@ -54,10 +54,12 @@ class TileCollider : Entity, HasCollision {
     func addCollision() {
         guard let scene = self.scene else {return}
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
+            print("Collision Tile Began")
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionBegan(tile: tile)
+            print("Collsion Tile Began Ending")
         })
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             guard let tile = event.entityB as? Tile else {

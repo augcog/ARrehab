@@ -314,9 +314,11 @@ extension ViewController {
             guard let tile = event.entityB as? Tile else {
                 return
             }
-            guard let gameType = self.gameBoard?.gamesDict[tile] as? Game else {return}
+            guard let gameType = self.gameBoard?.gamesDict[tile] else {return}
             self.startMinigame(gameType: gameType)
             self.gameBoard?.removeGame(tile)
+            print(gameType)
+            print("End collision board")
         })
     }
     

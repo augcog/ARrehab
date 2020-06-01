@@ -25,12 +25,16 @@ class TileGrid {
     var zLength: Float = 0.0
     
     var rotated : RotateValue = .north
+    
+    var centerTile : Tile?
         
     init(surfaceAnchor: ARPlaneAnchor) {
         self.surfaceAnchor = surfaceAnchor
         
         self.gridEntity = AnchorEntity(anchor: surfaceAnchor)
         self.gridEntity.transform.translation = surfaceAnchor.center
+        
+        self.centerTile = nil
         
         self.generatePossibleTiles()
     }
@@ -101,7 +105,8 @@ class TileGrid {
         
         //Clear current outline
         self.clearOutline()
-          
+        
+        self.centerTile = centerTile;
         
         //Get an appropriate multiplier for later calculations involving directional offset
         var rotationMultiplier : Float
@@ -218,6 +223,19 @@ extension TileGrid {
         case east
         case south
         case west
+        
+        var angle : Float {
+            switch self {
+            case .north:
+                return 0
+            case .east:
+                return -0.5 * .pi
+            case .south:
+                return .pi
+            case .west:
+                return 0.5 * .pi
+            }
+        }
     }
     
     /*
