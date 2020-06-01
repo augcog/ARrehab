@@ -194,7 +194,7 @@ extension ViewController {
         }
         
         //Instantiate a gameboard object with the current tile outline and add it to the scene
-        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false))
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false), center: (self.tileGrid?.centerTile!.coords)!)
         self.gameBoard?.addBoardToScene(arView: self.arView)
         
         
@@ -221,7 +221,7 @@ extension ViewController {
             self.gameBoard!.board.addChild(background)
             //  Correction for the model to be centered. Other than centering the model, no other transform needs to be done on backgroundModel
             backgroundModel.transform.translation = SIMD3<Float>(0.0779, -0.01, 0.2977)
-            background.transform.translation = (self.tileGrid?.centerTile?.transform.translation ?? SIMD3<Float>(0,0,0))
+            background.transform.translation = (self.gameBoard?.center.translation)!
             background.transform.rotation = simd_quatf(angle: self.tileGrid?.rotated.angle ?? 0, axis: SIMD3<Float>(0, 1, 0))
             background.transform.scale = SIMD3(Tile.SCALE, Tile.SCALE, Tile.SCALE)
         }))

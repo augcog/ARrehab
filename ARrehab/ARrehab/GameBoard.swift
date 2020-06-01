@@ -49,13 +49,16 @@ class GameBoard {
     var gamesDict: [Tile:Game] = [:]
     var iconDict: [Tile:Entity] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: AnchorEntity, games: [Game] = [.trace]) {
+    var center : Tile.Coordinates
+    
+    init(tiles: [Tile], surfaceAnchor: AnchorEntity, center: Tile.Coordinates, games: [Game] = [.trace]) {
         
         for tile in tiles {
             tilesDict[tile.coords] = tile
         }
        
         self.board = surfaceAnchor
+        self.center = center
         
         DispatchQueue.main.async {
             self.generateBoard()
@@ -78,8 +81,14 @@ class GameBoard {
     
     ///Randomly assign games to all tiles on the board (possibility of no game)
     private func assignGames(games: [Game]) {
+        var gameNum = 0
         for (coord, tile) in tilesDict {
-            gamesDict[tile] = games.randomElement()
+            if (isCorner(coord: coord)) {
+                gamesDict[tile] = games[gameNum % games.count]
+                gameNum += 1
+            } else {
+                gamesDict[tile] = nil
+            }
             if (gamesDict[tile] == nil) {
                 continue
             } else {
@@ -93,6 +102,14 @@ class GameBoard {
                 iconDict[tile] = icon
             }
         }
+    }
+    
+    func isCorner(coord: Tile.Coordinates) -> Bool{
+        let local = coord.localVec(center: center)
+        let x = (GameBoard.DIMENSIONS.0 - 1) / 2
+        let z = (GameBoard.DIMENSIONS.1 - 1) / 2
+        return (abs(local.x) == x && abs(local.y) == z || abs(local.x) == z && abs(local.y) == x)
+        
     }
     
     ///Adds the self.board AnchorEntity to the scene

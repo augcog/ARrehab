@@ -36,7 +36,7 @@ class Tile : Entity, HasModel, HasCollision {
         self.components[ModelComponent] = Tile.defaultTileModel
         self.components[CollisionComponent] = Tile.defaultCollisionComp
         
-        self.transform.translation = SIMD3(x, 0.0, z)
+        self.transform.translation = self.coords.translation
         print("Generated Tile: " + name)
     }
     
@@ -65,12 +65,29 @@ extension Tile {
         
         var x : Float
         var z : Float
-        var coordVec : SIMD2<Float>
+        var coordVec : SIMD2<Float> {
+            get {
+                return SIMD2<Float>(x, z)
+            }
+            set (newCoords) {
+                x = newCoords.x
+                z = newCoords.y
+            }
+        }
+        var translation: SIMD3<Float> {
+            get {
+                return SIMD3<Float>(x, 0.0, z)
+            }
+        }
         
         init(x: Float, z: Float) {
             self.x = x
             self.z = z
-            self.coordVec = SIMD2(x, z)
+        }
+        
+        func localVec(center: Coordinates) -> SIMD2<Int> {
+            let local = coordVec - center.coordVec
+            return SIMD2<Int>(Int(local.x / Tile.TILE_SIZE.x), Int(local.y / Tile.TILE_SIZE.z))
         }
         
     }

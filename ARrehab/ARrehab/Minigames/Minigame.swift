@@ -268,5 +268,9 @@ class MinigameController {
             subscription.cancel()
         }
         self.cancellable = []
+        
+        // delete controller
+        // delete game instance
+        
     }
 }
