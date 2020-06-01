@@ -42,6 +42,7 @@
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
 		1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1901C560245FE1E900896EE4 /* RotateBoardButton.swift */; };
 		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
+		1923B1AC247F52C400CC92F5 /* backgroudn.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 1923B1AB247F52C400CC92F5 /* backgroudn.rcproject */; };
 		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
 		19989C3D244AA617001C1C7F /* PlaceBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19989C3C244AA617001C1C7F /* PlaceBoardButton.swift */; };
 		19989C40244AACBE001C1C7F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 19989C3F244AACBE001C1C7F /* README */; };
@@ -108,6 +109,7 @@
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
 		1901C560245FE1E900896EE4 /* RotateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateBoardButton.swift; sourceTree = "<group>"; };
 		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		1923B1AB247F52C400CC92F5 /* backgroudn.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; name = backgroudn.rcproject; path = "../../../../../Downloads/Background 2/backgroudn.rcproject"; sourceTree = "<group>"; };
 		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
 		19989C3C244AA617001C1C7F /* PlaceBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBoardButton.swift; sourceTree = "<group>"; };
 		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				19B173692403475400845819 /* Tile.swift */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
 				159A41F023F49283000A5376 /* Experience.rcproject */,
+				1923B1AB247F52C400CC92F5 /* backgroudn.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
@@ -411,6 +414,7 @@
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
 				19989C3D244AA617001C1C7F /* PlaceBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
+				1923B1AC247F52C400CC92F5 /* backgroudn.rcproject in Sources */,
 				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
 				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
@@ -604,13 +608,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = erwang.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ssen.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -622,13 +626,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = erwang.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ssen.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

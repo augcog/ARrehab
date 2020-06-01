@@ -58,7 +58,7 @@ extension ViewController {
         guard let backgroundModel = try? Backgroudn.loadScene() else {return}
         backgroundModel.transform.translation = self.gameBoard!.surfaceAnchor.center
         self.arView.scene.addAnchor(backgroundModel)
-         */
+        */
     }
     
     func addRbButton() {
