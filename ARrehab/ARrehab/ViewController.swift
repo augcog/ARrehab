@@ -52,6 +52,9 @@ class ViewController: UIViewController {
         
         minigameSwitch.isHidden = true
         minigameLabel.isHidden = true
+        
+        self.arView.debugOptions = [.showStatistics]
+        
     }
     
     private func startTracking() {
@@ -181,70 +184,50 @@ extension ViewController {
     }
     
     
-    //Plane visualization methods, for use in development
-    func visualizePlanes(anchors: [ARAnchor]) {
+    //Transition from board placement --> game mode
+    func moveToGameplay() {
         
-        let pointModel = ModelEntity.init(mesh: MeshResource.generateSphere(radius: 0.01))
-        
-        for anc in anchors {
-            
-            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
-            let planeAnchorEntity = AnchorEntity(anchor: planeAnchor)
-                        
-            for point in planeAnchor.geometry.boundaryVertices {
-                let pointEntity = pointModel
-                pointEntity.transform.translation = point
-                planeAnchorEntity.addChild(pointEntity)
-            }
-            
-            let planeModel = ModelEntity()
-            planeModel.model = ModelComponent(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
-            planeModel.transform.translation = planeAnchor.center
-            planeAnchorEntity.addChild(planeModel)
-            
-            let center = ModelEntity(mesh: MeshResource.generateBox(width: 0.1, height: 1, depth: 0.1), materials: [SimpleMaterial.init()])
-            center.transform.translation = planeAnchor.center
-            planeAnchorEntity.addChild(center)
-            
-            planeAnchorEntity.name = planeAnchor.identifier.uuidString
-            
-            arView.scene.addAnchor(planeAnchorEntity)
-            self.visualizedPlanes.append(planeAnchor)
+        //Clean up the tile grid and board placement buttons
+        self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
+        self.activeButtons.forEach { (button) in
+            button.removeFromSuperview()
         }
+        
+        //Instantiate a gameboard object with the current tile outline and add it to the scene
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false))
+        self.gameBoard?.addBoardToScene(arView: self.arView)
+        
+        
+        //Stop ARWorldTracking, as it is unnecessary from this point onwards (unless you desire further scene understanding for a specific minigame, in which case it can be re-activated)
+        let newConfig = ARWorldTrackingConfiguration()
+        self.arView.session.run(newConfig)
+        
+        //Set up the minigames
+        setupMinigames(ground: self.gameBoard!.board.clone(recursive: false))
+        //setupMinigames(ground: self.gameBoard!.board)
+            
+    }
+        
+    //Here is code to load in the background model. Currently not recommended -- causes iPad to heat significantly and doesn't blend with scene well
+    func addBackgroundModel() {
+        
+        subscribers.append(Entity.loadAsync(named: "Background").sink(receiveCompletion: { (loadCompletion) in
+            // Handle Errors
+            print(loadCompletion)
+        }, receiveValue: { (backgroundModel) in
+            // Create a background entity in which we apply our transforms depending on board placement and game settings.
+            let background = Entity()
+            background.addChild(backgroundModel)
+            self.gameBoard!.board.addChild(background)
+            //  Correction for the model to be centered. Other than centering the model, no other transform needs to be done on backgroundModel
+            backgroundModel.transform.translation = SIMD3<Float>(0.0779, -0.01, 0.2977)
+            background.transform.translation = (self.tileGrid?.centerTile?.transform.translation ?? SIMD3<Float>(0,0,0))
+            background.transform.rotation = simd_quatf(angle: self.tileGrid?.rotated.angle ?? 0, axis: SIMD3<Float>(0, 1, 0))
+            background.transform.scale = SIMD3(Tile.SCALE, Tile.SCALE, Tile.SCALE)
+        }))
         
     }
     
-    func visualizePlanes(anchors: [ARAnchor], floor: Bool) {
-        let validAnchors = anchors.filter() {anc in
-            guard let planeAnchor = anc as? ARPlaneAnchor else {return false}
-            return isValidSurface(plane: planeAnchor) == floor
-        }
-        visualizePlanes(anchors: validAnchors)
-    }
-    
-    func updatePlaneVisual(anchors: [ARAnchor]) {
-        for anc in anchors {
-            
-            guard let planeAnchor = anc as? ARPlaneAnchor else {return}
-            
-            guard let planeAnchorEntity = self.arView.scene.findEntity(named: planeAnchor.identifier.uuidString) else {return}
-            
-            var newBoundaries = [ModelEntity]()
-            
-            for point in planeAnchor.geometry.boundaryVertices {
-                let pointEntity = ModelEntity.init(mesh: MeshResource.generatePlane(width: 0.01, depth: 0.01))
-                pointEntity.transform.translation = point
-                newBoundaries.append(pointEntity)
-            }
-            
-            planeAnchorEntity.children.replaceAll(newBoundaries)
-            
-            let modelEntity = ModelEntity(mesh: MeshResource.generatePlane(width: planeAnchor.extent.x, depth: planeAnchor.extent.z), materials: [SimpleMaterial(color: SimpleMaterial.Color.blue, isMetallic: false)])
-            modelEntity.transform.translation = planeAnchor.center
-            
-            planeAnchorEntity.addChild(modelEntity)
-        }
-    }
 }
 
 

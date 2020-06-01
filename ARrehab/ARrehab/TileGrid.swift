@@ -108,7 +108,7 @@ class TileGrid {
         
         self.centerTile = centerTile;
         
-        //Get an appropriate multiplier for later calculations involving directional offset
+        //Get an appropriate multiplier for later calculations involving rotation
         var rotationMultiplier : Float
         switch self.rotated {
         case .north, .east:
@@ -169,7 +169,7 @@ class TileGrid {
         
         let leftCornerVec = centerTile.coords.coordVec + (-rotationMultiplier * coordTranslation)
         let leftCornerTile = self.possibleTiles.first() {coords, tile in
-            return TileGrid.isApproxEqual(value1: coords.x, value2: leftCornerVec.x, error: 0.1) && TileGrid.isApproxEqual(value1: coords.z, value2: leftCornerVec.y, error: 0.1)
+            return TileGrid.isApproxEqual(value1: coords.x, value2: leftCornerVec.x, error: Tile.TILE_SIZE.x / 5) && TileGrid.isApproxEqual(value1: coords.z, value2: leftCornerVec.y, error: Tile.TILE_SIZE.z / 5)
         }
         
         if (rightCornerTile != nil && leftCornerTile != nil) {
@@ -188,7 +188,7 @@ class TileGrid {
         for x in xRange {
             for z in zRange {
                 //Checks is the tile is part of the border (i.e. should be included in the outline)
-                //If this check is removed, the function will instead generate the entire rectangle relative to the corner tile, xRange, and zRange
+                //If this check is removed, will instead generate the entire rectangle relative to the corner tile, xRange, and zRange
                 if isBorderTile(x: x, z: z, xRange: xRange, zRange: zRange) {
                     let currentCoords = Tile.Coordinates(x: (cornerTile.coords.x) - (rotationMultiplier * Float(x) * Tile.TILE_SIZE.x), z: (cornerTile.coords.z) + (rotationMultiplier * Float(z) * Tile.TILE_SIZE.z))
                     let currentTile = self.possibleTiles[currentCoords]
@@ -239,10 +239,10 @@ extension TileGrid {
     }
     
     /*
-     Checks if two values are approximately equal to each other, with the allowed ERROR
+     Checks if two values are approximately equal to each other, with the allowed error
      */
     static func isApproxEqual(value1: Float, value2: Float, error: Float) -> Bool {
-        return abs(value1 - value2) <= (0.00 + error) && abs(value1 - value2) >= (0.00 - error)
+        return abs(value1 - value2) <= error && abs(value1 - value2) >= -error
     }
     
     /*
