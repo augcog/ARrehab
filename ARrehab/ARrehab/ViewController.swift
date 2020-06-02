@@ -252,12 +252,12 @@ extension ViewController {
     /**
      Adds the controller as a subview programmatically.
      */
-    private func addController(controller: UIViewController) {
+    private func addViewController(controller: UIViewController) {
         // Add the View Controller as a subview programmatically.
         addChild(controller)
         // TODO Make a better frame depending on what UI elements are going to persist such that the Minigame Controller will not confict with the Persistent UI.
         print("Added child, creating frame.")
-        var frame = self.view.frame.insetBy(dx: 0, dy: 100)
+        let frame = self.view.frame.insetBy(dx: 0, dy: 100)
         print("Setting frame")
         controller.view.frame = frame
         print("Adding as subview")
@@ -293,7 +293,7 @@ extension ViewController {
 // TODO: This line of code mirrors the line of code in the minigame switch. Unfortunately it still crashes when the minigame switch doesn't
 //            self.startMinigame(gameType: .movement)
 
-            print("Collision")
+            print("Board Collision")
             guard let tile = event.entityB as? Tile else {
                 return
             }
@@ -310,7 +310,7 @@ extension ViewController {
         self.minigameController.ground.isEnabled = true
         let controller = self.minigameController.enableMinigame(game: gameType)
         print("Adding Controller")
-        self.addController(controller: controller)
+        self.addViewController(controller: controller)
         print("Turning minigame switch on")
         self.minigameSwitch.setOn(true, animated: true)
         print("Switch is On")

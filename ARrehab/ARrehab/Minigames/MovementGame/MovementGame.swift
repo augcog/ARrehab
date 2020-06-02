@@ -78,7 +78,7 @@ class MovementGame : Minigame {
             self.coachingState = stateIsDown ?? .other
         }
         self.timer?.tolerance = 0.1
-        
+
         // Create a target with a trigger time of 1 second
         let target = MovementTarget(delay: 1, reps: num, arrow: true)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
@@ -88,7 +88,7 @@ class MovementGame : Minigame {
         // Move the squat target down by 0.2 m.
         target.transform.translation = SIMD3<Float>(0,-0.2,0)
         self.addChild(target)
-        
+
         // Create a target with a trigger time of 1 second
         let hardTarget = MovementTarget(delay: 1, reps: num, arrow: false)
         hardTarget.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
@@ -162,19 +162,25 @@ class MovementGame : Minigame {
         })
         // TODO this runs into a EXC_BAD_ACCESS Error
         
-        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: getPlayerCollisionEntity()) { event in
-            guard let target = event.entityB as? MovementTarget else {
-                return
-            }
-            target.onCollisionUpdated()
-        })
+//        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: playerCollisionEntity) { event in
+//            print("Movement Game Collision Updated")
+//            guard let target = event.entityB as? MovementTarget else {
+//                return
+//            }
+//            target.onCollisionUpdated()
+//            print("Movement Game Collision Update Ended")
+//        })
         
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: getPlayerCollisionEntity()) { event in
+            print("Movement Game Collision Ended Start")
             guard let target = event.entityB as? MovementTarget else {
                 return
             }
             target.onCollisionEnded()
+            print("Movement Game Collision Ended Finish")
         })
+        
+        print(self.subscriptions)
     }
 }
 
@@ -227,30 +233,42 @@ class MovementTarget : Entity, HasModel, HasCollision {
         if (active) {
             setMaterials(materials: [inProgressMaterial])
             self.end = DispatchTime.now() + self.delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
+                print("Running Async Dispatch Callback")
+                self.onCollisionUpdated()
+                print("Completed Async Dispatch Callback")
+            })
         }
     }
     
     /// Check if the time has exhausted and update as appropriate
     func onCollisionUpdated() {
-        self.state = .down
+        print("Running Collision Updated")
         if (self.active) {
+            print("Target still active")
             if (self.end < DispatchTime.now()) {
-                setMaterials(materials: [completeMaterial])
+                print("Time elapsed")
                 self.active = false
+                print("Target deactivated. Changing materials")
+                setMaterials(materials: [completeMaterial])
+                print("Testing parent")
                 guard let game = self.parent as? MovementGame else {
                     return
                 }
+                print("Changing completion")
                 game.completion += 1
+                print("Chaning reps")
                 reps -= 1
             }
         }
+        print("Collision Updated Complete")
     }
     
     /// Set the appropriate material and reset the timer if needed.
     func onCollisionEnded() {
         self.state = .up
         if (!active && reps <= 0) {
-                setMaterials(materials: [completeMaterial])
+            setMaterials(materials: [completeMaterial])
         } else {
             reset()
         }

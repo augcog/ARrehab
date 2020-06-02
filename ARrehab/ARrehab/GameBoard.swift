@@ -51,7 +51,7 @@ class GameBoard {
     
     var center : Tile.Coordinates
     
-    init(tiles: [Tile], surfaceAnchor: AnchorEntity, center: Tile.Coordinates, games: [Game] = [.trace]) {
+    init(tiles: [Tile], surfaceAnchor: AnchorEntity, center: Tile.Coordinates, games: [Game] = [.trace, .movement]) {
         
         for tile in tiles {
             tilesDict[tile.coords] = tile
