@@ -9,12 +9,21 @@ Minigames are small self contained AR experiences that are triggered by stepping
 1. Extend the `Minigame` class as `[Name]Game` in a file named `[Name]Game.swift`
     1. This class is an Entity that will be attached to the ground and will serve as the spawning point of your game's 3D elements.
     1. Publish `score`
+        - This is the number of points the player gets as a result of completing the minigame. (or partially completing it)
     1. Publish `progress`
+        - `progress[0]` is how far through the minigame the player is. Once it reaches `1.0`, the minigame will transition back to the gameboard. (Note this is **not yet implemented**)
+        - Feel free to append more values onto `progress` for use within your own minigame code.
     1. Implement `attach(ground: Entity, player: Entity)`
+        - Attach all necessary RealityKit entities.
     1. Implement `run()`
+        - Sanity Check that objects are active
+        - Add any collision callbacks
     1. Implement `endGame()`
+        - This disables the minigame, removing all generated entities, etc.
     1. Probably implement `init()`
 1. Extend the `MinigameViewController` class. This will serve your 2D UI elements. Please note that these elements are overlayed over persistent UI elements from the main game.
+    - Name it `[Name]ViewController`.
+    - set the ViewController's Storyboard ID as `minigameViewController`.
 1. Add your new minigame to the `Game` enum in [Minigame.swift](Minigame.swift)
     1. Add a case
     1. Add the default instance
