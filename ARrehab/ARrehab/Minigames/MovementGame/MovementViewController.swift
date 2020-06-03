@@ -46,7 +46,9 @@ class MovementGameViewController : MinigameViewController {
     private let progressViewWidth: CGFloat = 500
 
     override func viewDidLoad() {
+        print("Loading SuperView")
         super.viewDidLoad()
+        print("Super View did load. Adding custom elements")
         view.addSubview(backgroundView)
         backgroundView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 left: view.safeAreaLayoutGuide.leftAnchor,
@@ -60,6 +62,7 @@ class MovementGameViewController : MinigameViewController {
         setupProgressBar()
 //        setupStackView()
         addMinigameSubscriber()
+        print("Complete viewDidLoad")
     }
     
     private func setupProgressBar() {

@@ -28,7 +28,7 @@ class Player : TileCollider, HasModel, HasAnchoring {
     
     override func onCollisionBegan(tile: Tile) {
         self.onTile = tile
-        print("CURRENTLY ON:",onTile?.tileName)
+        print("CURRENTLY ON:", onTile?.tileName)
         self.onTile!.changeMaterials(materials: [SimpleMaterial(color: .blue, isMetallic: false)])
         //super.onCollisionBegan(tile: tile)
     }
@@ -54,16 +54,20 @@ class TileCollider : Entity, HasCollision {
     func addCollision() {
         guard let scene = self.scene else {return}
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
+            print("Collision Tile Began with", event.entityB)
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionBegan(tile: tile)
+            print("Collsion Tile Began Ending")
         })
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
+            print("Collision Tile Ended Start")
             guard let tile = event.entityB as? Tile else {
                 return
             }
             self.onCollisionEnded(tile: tile)
+            print("Collision Tile Ended Finish")
         })
     }
     

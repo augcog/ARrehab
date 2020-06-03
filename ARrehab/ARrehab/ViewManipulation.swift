@@ -26,39 +26,20 @@ extension ViewController {
         self.activeButtons.append(pbButton)
     }
     
+    /// Generates the Gameboard, transitioning away from the Tile Placement view.
+    /// - Parameter sender: Button that was clicked.
     @objc func pbButtonClicked(sender: UIButton) {
-        print("Button Clicked")
-        guard self.boardState == .mapped else {
-            print("Not Mapped")
-            return
-        }
-        guard (self.playerEntity.onTile != nil) else {
-            print("Not on a tile")
+        print("PB Button Clicked")
+        
+        guard (self.tileGrid?.currentOutline != []) else {
+            print("Not a valid board position")
             return
         }
         self.boardState = .placed
         
-        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.surfaceAnchor)
-        self.gameBoard?.addBoardToScene(arView: self.arView)
+        self.moveToGameplay()
+        //self.addBackgroundModel()
         
-        self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
-        self.activeButtons.forEach { (button) in
-            button.removeFromSuperview()
-        }
-        
-        setupMinigames(ground: self.gameBoard!.board.clone(recursive: false))
-//        setupMinigames(ground: self.gameBoard!.board)
-        
-        //Stop ARWorldTracking, as it is unnecessary from this point onwards (unless you desire further scene understanding for a specific minigame, in which case it can be re-run)
-        let newConfig = ARWorldTrackingConfiguration()
-        self.arView.session.run(newConfig)
-        
-        //Here is code to load in the background model. Currently not recommended -- causes iPad to heat significantly and doesn't blend with scene well
-        /*
-        guard let backgroundModel = try? Backgroudn.loadScene() else {return}
-        backgroundModel.transform.translation = self.gameBoard!.surfaceAnchor.center
-        self.arView.scene.addAnchor(backgroundModel)
-         */
     }
     
     func addRbButton() {

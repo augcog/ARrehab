@@ -13,10 +13,10 @@ import CoreGraphics
 class Tile : Entity, HasModel, HasCollision {
     
     //Class attributes
-    static let SCALE: Float = 0.5
-    static let TILE_SIZE = SIMD3<Float>(0.5, 0.01, 0.5) * Tile.SCALE
+    static let SCALE: Float = 0.75
+    static let TILE_SIZE = SIMD3<Float>(0.5, 0.1, 0.5) * Tile.SCALE
     static let TILE_COLLISION_GROUP = CollisionGroup(rawValue: 1) //Totally arbitrary number
-   
+    
     static let defaultTileModel = ModelComponent(mesh: MeshResource.generateBox(size: Tile.TILE_SIZE, cornerRadius: 0.2), materials: [SimpleMaterial()])
     static let defaultCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: Tile.TILE_SIZE.x, height: 4.0, depth: Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2,0))], mode: .trigger, filter: CollisionFilter(group: Tile.TILE_COLLISION_GROUP, mask: Player.PLAYER_COLLISION_GROUP))
 
@@ -36,7 +36,7 @@ class Tile : Entity, HasModel, HasCollision {
         self.components[ModelComponent] = Tile.defaultTileModel
         self.components[CollisionComponent] = Tile.defaultCollisionComp
         
-        self.transform.translation = SIMD3(x, 0.0, z)
+        self.transform.translation = self.coords.translation
         print("Generated Tile: " + name)
     }
     
@@ -65,12 +65,29 @@ extension Tile {
         
         var x : Float
         var z : Float
-        var coordVec : SIMD2<Float>
+        var coordVec : SIMD2<Float> {
+            get {
+                return SIMD2<Float>(x, z)
+            }
+            set (newCoords) {
+                x = newCoords.x
+                z = newCoords.y
+            }
+        }
+        var translation: SIMD3<Float> {
+            get {
+                return SIMD3<Float>(x, 0.0, z)
+            }
+        }
         
         init(x: Float, z: Float) {
             self.x = x
             self.z = z
-            self.coordVec = SIMD2(x, z)
+        }
+        
+        func localVec(center: Coordinates) -> SIMD2<Int> {
+            let local = coordVec - center.coordVec
+            return SIMD2<Int>(Int(local.x / Tile.TILE_SIZE.x), Int(local.y / Tile.TILE_SIZE.z))
         }
         
     }

@@ -40,7 +40,7 @@ class MovementGame : Minigame {
     @Published
     var coachingState : MovementState
     
-    var timer: Timer! = nil
+    var timer: Timer? = nil
     
     convenience required init() {
         self.init(num: 1)
@@ -77,8 +77,8 @@ class MovementGame : Minigame {
             }
             self.coachingState = stateIsDown ?? .other
         }
-        self.timer.tolerance = 0.1
-        
+        self.timer?.tolerance = 0.1
+
         // Create a target with a trigger time of 1 second
         let target = MovementTarget(delay: 1, reps: num, arrow: true)
         target.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
@@ -88,7 +88,7 @@ class MovementGame : Minigame {
         // Move the squat target down by 0.2 m.
         target.transform.translation = SIMD3<Float>(0,-0.2,0)
         self.addChild(target)
-        
+
         // Create a target with a trigger time of 1 second
         let hardTarget = MovementTarget(delay: 1, reps: num, arrow: false)
         hardTarget.collision?.filter = CollisionFilter(group: self.targetCollisionGroup, mask: Player.PLAYER_COLLISION_GROUP)
@@ -117,7 +117,6 @@ class MovementGame : Minigame {
     }
     
     override func run() -> Bool {
-        self.addCollision()
         self.getPlayerCollisionEntity().isEnabled = true
         assert(self.getPlayerCollisionEntity().isActive == true, "Warning PlayerCollisionEntity is not active")
         for child in self.children {
@@ -127,12 +126,19 @@ class MovementGame : Minigame {
             }
         }
         self.coachingState = .down
+        print("Adding Collision")
+        self.addCollision()
+        print("Collision Added")
         return true
     }
     
     override func endGame() -> Float {
         self.parent?.removeChild(self)
         self.getPlayerCollisionEntity().parent?.removeChild(self.getPlayerCollisionEntity())
+        subscriptions.forEach { (subscription) in
+            subscription.cancel()
+        }
+        subscriptions = []
         return score
     }
     
@@ -147,26 +153,34 @@ class MovementGame : Minigame {
     func addCollision() {
         guard let scene = self.scene else {return}
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: getPlayerCollisionEntity()) { event in
+            print("Movement Game Collision began")
             guard let target = event.entityB as? MovementTarget else {
                 return
             }
             target.onCollisionBegan()
+            print("Movement Game Collision Began Ended")
         })
         // TODO this runs into a EXC_BAD_ACCESS Error
         
-        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: getPlayerCollisionEntity()) { event in
-            guard let target = event.entityB as? MovementTarget else {
-                return
-            }
-            target.onCollisionUpdated()
-        })
+//        self.subscriptions.append(scene.subscribe(to: CollisionEvents.Updated.self, on: playerCollisionEntity) { event in
+//            print("Movement Game Collision Updated")
+//            guard let target = event.entityB as? MovementTarget else {
+//                return
+//            }
+//            target.onCollisionUpdated()
+//            print("Movement Game Collision Update Ended")
+//        })
         
         self.subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: getPlayerCollisionEntity()) { event in
+            print("Movement Game Collision Ended Start")
             guard let target = event.entityB as? MovementTarget else {
                 return
             }
             target.onCollisionEnded()
+            print("Movement Game Collision Ended Finish")
         })
+        
+        print(self.subscriptions)
     }
 }
 
@@ -219,30 +233,42 @@ class MovementTarget : Entity, HasModel, HasCollision {
         if (active) {
             setMaterials(materials: [inProgressMaterial])
             self.end = DispatchTime.now() + self.delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
+                print("Running Async Dispatch Callback")
+                self.onCollisionUpdated()
+                print("Completed Async Dispatch Callback")
+            })
         }
     }
     
     /// Check if the time has exhausted and update as appropriate
     func onCollisionUpdated() {
-        self.state = .down
+        print("Running Collision Updated")
         if (self.active) {
+            print("Target still active")
             if (self.end < DispatchTime.now()) {
-                setMaterials(materials: [completeMaterial])
+                print("Time elapsed")
                 self.active = false
+                print("Target deactivated. Changing materials")
+                setMaterials(materials: [completeMaterial])
+                print("Testing parent")
                 guard let game = self.parent as? MovementGame else {
                     return
                 }
+                print("Changing completion")
                 game.completion += 1
+                print("Chaning reps")
                 reps -= 1
             }
         }
+        print("Collision Updated Complete")
     }
     
     /// Set the appropriate material and reset the timer if needed.
     func onCollisionEnded() {
         self.state = .up
         if (!active && reps <= 0) {
-                setMaterials(materials: [completeMaterial])
+            setMaterials(materials: [completeMaterial])
         } else {
             reset()
         }
@@ -250,9 +276,11 @@ class MovementTarget : Entity, HasModel, HasCollision {
     
     /// Resets the target: materials, timer, etc.
     func reset() {
+        print("Resetting")
         self.active = true
         setMaterials(materials: [uncompleteMaterial])
         self.end = DispatchTime.distantFuture
+        print("Resetted")
     }
     
     /**
@@ -261,11 +289,13 @@ class MovementTarget : Entity, HasModel, HasCollision {
         - materials: the materials to give to all children entities
      */
     func setMaterials(materials:[Material]) {
+        print("Setting Materials")
         for child in self.children {
             guard let modelEntity = child as? HasModel else {
                 continue
             }
             modelEntity.model?.materials = materials
         }
+        print("materials set")
     }
 }

@@ -19,8 +19,8 @@ import UIKit
  */
 enum Game : CaseIterable {
     // List of minigames.
-    case trace
     case movement
+    case trace
     
     /**I
      Returns a new instance of the minigame.
@@ -269,5 +269,9 @@ class MinigameController {
             subscription.cancel()
         }
         self.cancellable = []
+        
+        // delete controller
+        // delete game instance
+        
     }
 }

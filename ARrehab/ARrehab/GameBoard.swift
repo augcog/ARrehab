@@ -10,8 +10,8 @@ import Foundation
 import RealityKit
 import ARKit
 
-/*
- GameBoard object represents the game board. It holds references to all tiles on the board, as well as the minigames assigned to each tile. It contains methods for board object generation, board object deletion, and path generation.
+
+ /*
  Instance variables:
     tiles: List of all Tile objects contained in the game board
     games: Dictionary consisting of Tile-Minigame value pairs
@@ -26,11 +26,13 @@ import ARKit
         - Sets any initial aesthetic aspects of the tiles
     removeBoard():
         - Removes the GameBoard instance's board entity from the scene
-    generatePath(from: Tile, to: Tile) -> [Tile]:
-        - Returns a list of adjacent tiles that connect 'from' to 'to', or nil if such a path does not exist
     assignGames()
         - Assigns Minigames to each tile in a list of tiles (mutates self.games)
 */
+
+
+///GameBoard object represents the game board. It holds references to all tiles on the board, as well as the minigames assigned to each tile.
+
 class GameBoard {
     
     //Dimension of the board (in tiles) (x, z)
@@ -43,21 +45,20 @@ class GameBoard {
     
     var tilesDict: [Tile.Coordinates:Tile] = [:]
     var board: AnchorEntity
-    var surfaceAnchor: ARPlaneAnchor
     // TODO Considier making these dicts attributes of the tiles instead.
     var gamesDict: [Tile:Game] = [:]
     var iconDict: [Tile:Entity] = [:]
     
-    init(tiles: [Tile], surfaceAnchor: ARPlaneAnchor, games: [Game] = [.trace, .movement]) {
-       
-        self.surfaceAnchor = surfaceAnchor
+    var center : Tile.Coordinates
+    
+    init(tiles: [Tile], surfaceAnchor: AnchorEntity, center: Tile.Coordinates, games: [Game] = [.trace, .movement]) {
         
         for tile in tiles {
             tilesDict[tile.coords] = tile
         }
        
-        self.board = AnchorEntity(anchor: surfaceAnchor)
-        self.board.transform.translation = surfaceAnchor.center
+        self.board = surfaceAnchor
+        self.center = center
         
         DispatchQueue.main.async {
             self.generateBoard()
@@ -65,15 +66,12 @@ class GameBoard {
         }
     }
     
-    /* Adds every tile in self.tilesDict to the self.board AnchorEntity, modifying aesthetics as desired */
+    ///Adds every tile in the gameboard's 'tilesDict' to to the 'board' AnchorEntity, modifying aesthetics as desired
     private func generateBoard() {
         for tile in self.tilesDict.values {
             //tile.changeMaterials(materials: [GameBoard.colorList.randomElement()!])
             // FIXME load the models directly into tile. Assert that the mesh is actually the size of the model.
             let newTileEntity : ModelEntity = try! Entity.loadModel(named: "Block")
-            //newTileEntity.transform.translation = SIMD3<Float>(0,0,0)
-            //newTileEntity.transform.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
-            //tile.addChild(newTileEntity, preservingWorldTransform: false)
             tile.model = newTileEntity.model
             tile.scale = Tile.TILE_SIZE / (newTileEntity.model?.mesh.bounds.extents ?? Tile.TILE_SIZE)
             tile.collision?.shapes = [ShapeResource.generateBox(width: tile.model?.mesh.bounds.extents[0] ?? Tile.TILE_SIZE.x, height: 4.0 / tile.transform.scale.y, depth: tile.model?.mesh.bounds.extents[2] ?? Tile.TILE_SIZE.z).offsetBy(translation: SIMD3<Float>(0,2 / tile.transform.scale.y,0))]
@@ -81,9 +79,16 @@ class GameBoard {
         }
     }
     
+    ///Randomly assign games to all tiles on the board (possibility of no game)
     private func assignGames(games: [Game]) {
+        var gameNum = 0
         for (coord, tile) in tilesDict {
-            gamesDict[tile] = games.randomElement()
+            if (isCorner(coord: coord)) {
+                gamesDict[tile] = games[gameNum % games.count]
+                gameNum += 1
+            } else {
+                gamesDict[tile] = nil
+            }
             if (gamesDict[tile] == nil) {
                 continue
             } else {
@@ -99,17 +104,26 @@ class GameBoard {
         }
     }
     
+    func isCorner(coord: Tile.Coordinates) -> Bool{
+        let local = coord.localVec(center: center)
+        let x = (GameBoard.DIMENSIONS.0 - 1) / 2
+        let z = (GameBoard.DIMENSIONS.1 - 1) / 2
+        return (abs(local.x) == x && abs(local.y) == z || abs(local.x) == z && abs(local.y) == x)
+        
+    }
+    
+    ///Adds the self.board AnchorEntity to the scene
     func addBoardToScene(arView: ARView) {
-        print("Trying")
         arView.scene.addAnchor(self.board)
     }
     
-    /* Removes the GameBoard instance's self.board AnchorEntity from the scene */
+    ///Removes the GameBoard instance's self.board AnchorEntity from the scene
     func removeBoard() {
         guard self.board.scene != nil else {return}
         self.board.scene?.removeAnchor(self.board)
     }
     
+    ///Removes the minigame assigned to the given tile
     func removeGame(_ tile: Tile) {
         self.gamesDict[tile] = nil
         tile.removeChild(iconDict[tile] ?? Entity())
