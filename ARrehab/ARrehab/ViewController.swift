@@ -20,9 +20,10 @@ class ViewController: UIViewController {
     var activeButtons : [UIButton] = []
     var trackedRaycasts : [ARTrackedRaycast?] = []
     
+    /// boardState could be notMapped, mapping, mapped, or placed
     var boardState : BoardState = .notMapped
     
-    
+    /// gameBoard is a collection of tileGrid (TBC)
     var tileGrid: TileGrid?
     var gameBoard: GameBoard?
     
@@ -34,6 +35,7 @@ class ViewController: UIViewController {
 
     /// Switch that turns on and off the Minigames, cycling through them.
     @IBOutlet var minigameSwitch: UISwitch!
+
     /// Label to display minigame output.
     @IBOutlet var minigameLabel: UILabel!
   
