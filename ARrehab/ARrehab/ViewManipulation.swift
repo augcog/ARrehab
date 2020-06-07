@@ -38,7 +38,7 @@ extension ViewController {
         self.boardState = .placed
         
         self.moveToGameplay()
-        //self.addBackgroundModel()
+        self.addBackgroundModel()
         
     }
     

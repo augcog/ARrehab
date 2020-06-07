@@ -227,18 +227,22 @@ class Laser : Entity, HasCollision, HasModel { // TODO: consider using a PointLi
     func addCollision() {
         guard let scene = self.scene else {return}
         subscriptions.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
+            print("Laser Collision Began")
             guard let point = event.entityB as? TracePoint else {
                 print("Laser: Bad Collision Began Event with", event.entityB)
                 return
             }
             point.onCollisionBegan()
+            print("Laser Collision Began Finished")
         })
         subscriptions.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
+            print("Laser Collision Ended Start")
             guard let point = event.entityB as? TracePoint else {
                 print("Laser: Bad Collision Ended Event with", event.entityB)
                 return
             }
             point.onCollisionEnded()
+            print("Laser Collision Ended Finished")
         })
     }
 }

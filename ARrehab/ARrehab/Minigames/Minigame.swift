@@ -42,7 +42,7 @@ enum Game : CaseIterable {
                 case .trace:
                     return try Entity.loadModel(named: TraceTargetType.bear.modelName)
                 case .movement:
-                    return ModelEntity(mesh: MeshResource.generateText("M"), materials:[SimpleMaterial(color: .orange, isMetallic: false)])
+                    return ModelEntity(mesh: MeshResource.generateText("M", alignment: .center), materials:[SimpleMaterial(color: .orange, isMetallic: false)])
                 default:
                     return ModelEntity(mesh: MeshResource.generateSphere(radius: 0.1), materials: [SimpleMaterial(color: .darkGray, isMetallic: false)])
                 }
@@ -91,7 +91,7 @@ class Minigame : Entity {
     func generateViewController() -> MinigameViewController {
         let storyboard : UIStoryboard
         
-        // FIXME UIStoryboard.init(name:bundle:) does not actually throw an error, instead the error dies inside of it.
+        // FIXME: UIStoryboard.init(name:bundle:) does not actually throw an error, instead the error dies inside of it.
         do {
             storyboard = try UIStoryboard.init(name: String(describing: type(of: self)), bundle: nil)
         } catch is NSException {

@@ -22,7 +22,6 @@
 		159994D92481CA8500BC40AA /* Background.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159994D82481CA8500BC40AA /* Background.rcproject */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
 		159A41EF23F49283000A5376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EE23F49283000A5376 /* ViewController.swift */; };
-		159A41F123F49283000A5376 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159A41F023F49283000A5376 /* Experience.rcproject */; };
 		159A41F423F49283000A5376 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F223F49283000A5376 /* Main.storyboard */; };
 		159A41F623F49286000A5376 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F523F49286000A5376 /* Assets.xcassets */; };
 		159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F723F49286000A5376 /* LaunchScreen.storyboard */; };
@@ -84,7 +83,6 @@
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A41EC23F49283000A5376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		159A41EE23F49283000A5376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		159A41F023F49283000A5376 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		159A41F323F49283000A5376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		159A41F523F49286000A5376 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		159A41F823F49286000A5376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -176,7 +174,6 @@
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
 				19989C39244A9B90001C1C7F /* 2D Elements */,
-				159A41F023F49283000A5376 /* Experience.rcproject */,
 				159994D82481CA8500BC40AA /* Background.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
@@ -226,6 +223,12 @@
 				15BB4C82245F53130033A18D /* TraceProgressSection.swift */,
 				15BB4C86245F53870033A18D /* TraceTargetType.swift */,
 				15BB4C84245F534D0033A18D /* TraceStackView.swift */,
+				157AE5802452C4DA00BE7809 /* Deer.usdz */,
+				157AE58A2455959800BE7809 /* Bear.usdz */,
+				157AE5882455956000BE7809 /* RedPanda.usdz */,
+				157AE586245594FE00BE7809 /* Wolf.usdz */,
+				157AE5822455749400BE7809 /* Fox.usdz */,
+				15B8D1CF246086E400D0CBB6 /* Puffer.usdz */,
 				1594B464245E9290008463BA /* TraceGame.storyboard */,
 			);
 			path = TraceGame;
@@ -238,12 +241,6 @@
 				15E002DD243AA3CD00BA6A96 /* MovementGame.swift */,
 				15CE526424608E7300A22B0B /* MovementState.swift */,
 				15CE52662460A88500A22B0B /* MovementGame.storyboard */,
-				157AE5802452C4DA00BE7809 /* Deer.usdz */,
-				157AE58A2455959800BE7809 /* Bear.usdz */,
-				157AE5882455956000BE7809 /* RedPanda.usdz */,
-				157AE586245594FE00BE7809 /* Wolf.usdz */,
-				157AE5822455749400BE7809 /* Fox.usdz */,
-				15B8D1CF246086E400D0CBB6 /* Puffer.usdz */,
 				15BB4C8D245FA4D50033A18D /* down.png */,
 				15BB4C8C245FA4D50033A18D /* up.png */,
 			);
@@ -416,7 +413,6 @@
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
 				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
 				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
-				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */,
 				193AC61C2443E7050046C872 /* TileGrid.swift in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
