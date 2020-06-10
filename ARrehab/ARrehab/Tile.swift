@@ -92,7 +92,9 @@ extension Tile {
         
     }
     
-    //Changes the material list of the tile's Model Component
+    /**
+     Changes the material attribute of the tile's Model Component
+     */
     func changeMaterials(materials: [Material]) {
         self.model?.materials = materials
     }

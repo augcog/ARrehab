@@ -10,6 +10,7 @@ import Foundation
 import ARKit
 import RealityKit
 
+///The TileGrid object represents a grid spanning the detected floor of the user's current environment, subdivided into tiles. It contains methods for generating and updating the detected grid, as well as outlining a potential gameboard given a center tile. Note: The TileGrid class does not use any explicit references for size (of tiles or gameboard) -- those attributes are set in their respective classes.
 class TileGrid {
     
     static let gridMaterial = SimpleMaterial(color: SimpleMaterial.Color.red.withAlphaComponent(0.1), isMetallic: false)
@@ -39,9 +40,8 @@ class TileGrid {
         self.generatePossibleTiles()
     }
     
-    /*
-     Uses the estimated x and z extents of the surface plane to generate an appropriate grid of tiles
-    */
+    
+     ///Uses the estimated x and z extents of the surface plane to generate an appropriate grid of tiles
     func generatePossibleTiles() {
         let xExtent = self.surfaceAnchor.extent.x
         let zExtent = self.surfaceAnchor.extent.z
@@ -49,6 +49,7 @@ class TileGrid {
         let xSize = Tile.TILE_SIZE.x
         let zSize = Tile.TILE_SIZE.z
         
+        //Adjust for tile size, so that the generated grid fits within the detected plane
         var currentX = (xExtent/2) - xSize/2
         var currentZ = (zExtent/2) - zSize/2
         
@@ -66,10 +67,9 @@ class TileGrid {
         self.zLength = getMaxZ().0.z
     }
     
-    /*
+    /**
      Generates a tile with the given coordinates
-     Adds the tile to the possibleTiles dictionary (indexed by coordinates)
-     and to the gridEntity (with appropriate translation)
+     - Adds the tile to the possibleTiles dictionary (indexed by coordinates) and to the gridEntity (with appropriate translation)
      */
     func generateOneTile(currentX: Float, currentZ: Float) {
         let newTile = Tile(name: String(format: "Tile (%f,%f)", currentX, currentZ), x: currentX, z: currentZ, materials: [TileGrid.gridMaterial])
@@ -77,7 +77,7 @@ class TileGrid {
         self.gridEntity.addChild(newTile)
     }
     
-    /*
+    /**
      Updates the tile grid if the plane has expanded sufficiently
      1) Checks if the new plane is long enough to fit more tiles
      2) If it is, remove all current tiles and regenerate grid to fit
@@ -98,7 +98,7 @@ class TileGrid {
         }
     }
     
-    /*
+    /**
      Updates the current board outline if the user is standing at a valid center tile position
      */
     func updateBoardOutline(centerTile: Tile) {
@@ -145,9 +145,9 @@ class TileGrid {
     }
     
     
-    /*
-    Finds the tiles that would form the upper-right and lower-left corners of the board (relative to direction of 'self.rotated'), with the given centerTile
-     Returns the tiles in a tuple (Upper Right Corner, Lower Left Corner) if they exist, nil otherwise
+    /**
+    Finds and returns the tiles that would form the upper-right and lower-left corners of the board (relative to direction of 'self.rotated'), with the given centerTile
+    - Returns the tiles in a tuple (Upper Right Corner, Lower Left Corner) if they exist, nil otherwise
      */
     func findCornerTiles(centerTile: Tile, rotationMultiplier: Float) -> (Tile, Tile)? {
         
@@ -181,7 +181,7 @@ class TileGrid {
         
     }
     
-    /*
+    /**
      Generates an outline of a game board using the upper-right corner tile of the board, a rotation multiplier (which will determine direction), and a range for the number of tiles in the x and z direction, respectively
      */
     func generateOutline(cornerTile: Tile, rotationMultiplier: Float, xRange: ClosedRange<Int>, zRange: ClosedRange<Int>) {
@@ -203,8 +203,8 @@ class TileGrid {
         }
     }
     
-    /*
-     Clears the current outline by changing all tiles back to the clear material and emptying the list
+    /**
+     Clears the current outline by changing all tiles back to the default grid material and emptying the list
      */
     func clearOutline() {
         for tile in self.currentOutline {
@@ -238,16 +238,15 @@ extension TileGrid {
         }
     }
     
-    /*
+    /**
      Checks if two values are approximately equal to each other, with the allowed error
      */
     static func isApproxEqual(value1: Float, value2: Float, error: Float) -> Bool {
         return abs(value1 - value2) <= error && abs(value1 - value2) >= -error
     }
     
-    /*
-     getMaxX() and getMaxZ() return the tiles with the largest X and Z coordinates,
-        respectively
+    /**
+     Return the tile with the largest X coordinate
      */
     func getMaxX() -> (Tile.Coordinates, Tile) {
         return self.possibleTiles.max(by:) {tile1, tile2 in
@@ -255,13 +254,16 @@ extension TileGrid {
             }!
     }
     
+    /**
+     Return the tile with the largest Z coordinate
+     */
     func getMaxZ() -> (Tile.Coordinates, Tile) {
         return self.possibleTiles.max(by:) {tile1, tile2 in
             return tile1.key.z < tile2.key.z
         }!
     }
     
-    /*
+    /**
      Given x and z values representing the # of tiles offset from the upper right corner of a rectangle with size (xRange + 1) by (zRange + 1), return whether the respective tile lies on the border of the rectangle
      */
     func isBorderTile(x: Int, z: Int, xRange: ClosedRange<Int>, zRange: ClosedRange<Int>) -> Bool {
