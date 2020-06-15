@@ -243,7 +243,8 @@ extension ViewController {
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
             // TODO: Disable when done debugging Movement Game loading.
-            self.startMinigame(gameType: .movement)
+//            self.startMinigame(game: .movement)
+            self.startMinigame(game: .face)
         } else {
             minigameController.disableMinigame()
             self.minigameController.ground.isEnabled = false
@@ -300,17 +301,17 @@ extension ViewController {
                 return
             }
             guard let gameType = self.gameBoard?.gamesDict[tile] else {return}
-            self.startMinigame(gameType: gameType)
+            self.startMinigame(game: gameType)
             self.gameBoard?.removeGame(tile)
             print(gameType)
             print("End collision board")
         })
     }
     
-    func startMinigame(gameType: Game) {
+    func startMinigame(game: Game) {
         self.gameBoard?.board.isEnabled = false
         self.minigameController.ground.isEnabled = true
-        let controller = self.minigameController.enableMinigame(game: gameType)
+        let controller = self.minigameController.enableMinigame(game: game)
         print("Adding Controller")
         self.addViewController(controller: controller)
         print("Turning minigame switch on")

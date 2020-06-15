@@ -21,8 +21,9 @@ enum Game : CaseIterable {
     // List of minigames.
     case movement
     case trace
+    case face
     
-    /**I
+    /**
      Returns a new instance of the minigame.
      */
     func makeNewInstance() -> Minigame{
@@ -31,6 +32,8 @@ enum Game : CaseIterable {
             return TraceGame()
         case .movement:
             return MovementGame(num: 3)
+        case .face:
+            return FaceGame()
         }
     }
     
