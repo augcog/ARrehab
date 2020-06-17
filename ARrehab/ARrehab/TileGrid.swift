@@ -40,6 +40,7 @@ class TileGrid {
     }
     
     /*
+     
      Uses the estimated x and z extents of the surface plane to generate an appropriate grid of tiles
     */
     func generatePossibleTiles() {

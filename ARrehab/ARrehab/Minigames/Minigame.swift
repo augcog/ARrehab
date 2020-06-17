@@ -21,6 +21,7 @@ enum Game : CaseIterable {
     // List of minigames.
     case movement
     case trace
+    case face
     
     /**
      Returns a new instance of the minigame.
@@ -31,6 +32,8 @@ enum Game : CaseIterable {
             return TraceGame()
         case .movement:
             return MovementGame(num: 3)
+        case .face:
+            return FaceGame()
         }
     }
     
@@ -64,12 +67,13 @@ class Minigame : Entity {
     
     /// Progress of the minigame in the range [0.0, 100.0] to be displayed on the progres bar.
     @Published var progress : [Float]
+
     /// View Controller of the Minigame 2D UI
     var viewController : MinigameViewController!
     
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
-    /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
+    /// - Parameter ground: an Entity to be used as a parent for items in fixed locations.
     /// - Parameter player: an Entity that represents the player. This will be used as a parent for elements that need to update with the camera.
     convenience init(ground: Entity, player: Entity) {
         self.init()
