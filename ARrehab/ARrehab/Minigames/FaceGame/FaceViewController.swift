@@ -14,7 +14,7 @@ import ARKit
 /**
  Face Minigame ViewController
  */
-class FaceViewController: UIViewController, ARSessionDelegate {
+class FaceViewController: MinigameViewController, ARSessionDelegate {
     
     //changing elements
     @IBOutlet weak var actionLabel: UILabel!
