@@ -40,6 +40,7 @@
 		15CE526524608E7300A22B0B /* MovementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CE526424608E7300A22B0B /* MovementState.swift */; };
 		15CE52672460A88500A22B0B /* MovementGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15CE52662460A88500A22B0B /* MovementGame.storyboard */; };
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
+		15E1B86F24A3B29F003ED0EA /* BasketGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E1B86E24A3B29F003ED0EA /* BasketGame.swift */; };
 		1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1901C560245FE1E900896EE4 /* RotateBoardButton.swift */; };
 		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
 		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
@@ -106,6 +107,7 @@
 		15CE526424608E7300A22B0B /* MovementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementState.swift; sourceTree = "<group>"; };
 		15CE52662460A88500A22B0B /* MovementGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MovementGame.storyboard; sourceTree = "<group>"; };
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
+		15E1B86E24A3B29F003ED0EA /* BasketGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketGame.swift; sourceTree = "<group>"; };
 		1901C560245FE1E900896EE4 /* RotateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateBoardButton.swift; sourceTree = "<group>"; };
 		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 		15AC2BAD2479C58900D5DFB6 /* Minigames */ = {
 			isa = PBXGroup;
 			children = (
+				15E1B86D24A3B286003ED0EA /* BasketGame */,
 				15BB4C88245F55130033A18D /* UIViewExtension.swift */,
 				1594B45E245E86B8008463BA /* PassThroughView.swift */,
 				15AC2BAE2479C5BC00D5DFB6 /* TraceGame */,
@@ -245,6 +248,14 @@
 				15BB4C8C245FA4D50033A18D /* up.png */,
 			);
 			path = MovementGame;
+			sourceTree = "<group>";
+		};
+		15E1B86D24A3B286003ED0EA /* BasketGame */ = {
+			isa = PBXGroup;
+			children = (
+				15E1B86E24A3B29F003ED0EA /* BasketGame.swift */,
+			);
+			path = BasketGame;
 			sourceTree = "<group>";
 		};
 		19989C39244A9B90001C1C7F /* 2D Elements */ = {
@@ -428,6 +439,7 @@
 				15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */,
 				1594B461245E8D82008463BA /* TraceViewController.swift in Sources */,
 				15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */,
+				15E1B86F24A3B29F003ED0EA /* BasketGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
