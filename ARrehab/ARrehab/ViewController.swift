@@ -26,6 +26,8 @@ class ViewController: UIViewController {
     var tileGrid: TileGrid?
     var gameBoard: GameBoard?
     
+    var floor: TriggerVolume?
+    
     /// The Player Entity that is attached to the camera.
     let playerEntity = Player(target: .camera)
 
@@ -156,6 +158,72 @@ extension ViewController: ARSessionDelegate {
         }
     }
     
+    ///Transition from board placement --> game mode
+    func moveToGameplay() {
+        
+        //Clean up the tile grid and board placement buttons
+        self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
+        self.activeButtons.forEach { (button) in
+            button.removeFromSuperview()
+        }
+        
+        //Instantiate a gameboard object with the current tile outline and add it to the scene
+        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false), center: (self.tileGrid?.centerTile!.coords)!)
+        self.gameBoard?.addBoardToScene(arView: self.arView)
+        
+        //Stop ARWorldTracking, as it is unnecessary from this point onwards (unless you desire further scene understanding for a specific minigame, in which case it can be re-activated)
+        let newConfig = ARWorldTrackingConfiguration()
+        self.arView.session.run(newConfig)
+        
+        //Set up the minigames
+        setupMinigames(ground: self.gameBoard!.board.clone(recursive: false))
+        //setupMinigames(ground: self.gameBoard!.board)
+            
+    }
+    
+    func setupMinigames(ground: AnchorEntity) {
+        arView.scene.addAnchor(ground)
+        ground.isEnabled = false
+        
+        //Instantiate the minigame controller
+        minigameController = MinigameController(ground: ground, player: self.playerEntity)
+        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
+            self.minigameLabel.text = String(format:"Score: %0.0f", score)
+        }))
+        
+        //Set up the floor entity, which will allow collision detection with the surface anchor during minigames
+        self.floor = TriggerVolume(shape: .generateBox(width: tileGrid!.surfaceAnchor.extent.x, height: 0.0, depth: tileGrid!.surfaceAnchor.extent.z))
+        minigameController.ground.addChild(floor!)
+        
+        
+        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
+        minigameLabel.isHidden = false
+        minigameSwitch.isHidden = false
+        minigameSwitch.setOn(false, animated: false)
+        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
+        addCollision()
+    }
+        
+    ///Here is code to load in the background model. Currently not recommended -- causes iPad to heat significantly and doesn't blend with scene well
+    func addBackgroundModel() {
+        
+        subscribers.append(Entity.loadAsync(named: "Background").sink(receiveCompletion: { (loadCompletion) in
+            // Handle Errors
+            print(loadCompletion)
+        }, receiveValue: { (backgroundModel) in
+            // Create a background entity in which we apply our transforms depending on board placement and game settings.
+            let background = Entity()
+            background.addChild(backgroundModel)
+            self.gameBoard!.board.addChild(background)
+            //  Correction for the model to be centered. Other than centering the model, no other transform needs to be done on backgroundModel
+            backgroundModel.transform.translation = SIMD3<Float>(0.0779, -0.01, 0.2977)
+            background.transform.translation = (self.gameBoard?.center.translation)!
+            background.transform.rotation = simd_quatf(angle: self.tileGrid?.rotated.angle ?? 0, axis: SIMD3<Float>(0, 1, 0))
+            background.transform.scale = SIMD3(Tile.SCALE, Tile.SCALE, Tile.SCALE)
+        }))
+        
+    }
+    
 }
 
 // MARK: Board Generation Helper functions
@@ -181,51 +249,6 @@ extension ViewController {
         let maxExtent = max(GameBoard.EXTENT1, GameBoard.EXTENT2)
         
         return minBoundary >= minExtent && maxBoundary >= maxExtent
-    }
-    
-    
-    //Transition from board placement --> game mode
-    func moveToGameplay() {
-        
-        //Clean up the tile grid and board placement buttons
-        self.arView.scene.removeAnchor(self.tileGrid!.gridEntity)
-        self.activeButtons.forEach { (button) in
-            button.removeFromSuperview()
-        }
-        
-        //Instantiate a gameboard object with the current tile outline and add it to the scene
-        self.gameBoard = GameBoard(tiles: self.tileGrid!.currentOutline, surfaceAnchor: self.tileGrid!.gridEntity.clone(recursive: false), center: (self.tileGrid?.centerTile!.coords)!)
-        self.gameBoard?.addBoardToScene(arView: self.arView)
-        
-        
-        //Stop ARWorldTracking, as it is unnecessary from this point onwards (unless you desire further scene understanding for a specific minigame, in which case it can be re-activated)
-        let newConfig = ARWorldTrackingConfiguration()
-        self.arView.session.run(newConfig)
-        
-        //Set up the minigames
-        setupMinigames(ground: self.gameBoard!.board.clone(recursive: false))
-        //setupMinigames(ground: self.gameBoard!.board)
-            
-    }
-        
-    //Here is code to load in the background model. Currently not recommended -- causes iPad to heat significantly and doesn't blend with scene well
-    func addBackgroundModel() {
-        
-        subscribers.append(Entity.loadAsync(named: "Background").sink(receiveCompletion: { (loadCompletion) in
-            // Handle Errors
-            print(loadCompletion)
-        }, receiveValue: { (backgroundModel) in
-            // Create a background entity in which we apply our transforms depending on board placement and game settings.
-            let background = Entity()
-            background.addChild(backgroundModel)
-            self.gameBoard!.board.addChild(background)
-            //  Correction for the model to be centered. Other than centering the model, no other transform needs to be done on backgroundModel
-            backgroundModel.transform.translation = SIMD3<Float>(0.0779, -0.01, 0.2977)
-            background.transform.translation = (self.gameBoard?.center.translation)!
-            background.transform.rotation = simd_quatf(angle: self.tileGrid?.rotated.angle ?? 0, axis: SIMD3<Float>(0, 1, 0))
-            background.transform.scale = SIMD3(Tile.SCALE, Tile.SCALE, Tile.SCALE)
-        }))
-        
     }
     
 }
@@ -265,22 +288,7 @@ extension ViewController {
         print("Setting Moved state")
         controller.didMove(toParent: self)
     }
-    
-    func setupMinigames(ground: AnchorEntity) {
-        arView.scene.addAnchor(ground)
-        ground.isEnabled = false
-        minigameController = MinigameController(ground: ground, player: self.playerEntity)
-        subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
-            self.minigameLabel.text = String(format:"Score: %0.0f", score)
-        }))
-        
-        //Setup the Minigame. Switch is used for debugging purposes. In the product it should be a seamless transition.
-        minigameLabel.isHidden = false
-        minigameSwitch.isHidden = false
-        minigameSwitch.setOn(false, animated: false)
-        minigameSwitch.addTarget(self, action: #selector(minigameSwitchStateChanged), for: .valueChanged)
-        addCollision()
-    }
+
 }
 
 
@@ -308,6 +316,8 @@ extension ViewController {
     func startMinigame(gameType: Game) {
         self.gameBoard?.board.isEnabled = false
         self.minigameController.ground.isEnabled = true
+        
+        
         let controller = self.minigameController.enableMinigame(game: gameType)
         print("Adding Controller")
         self.addViewController(controller: controller)

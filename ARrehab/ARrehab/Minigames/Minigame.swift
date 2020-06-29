@@ -8,6 +8,7 @@
 //  Template and controller for all Minigames.
 
 import Foundation
+import ARKit
 import RealityKit
 import Combine
 import UIKit
@@ -66,7 +67,7 @@ class Minigame : Entity {
     @Published var progress : [Float]
     /// View Controller of the Minigame 2D UI
     var viewController : MinigameViewController!
-    
+        
     /// Initializes the minigame. Adding it to the scene as appropriate.
     ///
     /// - Parameter ground: an Entity to used as a parent for items in fixed locations.
@@ -188,6 +189,7 @@ class DefaultViewController : MinigameViewController {
 class MinigameController {
     
     var currentMinigame : Minigame? = nil
+    
     var ground: Entity
     var player: Entity
     
@@ -208,6 +210,7 @@ class MinigameController {
     init(ground: Entity, player: Entity) {
         self.ground = ground
         self.player = player
+        
         self.score = 0
         self.cancellable = []
     }
