@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     var tileGrid: TileGrid?
     var gameBoard: GameBoard?
     
-    var floor: TriggerVolume?
+    var floor: Entity?
     
     /// The Player Entity that is attached to the camera.
     let playerEntity = Player(target: .camera)
@@ -192,7 +192,11 @@ extension ViewController: ARSessionDelegate {
         }))
         
         //Set up the floor entity, which will allow collision detection with the surface anchor during minigames
-        self.floor = TriggerVolume(shape: .generateBox(width: tileGrid!.surfaceAnchor.extent.x, height: 0.0, depth: tileGrid!.surfaceAnchor.extent.z))
+        self.floor = Entity()
+        let floorCollisionComp = CollisionComponent(shapes: [ShapeResource.generateBox(width: tileGrid!.surfaceAnchor.extent.x, height: 0.00, depth: tileGrid!.surfaceAnchor.extent.z)])
+        let floorPhysicsComp = PhysicsBodyComponent(shapes: floorCollisionComp.shapes, density: 0.1, material: .default, mode: .static)
+        self.floor!.components.set([floorCollisionComp, floorPhysicsComp])
+        
         minigameController.ground.addChild(floor!)
         
         
