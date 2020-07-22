@@ -54,7 +54,7 @@ class FaceViewController: MinigameViewController, ARSessionDelegate {
         let config = ARFaceTrackingConfiguration()
         config.worldAlignment = .gravity
         session.delegate = self
-        session.run(config, options: [])
+        session.run(config)
         
         self.updateUI()
     }

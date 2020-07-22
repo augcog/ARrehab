@@ -242,14 +242,26 @@ extension ViewController {
      */
     @objc func minigameSwitchStateChanged(switchState: UISwitch) {
         if switchState.isOn {
-            // TODO: Disable when done debugging Movement Game loading.
+            // TODO: Change when done with expression game
 //            self.startMinigame(game: .movement)
-            self.startMinigame(game: .face)
+            self.startMinigame(game: .expression)
+//            self.startExpressionGame()
         } else {
-            minigameController.disableMinigame()
-            self.minigameController.ground.isEnabled = false
+            // TODO: Change when done with expression game
+//            minigameController.disableMinigame()
+//            self.minigameController.ground.isEnabled = false
+//            self.gameBoard?.board.isEnabled = true
+            let generalConfig = ARWorldTrackingConfiguration()
+            self.arView.session.run(generalConfig)
             self.gameBoard?.board.isEnabled = true
         }
+    }
+    
+    func startExpressionGame() {
+        let expressionConfig = ARFaceTrackingConfiguration()
+        expressionConfig.worldAlignment = .gravity
+        self.gameBoard?.board.isEnabled = false
+        self.arView.session.run(expressionConfig, options: [])
     }
     
     /**

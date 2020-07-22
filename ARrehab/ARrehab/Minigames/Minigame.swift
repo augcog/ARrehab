@@ -22,6 +22,7 @@ enum Game : CaseIterable {
     case movement
     case trace
     case face
+    case expression
     
     /**
      Returns a new instance of the minigame.
@@ -34,6 +35,8 @@ enum Game : CaseIterable {
             return MovementGame(num: 3)
         case .face:
             return FaceGame()
+        case .expression:
+            return ExpressionGame()
         }
     }
     

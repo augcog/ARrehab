@@ -73,6 +73,7 @@ class TraceGameViewController : MinigameViewController {
         setupProgressBar()
         setupStackView()
         addProgressSubscriber()
+        
     }
     
     private func setupLabels() {
