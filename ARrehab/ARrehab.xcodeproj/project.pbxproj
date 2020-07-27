@@ -292,8 +292,8 @@
 			isa = PBXGroup;
 			children = (
 				19C6B61D24C7D611002E6395 /* ExpressionViewController.swift */,
-				19C6B61F24C7D622002E6395 /* ExpressionGame.storyboard */,
 				19C6B62124C7E5CD002E6395 /* ExpressionGame.swift */,
+				19C6B61F24C7D622002E6395 /* ExpressionGame.storyboard */,
 				94D52543248B81940084D7F1 /* Expressions.swift */,
 			);
 			path = ExpressionGame;

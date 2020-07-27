@@ -10,6 +10,7 @@ import RealityKit
 import Combine
 import UIKit
 import Dispatch
+import ARKit
 
 /**
 Movement Game Entity holds a representatioin of where the user needs to go and the detection mechanism to determine if the user has completed the action.

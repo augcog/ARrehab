@@ -9,6 +9,7 @@
 import Foundation
 import RealityKit
 import UIKit
+import ARKit
 
 class FaceGame: Minigame {
     

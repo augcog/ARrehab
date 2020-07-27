@@ -17,6 +17,7 @@ import RealityKit
 import Combine
 import MultiProgressView
 import UIKit
+import ARKit
 
 /**
 Trace Game Entity holds a pointCloud of TracePoints which the uesr needs to trace over with the Laser.
@@ -95,7 +96,7 @@ class TraceGame : Minigame {
         // Get a unit vector of our target projection then add it to our player position
         targetPosition = simd_normalize(targetPosition) + playerPosition
         // This should result in a position denoted by a 1m vector extending out from the player in the XZ direction the player is facing. This position is fixed at a height of 0 m.
-        // Set the target at thee desired position and orient it towards the player.
+        // Set the target at the desired position and orient it towards the player.
         self.look(at: playerPosition, from: targetPosition, relativeTo: ground)
         ground.addChild(self)
         player.addChild(self.getLaser())

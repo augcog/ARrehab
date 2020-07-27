@@ -11,6 +11,7 @@ import Foundation
 import RealityKit
 import Combine
 import UIKit
+import ARKit
 
 /**
  Minigames available to play
@@ -27,7 +28,7 @@ enum Game : CaseIterable {
     /**
      Returns a new instance of the minigame.
      */
-    func makeNewInstance() -> Minigame{
+    func makeNewInstance(arSession: ARSession?=nil) -> Minigame{
         switch self {
         case .trace:
             return TraceGame()
@@ -36,7 +37,7 @@ enum Game : CaseIterable {
         case .face:
             return FaceGame()
         case .expression:
-            return ExpressionGame()
+            return ExpressionGame(session: arSession!)
         }
     }
     
@@ -141,7 +142,7 @@ class Minigame : Entity {
 }
 
 /**
- Minigame ViewController base classs.
+ Minigame ViewController base class.
  Each minigame will implement its own view controller.
  Please note that the UIView must be of the PassThroughView Class.
  */
@@ -197,6 +198,7 @@ class MinigameController {
     var currentMinigame : Minigame? = nil
     var ground: Entity
     var player: Entity
+    var session: ARSession
     
     /// The current Minigame's ViewController. Note that this returns nil once the Minigame is ended.
     var controller : MinigameViewController? {
@@ -212,9 +214,10 @@ class MinigameController {
     
     var cancellable : [Cancellable]
     
-    init(ground: Entity, player: Entity) {
+    init(ground: Entity, player: Entity, session: ARSession) {
         self.ground = ground
         self.player = player
+        self.session = session
         self.score = 0
         self.cancellable = []
     }
@@ -238,7 +241,7 @@ class MinigameController {
             return self.controller!
         }
         print("Enabling", game)
-        currentMinigame = game.makeNewInstance()
+        currentMinigame = game.makeNewInstance(arSession: self.session)
         print("Subscribing to score")
         cancellable.append(currentMinigame!.$score.sink{ score in
             guard self.currentMinigame != nil else {
@@ -264,12 +267,13 @@ class MinigameController {
             return
         }
         
+        currentMinigame?.endGame()
+        
         // Remove the Minigame's View Controller.
         controller?.willMove(toParent: nil)
         controller?.view.removeFromSuperview()
         controller?.removeFromParent()
         
-        currentMinigame?.endGame()
         currentMinigame = nil
         cancellable.forEach { (subscription) in
             subscription.cancel()

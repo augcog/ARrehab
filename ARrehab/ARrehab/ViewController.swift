@@ -248,20 +248,10 @@ extension ViewController {
 //            self.startExpressionGame()
         } else {
             // TODO: Change when done with expression game
-//            minigameController.disableMinigame()
-//            self.minigameController.ground.isEnabled = false
-//            self.gameBoard?.board.isEnabled = true
-            let generalConfig = ARWorldTrackingConfiguration()
-            self.arView.session.run(generalConfig)
+            minigameController.disableMinigame()
+            self.minigameController.ground.isEnabled = false
             self.gameBoard?.board.isEnabled = true
         }
-    }
-    
-    func startExpressionGame() {
-        let expressionConfig = ARFaceTrackingConfiguration()
-        expressionConfig.worldAlignment = .gravity
-        self.gameBoard?.board.isEnabled = false
-        self.arView.session.run(expressionConfig, options: [])
     }
     
     /**
@@ -284,7 +274,7 @@ extension ViewController {
     func setupMinigames(ground: AnchorEntity) {
         arView.scene.addAnchor(ground)
         ground.isEnabled = false
-        minigameController = MinigameController(ground: ground, player: self.playerEntity)
+        minigameController = MinigameController(ground: ground, player: self.playerEntity, session: self.arView.session)
         subscribers.append(minigameController.$score.sink(receiveValue: { (score) in
             self.minigameLabel.text = String(format:"Score: %0.0f", score)
         }))
