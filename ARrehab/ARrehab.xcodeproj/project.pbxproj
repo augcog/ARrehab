@@ -51,16 +51,7 @@
 		19C6B62024C7D622002E6395 /* ExpressionGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19C6B61F24C7D622002E6395 /* ExpressionGame.storyboard */; };
 		19C6B62224C7E5CD002E6395 /* ExpressionGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6B62124C7E5CD002E6395 /* ExpressionGame.swift */; };
 		19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */; };
-		94D5253F248B809C0084D7F1 /* FaceGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D5253E248B809C0084D7F1 /* FaceGame.swift */; };
-		94D52542248B814E0084D7F1 /* FaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D52541248B814E0084D7F1 /* FaceViewController.swift */; };
 		94D52544248B81940084D7F1 /* Expressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D52543248B81940084D7F1 /* Expressions.swift */; };
-		94D52548248B82470084D7F1 /* FaceGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94D52547248B82470084D7F1 /* FaceGame.storyboard */; };
-		94D5254B248B82EB0084D7F1 /* VirtualFaceContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D5254A248B82EB0084D7F1 /* VirtualFaceContent.swift */; };
-		94D5254D248B82FF0084D7F1 /* Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D5254C248B82FF0084D7F1 /* Mask.swift */; };
-		94D52552248B83140084D7F1 /* RoundedRectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D5254F248B83140084D7F1 /* RoundedRectButton.swift */; };
-		94D52553248B83140084D7F1 /* UIKitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D52550248B83140084D7F1 /* UIKitExtras.swift */; };
-		94D52554248B83140084D7F1 /* FoundationExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D52551248B83140084D7F1 /* FoundationExtras.swift */; };
-		94D52556248B83380084D7F1 /* FaceInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94D52555248B83380084D7F1 /* FaceInfo.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,16 +122,7 @@
 		19C6B61F24C7D622002E6395 /* ExpressionGame.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ExpressionGame.storyboard; sourceTree = "<group>"; };
 		19C6B62124C7E5CD002E6395 /* ExpressionGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionGame.swift; sourceTree = "<group>"; };
 		19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManipulation.swift; sourceTree = "<group>"; };
-		94D5253E248B809C0084D7F1 /* FaceGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceGame.swift; sourceTree = "<group>"; };
-		94D52541248B814E0084D7F1 /* FaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceViewController.swift; sourceTree = "<group>"; };
 		94D52543248B81940084D7F1 /* Expressions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expressions.swift; sourceTree = "<group>"; };
-		94D52547248B82470084D7F1 /* FaceGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FaceGame.storyboard; sourceTree = "<group>"; };
-		94D5254A248B82EB0084D7F1 /* VirtualFaceContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualFaceContent.swift; sourceTree = "<group>"; };
-		94D5254C248B82FF0084D7F1 /* Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mask.swift; sourceTree = "<group>"; };
-		94D5254F248B83140084D7F1 /* RoundedRectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectButton.swift; sourceTree = "<group>"; };
-		94D52550248B83140084D7F1 /* UIKitExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitExtras.swift; sourceTree = "<group>"; };
-		94D52551248B83140084D7F1 /* FoundationExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtras.swift; sourceTree = "<group>"; };
-		94D52555248B83380084D7F1 /* FaceInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FaceInfo.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,7 +220,6 @@
 				15B4A790245E2EB8005CC9EC /* Default.storyboard */,
 				15986819242451FA009456EF /* Minigame.swift */,
 				15AC2BB02479C66E00D5DFB6 /* README.md */,
-				94D5253D248B805E0084D7F1 /* FaceGame */,
 				15AC2BAE2479C5BC00D5DFB6 /* TraceGame */,
 				15AC2BAF2479C5DE00D5DFB6 /* MovementGame */,
 				19C6B61824C7D12D002E6395 /* ExpressionGame */,
@@ -297,38 +278,6 @@
 				94D52543248B81940084D7F1 /* Expressions.swift */,
 			);
 			path = ExpressionGame;
-			sourceTree = "<group>";
-		};
-		94D5253D248B805E0084D7F1 /* FaceGame */ = {
-			isa = PBXGroup;
-			children = (
-				94D52541248B814E0084D7F1 /* FaceViewController.swift */,
-				94D5253E248B809C0084D7F1 /* FaceGame.swift */,
-				94D52547248B82470084D7F1 /* FaceGame.storyboard */,
-				94D52555248B83380084D7F1 /* FaceInfo.plist */,
-				94D52549248B82610084D7F1 /* Floating Mask */,
-				94D5254E248B83140084D7F1 /* Extras */,
-			);
-			path = FaceGame;
-			sourceTree = "<group>";
-		};
-		94D52549248B82610084D7F1 /* Floating Mask */ = {
-			isa = PBXGroup;
-			children = (
-				94D5254A248B82EB0084D7F1 /* VirtualFaceContent.swift */,
-				94D5254C248B82FF0084D7F1 /* Mask.swift */,
-			);
-			path = "Floating Mask";
-			sourceTree = "<group>";
-		};
-		94D5254E248B83140084D7F1 /* Extras */ = {
-			isa = PBXGroup;
-			children = (
-				94D5254F248B83140084D7F1 /* RoundedRectButton.swift */,
-				94D52550248B83140084D7F1 /* UIKitExtras.swift */,
-				94D52551248B83140084D7F1 /* FoundationExtras.swift */,
-			);
-			path = Extras;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,9 +402,7 @@
 				157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */,
 				15BB4C8E245FA4D60033A18D /* up.png in Resources */,
 				19C6B62024C7D622002E6395 /* ExpressionGame.storyboard in Resources */,
-				94D52556248B83380084D7F1 /* FaceInfo.plist in Resources */,
 				15CE52672460A88500A22B0B /* MovementGame.storyboard in Resources */,
-				94D52548248B82470084D7F1 /* FaceGame.storyboard in Resources */,
 				157AE587245594FE00BE7809 /* Wolf.usdz in Resources */,
 				157AE5892455956000BE7809 /* RedPanda.usdz in Resources */,
 				157AE58B2455959800BE7809 /* Bear.usdz in Resources */,
@@ -486,18 +433,14 @@
 			files = (
 				15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
-				94D5253F248B809C0084D7F1 /* FaceGame.swift in Sources */,
 				19989C3D244AA617001C1C7F /* PlaceBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
 				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
 				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
 				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
 				15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */,
-				94D52553248B83140084D7F1 /* UIKitExtras.swift in Sources */,
-				94D52552248B83140084D7F1 /* RoundedRectButton.swift in Sources */,
 				193AC61C2443E7050046C872 /* TileGrid.swift in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
-				94D5254D248B82FF0084D7F1 /* Mask.swift in Sources */,
 				1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */,
 				1598681A242451FA009456EF /* Minigame.swift in Sources */,
 				15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */,
@@ -508,13 +451,10 @@
 				159994D92481CA8500BC40AA /* Background.rcproject in Sources */,
 				15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */,
 				1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */,
-				94D52554248B83140084D7F1 /* FoundationExtras.swift in Sources */,
 				19C6B62224C7E5CD002E6395 /* ExpressionGame.swift in Sources */,
-				94D5254B248B82EB0084D7F1 /* VirtualFaceContent.swift in Sources */,
 				94D52544248B81940084D7F1 /* Expressions.swift in Sources */,
 				15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */,
 				1594B461245E8D82008463BA /* TraceViewController.swift in Sources */,
-				94D52542248B814E0084D7F1 /* FaceViewController.swift in Sources */,
 				15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
