@@ -3,23 +3,50 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		15264C962404DA4B00E4F2BB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15264C952404DA4A00E4F2BB /* Player.swift */; };
+		1572133D2462009D006E6BBC /* Block.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1572133C2462009D006E6BBC /* Block.usdz */; };
+		157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE5802452C4DA00BE7809 /* Deer.usdz */; };
+		157AE5832455749400BE7809 /* Fox.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE5822455749400BE7809 /* Fox.usdz */; };
+		157AE587245594FE00BE7809 /* Wolf.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE586245594FE00BE7809 /* Wolf.usdz */; };
+		157AE5892455956000BE7809 /* RedPanda.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE5882455956000BE7809 /* RedPanda.usdz */; };
+		157AE58B2455959800BE7809 /* Bear.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 157AE58A2455959800BE7809 /* Bear.usdz */; };
+		1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594B45E245E86B8008463BA /* PassThroughView.swift */; };
+		1594B461245E8D82008463BA /* TraceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594B460245E8D82008463BA /* TraceViewController.swift */; };
+		1594B465245E9290008463BA /* TraceGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1594B464245E9290008463BA /* TraceGame.storyboard */; };
 		15986816241EE627009456EF /* TraceGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986815241EE627009456EF /* TraceGame.swift */; };
 		1598681A242451FA009456EF /* Minigame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15986819242451FA009456EF /* Minigame.swift */; };
+		159994D92481CA8500BC40AA /* Background.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159994D82481CA8500BC40AA /* Background.rcproject */; };
 		159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EC23F49283000A5376 /* AppDelegate.swift */; };
 		159A41EF23F49283000A5376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A41EE23F49283000A5376 /* ViewController.swift */; };
-		159A41F123F49283000A5376 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 159A41F023F49283000A5376 /* Experience.rcproject */; };
 		159A41F423F49283000A5376 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F223F49283000A5376 /* Main.storyboard */; };
 		159A41F623F49286000A5376 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F523F49286000A5376 /* Assets.xcassets */; };
 		159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 159A41F723F49286000A5376 /* LaunchScreen.storyboard */; };
 		159A420423F49286000A5376 /* ARrehabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420323F49286000A5376 /* ARrehabTests.swift */; };
 		159A420F23F49286000A5376 /* ARrehabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159A420E23F49286000A5376 /* ARrehabUITests.swift */; };
+		15B4A78F245DF51B005CC9EC /* MultiProgressView in Frameworks */ = {isa = PBXBuildFile; productRef = 15B4A78E245DF51B005CC9EC /* MultiProgressView */; };
+		15B4A791245E2EB8005CC9EC /* Default.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15B4A790245E2EB8005CC9EC /* Default.storyboard */; };
+		15B8D1D0246086E500D0CBB6 /* Puffer.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 15B8D1CF246086E400D0CBB6 /* Puffer.usdz */; };
+		15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C82245F53130033A18D /* TraceProgressSection.swift */; };
+		15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C84245F534D0033A18D /* TraceStackView.swift */; };
+		15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C86245F53870033A18D /* TraceTargetType.swift */; };
+		15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C88245F55130033A18D /* UIViewExtension.swift */; };
+		15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB4C8A245FA3410033A18D /* MovementViewController.swift */; };
+		15BB4C8E245FA4D60033A18D /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 15BB4C8C245FA4D50033A18D /* up.png */; };
+		15BB4C8F245FA4D60033A18D /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 15BB4C8D245FA4D50033A18D /* down.png */; };
+		15CE526524608E7300A22B0B /* MovementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CE526424608E7300A22B0B /* MovementState.swift */; };
+		15CE52672460A88500A22B0B /* MovementGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15CE52662460A88500A22B0B /* MovementGame.storyboard */; };
 		15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E002DD243AA3CD00BA6A96 /* MovementGame.swift */; };
+		1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1901C560245FE1E900896EE4 /* RotateBoardButton.swift */; };
+		19089AED24380DF70054EFED /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19089AEC24380DF70054EFED /* GameBoard.swift */; };
+		193AC61C2443E7050046C872 /* TileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193AC61B2443E7050046C872 /* TileGrid.swift */; };
+		19989C3D244AA617001C1C7F /* PlaceBoardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19989C3C244AA617001C1C7F /* PlaceBoardButton.swift */; };
+		19989C40244AACBE001C1C7F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 19989C3F244AACBE001C1C7F /* README */; };
 		19B1736A2403475400845819 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B173692403475400845819 /* Tile.swift */; };
+		19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,12 +68,21 @@
 
 /* Begin PBXFileReference section */
 		15264C952404DA4A00E4F2BB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		1572133C2462009D006E6BBC /* Block.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Block.usdz; sourceTree = "<group>"; };
+		157AE5802452C4DA00BE7809 /* Deer.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Deer.usdz; sourceTree = "<group>"; };
+		157AE5822455749400BE7809 /* Fox.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Fox.usdz; sourceTree = "<group>"; };
+		157AE586245594FE00BE7809 /* Wolf.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Wolf.usdz; sourceTree = "<group>"; };
+		157AE5882455956000BE7809 /* RedPanda.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = RedPanda.usdz; sourceTree = "<group>"; };
+		157AE58A2455959800BE7809 /* Bear.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bear.usdz; sourceTree = "<group>"; };
+		1594B45E245E86B8008463BA /* PassThroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassThroughView.swift; sourceTree = "<group>"; };
+		1594B460245E8D82008463BA /* TraceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceViewController.swift; sourceTree = "<group>"; };
+		1594B464245E9290008463BA /* TraceGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TraceGame.storyboard; sourceTree = "<group>"; };
 		15986815241EE627009456EF /* TraceGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceGame.swift; sourceTree = "<group>"; };
 		15986819242451FA009456EF /* Minigame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minigame.swift; sourceTree = "<group>"; };
+		159994D82481CA8500BC40AA /* Background.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Background.rcproject; sourceTree = "<group>"; };
 		159A41E923F49283000A5376 /* ARrehab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARrehab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A41EC23F49283000A5376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		159A41EE23F49283000A5376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		159A41F023F49283000A5376 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		159A41F323F49283000A5376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		159A41F523F49286000A5376 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		159A41F823F49286000A5376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -57,8 +93,26 @@
 		159A420A23F49286000A5376 /* ARrehabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARrehabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		159A420E23F49286000A5376 /* ARrehabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARrehabUITests.swift; sourceTree = "<group>"; };
 		159A421023F49286000A5376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15AC2BB02479C66E00D5DFB6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		15B4A790245E2EB8005CC9EC /* Default.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Default.storyboard; sourceTree = "<group>"; };
+		15B8D1CF246086E400D0CBB6 /* Puffer.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Puffer.usdz; sourceTree = "<group>"; };
+		15BB4C82245F53130033A18D /* TraceProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceProgressSection.swift; sourceTree = "<group>"; };
+		15BB4C84245F534D0033A18D /* TraceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceStackView.swift; sourceTree = "<group>"; };
+		15BB4C86245F53870033A18D /* TraceTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceTargetType.swift; sourceTree = "<group>"; };
+		15BB4C88245F55130033A18D /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		15BB4C8A245FA3410033A18D /* MovementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovementViewController.swift; sourceTree = "<group>"; };
+		15BB4C8C245FA4D50033A18D /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		15BB4C8D245FA4D50033A18D /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
+		15CE526424608E7300A22B0B /* MovementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementState.swift; sourceTree = "<group>"; };
+		15CE52662460A88500A22B0B /* MovementGame.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MovementGame.storyboard; sourceTree = "<group>"; };
 		15E002DD243AA3CD00BA6A96 /* MovementGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementGame.swift; sourceTree = "<group>"; };
+		1901C560245FE1E900896EE4 /* RotateBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateBoardButton.swift; sourceTree = "<group>"; };
+		19089AEC24380DF70054EFED /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		193AC61B2443E7050046C872 /* TileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileGrid.swift; sourceTree = "<group>"; };
+		19989C3C244AA617001C1C7F /* PlaceBoardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBoardButton.swift; sourceTree = "<group>"; };
+		19989C3F244AACBE001C1C7F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		19B173692403475400845819 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManipulation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15B4A78F245DF51B005CC9EC /* MultiProgressView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,16 +166,19 @@
 			children = (
 				159A41EC23F49283000A5376 /* AppDelegate.swift */,
 				159A41EE23F49283000A5376 /* ViewController.swift */,
-				15986815241EE627009456EF /* TraceGame.swift */,
-				15E002DD243AA3CD00BA6A96 /* MovementGame.swift */,
+				19DEDE7A243EB2B20090CA15 /* ViewManipulation.swift */,
+				193AC61B2443E7050046C872 /* TileGrid.swift */,
+				19089AEC24380DF70054EFED /* GameBoard.swift */,
+				15AC2BAD2479C58900D5DFB6 /* Minigames */,
+				1572133C2462009D006E6BBC /* Block.usdz */,
 				15264C952404DA4A00E4F2BB /* Player.swift */,
 				19B173692403475400845819 /* Tile.swift */,
-				159A41F023F49283000A5376 /* Experience.rcproject */,
+				19989C39244A9B90001C1C7F /* 2D Elements */,
+				159994D82481CA8500BC40AA /* Background.rcproject */,
 				159A41F223F49283000A5376 /* Main.storyboard */,
 				159A41F523F49286000A5376 /* Assets.xcassets */,
 				159A41F723F49286000A5376 /* LaunchScreen.storyboard */,
 				159A41FA23F49286000A5376 /* Info.plist */,
-				15986819242451FA009456EF /* Minigame.swift */,
 			);
 			path = ARrehab;
 			sourceTree = "<group>";
@@ -143,6 +201,62 @@
 			path = ARrehabUITests;
 			sourceTree = "<group>";
 		};
+		15AC2BAD2479C58900D5DFB6 /* Minigames */ = {
+			isa = PBXGroup;
+			children = (
+				15BB4C88245F55130033A18D /* UIViewExtension.swift */,
+				1594B45E245E86B8008463BA /* PassThroughView.swift */,
+				15AC2BAE2479C5BC00D5DFB6 /* TraceGame */,
+				15AC2BAF2479C5DE00D5DFB6 /* MovementGame */,
+				15B4A790245E2EB8005CC9EC /* Default.storyboard */,
+				15986819242451FA009456EF /* Minigame.swift */,
+				15AC2BB02479C66E00D5DFB6 /* README.md */,
+			);
+			path = Minigames;
+			sourceTree = "<group>";
+		};
+		15AC2BAE2479C5BC00D5DFB6 /* TraceGame */ = {
+			isa = PBXGroup;
+			children = (
+				15986815241EE627009456EF /* TraceGame.swift */,
+				1594B460245E8D82008463BA /* TraceViewController.swift */,
+				15BB4C82245F53130033A18D /* TraceProgressSection.swift */,
+				15BB4C86245F53870033A18D /* TraceTargetType.swift */,
+				15BB4C84245F534D0033A18D /* TraceStackView.swift */,
+				157AE5802452C4DA00BE7809 /* Deer.usdz */,
+				157AE58A2455959800BE7809 /* Bear.usdz */,
+				157AE5882455956000BE7809 /* RedPanda.usdz */,
+				157AE586245594FE00BE7809 /* Wolf.usdz */,
+				157AE5822455749400BE7809 /* Fox.usdz */,
+				15B8D1CF246086E400D0CBB6 /* Puffer.usdz */,
+				1594B464245E9290008463BA /* TraceGame.storyboard */,
+			);
+			path = TraceGame;
+			sourceTree = "<group>";
+		};
+		15AC2BAF2479C5DE00D5DFB6 /* MovementGame */ = {
+			isa = PBXGroup;
+			children = (
+				15BB4C8A245FA3410033A18D /* MovementViewController.swift */,
+				15E002DD243AA3CD00BA6A96 /* MovementGame.swift */,
+				15CE526424608E7300A22B0B /* MovementState.swift */,
+				15CE52662460A88500A22B0B /* MovementGame.storyboard */,
+				15BB4C8D245FA4D50033A18D /* down.png */,
+				15BB4C8C245FA4D50033A18D /* up.png */,
+			);
+			path = MovementGame;
+			sourceTree = "<group>";
+		};
+		19989C39244A9B90001C1C7F /* 2D Elements */ = {
+			isa = PBXGroup;
+			children = (
+				19989C3F244AACBE001C1C7F /* README */,
+				19989C3C244AA617001C1C7F /* PlaceBoardButton.swift */,
+				1901C560245FE1E900896EE4 /* RotateBoardButton.swift */,
+			);
+			path = "2D Elements";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,6 +273,9 @@
 			dependencies = (
 			);
 			name = ARrehab;
+			packageProductDependencies = (
+				15B4A78E245DF51B005CC9EC /* MultiProgressView */,
+			);
 			productName = ARrehab;
 			productReference = 159A41E923F49283000A5376 /* ARrehab.app */;
 			productType = "com.apple.product-type.application";
@@ -206,7 +323,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Eric Wang";
 				TargetAttributes = {
 					159A41E823F49283000A5376 = {
@@ -231,6 +348,9 @@
 				Base,
 			);
 			mainGroup = 159A41E023F49283000A5376;
+			packageReferences = (
+				15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */,
+			);
 			productRefGroup = 159A41EA23F49283000A5376 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -247,9 +367,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19989C40244AACBE001C1C7F /* README in Resources */,
 				159A41F923F49286000A5376 /* LaunchScreen.storyboard in Resources */,
+				1572133D2462009D006E6BBC /* Block.usdz in Resources */,
 				159A41F623F49286000A5376 /* Assets.xcassets in Resources */,
+				1594B465245E9290008463BA /* TraceGame.storyboard in Resources */,
 				159A41F423F49283000A5376 /* Main.storyboard in Resources */,
+				15B4A791245E2EB8005CC9EC /* Default.storyboard in Resources */,
+				157AE5832455749400BE7809 /* Fox.usdz in Resources */,
+				15B8D1D0246086E500D0CBB6 /* Puffer.usdz in Resources */,
+				157AE5812452C4DA00BE7809 /* Deer.usdz in Resources */,
+				15BB4C8E245FA4D60033A18D /* up.png in Resources */,
+				15CE52672460A88500A22B0B /* MovementGame.storyboard in Resources */,
+				157AE587245594FE00BE7809 /* Wolf.usdz in Resources */,
+				157AE5892455956000BE7809 /* RedPanda.usdz in Resources */,
+				157AE58B2455959800BE7809 /* Bear.usdz in Resources */,
+				15BB4C8F245FA4D60033A18D /* down.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,13 +407,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15BB4C85245F534D0033A18D /* TraceStackView.swift in Sources */,
 				159A41EF23F49283000A5376 /* ViewController.swift in Sources */,
+				19989C3D244AA617001C1C7F /* PlaceBoardButton.swift in Sources */,
 				159A41ED23F49283000A5376 /* AppDelegate.swift in Sources */,
-				159A41F123F49283000A5376 /* Experience.rcproject in Sources */,
+				19DEDE7B243EB2B20090CA15 /* ViewManipulation.swift in Sources */,
+				19089AED24380DF70054EFED /* GameBoard.swift in Sources */,
+				15BB4C89245F55130033A18D /* UIViewExtension.swift in Sources */,
+				193AC61C2443E7050046C872 /* TileGrid.swift in Sources */,
 				15264C962404DA4B00E4F2BB /* Player.swift in Sources */,
+				1901C561245FE1E900896EE4 /* RotateBoardButton.swift in Sources */,
 				1598681A242451FA009456EF /* Minigame.swift in Sources */,
+				15BB4C87245F53870033A18D /* TraceTargetType.swift in Sources */,
 				15986816241EE627009456EF /* TraceGame.swift in Sources */,
 				19B1736A2403475400845819 /* Tile.swift in Sources */,
+				15CE526524608E7300A22B0B /* MovementState.swift in Sources */,
+				159994D92481CA8500BC40AA /* Background.rcproject in Sources */,
+				15BB4C8B245FA3420033A18D /* MovementViewController.swift in Sources */,
+				1594B45F245E86B8008463BA /* PassThroughView.swift in Sources */,
+				15BB4C83245F53130033A18D /* TraceProgressSection.swift in Sources */,
+				1594B461245E8D82008463BA /* TraceViewController.swift in Sources */,
 				15E002DE243AA3CD00BA6A96 /* MovementGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,7 +538,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -446,6 +594,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -455,13 +604,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ssen.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -473,13 +622,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehab;
+				PRODUCT_BUNDLE_IDENTIFIER = ssen.ARrehab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -491,8 +640,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehabTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -500,7 +650,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -513,8 +663,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = 832VQUJPML;
 				INFOPLIST_FILE = ARrehabTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -522,7 +673,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -534,8 +685,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARrehabUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -544,6 +697,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARrehab;
@@ -554,8 +709,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X444959833;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARrehabUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -564,6 +721,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ericwang.ARrehabUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARrehab;
@@ -610,6 +769,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-gallagher/MultiProgressView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		15B4A78E245DF51B005CC9EC /* MultiProgressView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15B4A78D245DF51B005CC9EC /* XCRemoteSwiftPackageReference "MultiProgressView" */;
+			productName = MultiProgressView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 159A41E123F49283000A5376 /* Project object */;
 }

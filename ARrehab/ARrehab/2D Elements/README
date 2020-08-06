@@ -1,0 +1,2 @@
+This folder contains classes that define the visual componenets of 2D UI elements
+They are not connected to any specific Storyboard element, and are meant to be added programatically
