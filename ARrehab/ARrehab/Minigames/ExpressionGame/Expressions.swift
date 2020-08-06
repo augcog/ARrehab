@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import ARKit
 
+// What is the point of extending NSObject?
 class Expression: NSObject {
     func name() -> String {
         return ""

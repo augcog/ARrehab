@@ -114,7 +114,7 @@ extension ExpressionViewController: ARSessionDelegate {
                 self.failedCurrentExpression()
             } else if currentExpression.isExpressing(from: faceAnchor) && !currentExpression.isDoingWrongExpression(from: faceAnchor) {
                 // succeeded! (but only if they're not also doing the wrong expression, like raising both eyebrows)
-                self.hasSatisifiedCurrentExpression()
+                self.satisifiedCurrentExpression()
             }
         }
     }
@@ -178,7 +178,7 @@ extension ExpressionViewController {
     
     ///Called if the player correctly mimics the expression
     /// - Adds the correct amount of points, documents the success, and shows the next expression
-    func hasSatisifiedCurrentExpression() {
+    func satisifiedCurrentExpression() {
         self.currentPoints += self.pointsToAwardFromCurrentExpression()
         self.totalExpressionsSucceeded += 1
         self.showNextExpressionWhenReady()
@@ -194,8 +194,10 @@ extension ExpressionViewController {
         // figure out percentage through current expression
         let timeSinceShown = Date().timeIntervalSince(shownAt)
         // calculate actual points earned (considering precentLeft)
+        // Minimum 1 point, max maxPoints + 1.
         let points = Int(Double(self.maxPointsAwardedPerExpression) * (1.0 - (timeSinceShown / self.timeIntervalPerExpression))) + 1
         
+        // When will points ever be less than 0?
         if points > 0 {
             return points
         } else {
