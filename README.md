@@ -5,18 +5,22 @@ This is a research project done under the advisement of Professor Allen Yang and
 ## Branch Structure:
 - content
     - content team's assets, reality composer mock ups, etc.
-- collision (Archived, please use tiles)
-    - basic tile collision.
-- tiles
-    - current codebase for new features.
-- avatar
+- avatar (Stale)
     - attempt at creating a player avatar.
-- laser
-    - Upper body movement demo.
 - board_generation
     - Laying out the board.
+- classification
+    - Laying out the board automatically by classifying the ground.
+- faceoff
+    - Facial expression minigame
 
-To switch to any branch: `git checkout treehacks`
+To switch to any branch: `git checkout [branch name]`
+
+## Current Minigames:
+- Laser
+    - Upper body / Hand / Eye coordination. Targeting monsters with water.
+- Movement
+    - Physical movement. Currently asking users to squat.
 
 # Contributing
 Please see [CONTRIBUTING.md](CONTRIBUTING.md)
